@@ -30,6 +30,11 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-mustache')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile("org.springframework.boot:spring-boot-starter-security")
+	
+	compile 'org.webjars:angularjs:1.2.16-2'
+    compile 'org.webjars:ui-grid:3.0.0-rc.20'
+    compile 'org.webjars:angular-ui-bootstrap:0.12.1-1'
+    
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('mysql:mysql-connector-java')
 	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
