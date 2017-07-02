@@ -19,7 +19,7 @@ public class Orden {
     private Date fechaSolicitado;
     private Date fechaRespuesta;
     private Date fechaFinalizado;
-    private Estado estado;
+    private String estado;
     
 	public long getId() {
 		return id;
@@ -63,10 +63,10 @@ public class Orden {
 	public void setFechaFinalizado(Date fechaFinalizado) {
 		this.fechaFinalizado = fechaFinalizado;
 	}
-	public Estado getEstado() {
+	public String getEstado() {
 		return estado;
 	}
-	public void setEstado(Estado estado) {
+	public void setEstado(String estado) {
 		this.estado = estado;
 	}
 }
