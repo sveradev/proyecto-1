@@ -1,32 +1,37 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Estudio Talgham</title>
-	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-	</head>
+	{{>bloques/header}}
 	<body>
-		<div class="container">
-			<h2>Nueva Solicitud</h2>
-			<form class="form-horizontal" action="/action_page.php">
-				<div class="form-group">
-					<input type="text" name="input-nombre" placeholder="Razon Social" required class="form-control input-lg" />
-				</div>
-				<div class="form-group">
-					<input type="text" name="input-asunto" placeholder="T&oacute;tulo" required class="form-control input-lg" />
-				</div>
-				<div class="form-group">        
-					<input type="text" name="input-email" placeholder="Email" required class="form-control input-lg" />
-				</div>
-				<div class="form-group">        
-					<input type="text" name="input-descripcion" placeholder="Descripci&oacute;n" required class="form-control input-lg" />
-				</div>
-				<div class="form-group">        
-					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-default">Aceptar</button>
+
+		<section class="container">
+			<section class="login-form">
+				<form method="post" action="" role="login">
+					<img src="images/logotalgham.jpg" class="img-responsive" alt="" />
+					
+					<div class="form-group">
+						<input type="text" id="nombre" name="nombre" placeholder="Razon Social" required class="form-control input-lg" />
 					</div>
+					<div class="form-group">
+						<input type="text" id="titulo" name="titulo" placeholder="T&iacute;tulo" required class="form-control input-lg" />
+					</div>
+					<div class="form-group">        
+						<input type="text" id="email" name="email" placeholder="Email" required class="form-control input-lg" />
+					</div>
+					<div class="form-group">        
+						<input type="text" id="descripcion" name="descripcion" placeholder="Descripci&oacute;n" required class="form-control input-lg" />
+					</div>
+					<div class="form-group">        
+						<button type="submit" id="createSolicitud" class="btn btn-lg btn-primary btn-block">Aceptar</button>
+					</div>
+
+				</form>
+				<div class="form-links">
+					<a href="#">www.estudiotalgham.com</a>
 				</div>
-			</form>
-		</div>
+			</section>
+		</section>
+
+		{{>bloques/footer}}
+		<script src="js/elements/solicitud.js"></script>
 	</body>
 </html>

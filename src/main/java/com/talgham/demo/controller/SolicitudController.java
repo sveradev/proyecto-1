@@ -1,22 +1,24 @@
 package com.talgham.demo.controller;
 
-import java.sql.Date;
-import java.util.Calendar;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.talgham.demo.model.Solicitud;
 import com.talgham.demo.repository.SolicitudRepository;
+import com.talgham.demo.service.SolicitudService;
 
 @Controller
 public class SolicitudController {
 
+	@Autowired
+	private SolicitudService solicitudService;
+	
     @RequestMapping("/solicitud")
     public String solicitud(@RequestParam(value="numero", required=false, defaultValue="000001") String numero, Model model) {
         model.addAttribute("numero", numero);
@@ -26,20 +28,15 @@ public class SolicitudController {
 	@Autowired // This means to get the bean called solicitudRepository
 	private SolicitudRepository solicitudRepository;
 
-	@GetMapping(path="/addSolicitud")
-	public @ResponseBody String addSolicitud (@RequestParam String nombre
-			, @RequestParam String descripcion) {
+	@PostMapping(path="/solicitud")
+	public @ResponseBody String addSolicitud (@RequestParam String nombre,
+			@RequestParam String titulo,
+			@RequestParam String email,
+			@RequestParam String descripcion) {
 
-		Solicitud n = new Solicitud();
-		Date fechaSolicitado = new Date(Calendar.getInstance().getTime().getTime());
-		String estado = "SOLICITADO";
+		solicitudService.addSolicitud(nombre, titulo, email, descripcion);
 		
-		n.setNombre(nombre);
-		n.setFechaSolicitado(fechaSolicitado);
-		n.setEstado(estado);
-		n.setDescripcion(descripcion);
-		solicitudRepository.save(n);
-		return "Saved";
+		return "Guardado";
 	}
 
 	@GetMapping(path="/allSolicitudes")

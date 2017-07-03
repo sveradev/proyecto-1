@@ -11,14 +11,17 @@ import javax.persistence.Id;
 public class Solicitud {
 	
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private long id;
-    private String nombre;
-    private String descripcion;
-    private Date fechaSolicitado;
-    private Date fechaRespuesta;
-    private Date fechaFinalizado;
-    private String estado;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private long id;
+	private String nombre;
+	private String titulo;
+	private String email;
+	private String descripcion;
+	private Date fechaSolicitado;
+	private Date fechaRespuesta;
+	private Date fechaFinalizado;
+	private String estado;
+	
 	public long getId() {
 		return id;
 	}
@@ -30,6 +33,18 @@ public class Solicitud {
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	public String getTitulo() {
+		return titulo;
+	}
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getDescripcion() {
 		return descripcion;
@@ -61,7 +76,4 @@ public class Solicitud {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-    
-    
-
-  }
+}

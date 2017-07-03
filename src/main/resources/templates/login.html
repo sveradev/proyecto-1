@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Talgham Estudio Contable</title>
-    </head>
-    <body>
-        <div>
-            Invalid username and password.
-        </div>
-        <div>
-            You have been logged out.
-        </div>
-        <form>
-            <div><label> User Name : <input type="text" name="{{username}}"/> </label></div>
-            <div><label> Password: <input type="password" name="{{password}}"/> </label></div>
-            <div><input type="submit" value="Sign In"/></div>
-        </form>
-    </body>
+	{{>bloques/header}}
+	<body>
+		<section class="container">
+			<section class="login-form">
+				<form action="#" method="post" role="login">
+					<img src="images/logotalgham.jpg" class="img-responsive" alt=""  />
+					<div>
+						{{salida}}
+					</div>
+					<input id="alias" type="text" name="alias" placeholder="Usuario" class="form-control input-lg"/> 
+					<input id="password" type="password" name="password" placeholder="Password" class="form-control input-lg"/> 
+					<input id="validateLogin" type="submit" value="Sign In" name="go" class="btn btn-lg btn-primary btn-block"/>
+				</form>
+				<div class="form-links">
+					<a href="#">www.estudiotalgham.com</a>
+				</div>
+			</section>
+		</section>
+		{{>bloques/footer}}
+		<script src="js/elements/login.js"></script>
+	</body>
 </html>

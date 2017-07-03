@@ -1,15 +1,49 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Getting Started: Handling Form Submission</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
-<body>
-	<h1>Form</h1>
-    <form action="#" th:action="@{/greeting}" th:object="${greeting}" method="post">
-    	<p>Id: <input type="text" th:field="*{id}" /></p>
-        <p>Message: <input type="text" th:field="*{content}" /></p>
-        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
-    </form>
-</body>
+<html>
+	{{>bloques/header}}
+	<body>
+		<section class="container">
+			<section class="login-form">
+				<form method="post" action="" role="login">
+					<img src="images/logotalgham.jpg" class="img-responsive" alt="" />
+					<div class="form-group">
+						<div class="form-control input-lg">
+							{{id}}
+						</div>	
+					</div>
+					<div class="form-group">
+						<label>Nombre</label>
+						<div class="form-control input-lg">
+							{{nombre}}
+						</div>	
+					</div>
+					<div class="form-group">
+						<div class="form-control input-lg">
+							{{titulo}}
+						</div>	
+					</div>
+					<div class="form-group">
+						<div class="form-control input-lg">
+							{{email}}
+						</div>	
+					</div>				
+					<div class="form-group">
+						<div class="form-control input-lg">
+							{{estado}}
+						</div>	
+					</div>
+					<div class="form-group">
+						<div class="form-control input-lg">
+							{{descripcion}}
+						</div>	
+					</div>			
+				</form>
+				<div class="form-links">
+					<a href="#">www.estudiotalgham.com</a>
+				</div>
+			</section>
+		</section>
+
+		{{>bloques/footer}}
+	</body>
 </html>

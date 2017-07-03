@@ -34,8 +34,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-mail')
 	compile('org.springframework.boot:spring-boot-starter-mustache')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile("org.springframework.boot:spring-boot-starter-security")
-	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+//	compile("org.springframework.boot:spring-boot-starter-security")
 	
 	compile 'org.webjars:angularjs:1.2.16-2'
     compile 'org.webjars:ui-grid:3.0.0-rc.20'

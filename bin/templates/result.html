@@ -6,8 +6,16 @@
 </head>
 <body>
 	<h1>Result</h1>
-    <p th:text="'id: ' + ${greeting.id}" />
-    <p th:text="'content: ' + ${greeting.content}" />
+	{{#greeting}}
+    	<p> id: {{id}}</p>
+    	<p> content: {{content}}</p>
+    	<input type="hidden" id="content" value={{content}}>
+    {{/greeting}}
+    {{prueba}}
     <a href="/greeting">Submit another message</a>
+    <button id="createSolicitud">crear</button>
+    {{>bloques/footer}}
+        <script src="js/elements/solicitud.js"></script>
+    
 </body>
 </html>

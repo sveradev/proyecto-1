@@ -1,16 +1,49 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
-	<head>
-		<title>Estudio Talgham</title>
-	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-	</head>
+	{{>bloques/header}}
 	<body>
-		<div class="container">
-			<h2>Ver Solicitud</h2>
-			Solicitud n&ordm; :{{numero}}<br>
-			Estado:{{estado}}<br>
-			Descripci&oacute;n:{{descripcion}}
-		</div>
+		<section class="container">
+			<section class="login-form">
+				<form method="post" action="" role="login">
+					<img src="images/logotalgham.jpg" class="img-responsive" alt="" />
+					<div class="form-group">
+						<div class="form-control input-lg">
+							{{id}}
+						</div>	
+					</div>
+					<div class="form-group">
+						<label>Nombre</label>
+						<div class="form-control input-lg">
+							{{nombre}}
+						</div>	
+					</div>
+					<div class="form-group">
+						<div class="form-control input-lg">
+							{{titulo}}
+						</div>	
+					</div>
+					<div class="form-group">
+						<div class="form-control input-lg">
+							{{email}}
+						</div>	
+					</div>				
+					<div class="form-group">
+						<div class="form-control input-lg">
+							{{estado}}
+						</div>	
+					</div>
+					<div class="form-group">
+						<div class="form-control input-lg">
+							{{descripcion}}
+						</div>	
+					</div>			
+				</form>
+				<div class="form-links">
+					<a href="#">www.estudiotalgham.com</a>
+				</div>
+			</section>
+		</section>
+
+		{{>bloques/footer}}
 	</body>
 </html>

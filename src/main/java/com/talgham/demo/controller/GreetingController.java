@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.talgham.demo.model.Greeting;
 
@@ -18,8 +19,11 @@ public class GreetingController {
     }
 
     @PostMapping("/greeting")
-    public String greetingSubmit(@ModelAttribute Greeting greeting) {
-        return "result";
+    public ModelAndView greetingSubmit(@ModelAttribute Greeting greeting) {
+    	ModelAndView model = new ModelAndView("result");
+    	model.addObject("greeting", greeting);
+    	model.addObject("prueba", "test");
+    	return model;
     }
-
+    
 }
