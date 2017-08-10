@@ -10,20 +10,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.talgham.demo.model.Greeting;
 
 @Controller
-public class GreetingController {
+public class HomeController {
 
-    @GetMapping("/greeting")
+    @GetMapping("/home")
     public String greetingForm(Model model) {
-        model.addAttribute("greeting", new Greeting());
-        return "greeting";
-    }
-
-    @PostMapping("/greeting")
-    public ModelAndView greetingSubmit(@ModelAttribute Greeting greeting) {
-    	ModelAndView model = new ModelAndView("result");
-    	model.addObject("greeting", greeting);
-    	model.addObject("prueba", "test");
-    	return model;
-    }
-    
+        model.addAttribute("home", new Greeting());
+        return "home";
+    }    
 }

@@ -25,8 +25,6 @@ public class SolicitudController {
         return "solicitud";
     }
 
-	@Autowired // This means to get the bean called solicitudRepository
-	private SolicitudRepository solicitudRepository;
 
 	@PostMapping(path="/solicitud")
 	public @ResponseBody String addSolicitud (@RequestParam String nombre,
@@ -38,6 +36,8 @@ public class SolicitudController {
 		
 		return "Guardado";
 	}
+	@Autowired // This means to get the bean called solicitudRepository
+	private SolicitudRepository solicitudRepository;
 
 	@GetMapping(path="/allSolicitudes")
 	public @ResponseBody Iterable<Solicitud> getAllSolicitudes() {

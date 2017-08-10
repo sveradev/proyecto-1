@@ -5,7 +5,7 @@
 		<section class="container">
 			<section class="login-form">
 				<form action="#" method="post" role="login">
-					<img src="images/logotalgham.jpg" class="img-responsive" alt=""  />
+					{{>bloques/imagenPpal}}
 					<div>
 						{{salida}}
 					</div>
@@ -13,9 +13,7 @@
 					<input id="password" type="password" name="password" placeholder="Password" class="form-control input-lg"/> 
 					<input id="validateLogin" type="submit" value="Sign In" name="go" class="btn btn-lg btn-primary btn-block"/>
 				</form>
-				<div class="form-links">
-					<a href="#">www.estudiotalgham.com</a>
-				</div>
+				{{>bloques/link}}
 			</section>
 		</section>
 		{{>bloques/footer}}

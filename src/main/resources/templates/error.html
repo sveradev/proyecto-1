@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html>
-    <body>
-        <h1 th:inline="text">ERROR!</h1>
-    </body>
+	{{>bloques/header}}
+	<body>
+		<section class="container">
+			<section class="login-form">
+				<form action="#" method="post" role="login">
+					{{>bloques/imagenPpal}}
+					<div>
+						<h4>Lo sentimos, ha ocurrido un error!!</h4>
+					</div>
+				</form>
+				{{>bloques/link}}
+			</section>
+		</section>
+		{{>bloques/footer}}
+		<script src="js/elements/login.js"></script>
+	</body>
 </html>
+	
