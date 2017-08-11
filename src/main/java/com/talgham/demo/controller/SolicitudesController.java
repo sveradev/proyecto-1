@@ -13,13 +13,13 @@ import com.talgham.demo.model.Solicitud;
 import com.talgham.demo.service.SolicitudService;
 
 @Controller
-public class SeguimientoController {
+public class SolicitudesController {
 
 	@Autowired
 	SolicitudService solicitudService;
 
-	@RequestMapping("/seguimiento")
-    public String seguimiento(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
+	@RequestMapping("/solicitudes")
+    public String solicitudes(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
     	
 		ArrayList<Solicitud> solicitudes = (ArrayList<Solicitud>) solicitudService.getAllSolicitudes();
 
@@ -34,6 +34,6 @@ public class SeguimientoController {
 			}
 		}
 		
-		return "seguimiento";
+		return "solicitudes";
 	}
 }

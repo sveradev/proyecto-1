@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	{{>bloques/header}}
+	<body>
+
+		<section class="container">
+			<section class="login-form">
+				<form method="post" action="" role="login">
+					{{>bloques/imagenPpal}}
+					
+					<div class="form-group">
+						<input type="text" id="nombre" name="nombre" placeholder="Razon Social" required class="form-control input-lg" />
+					</div>
+					<div class="form-group">
+						<input type="text" id="estado" name="estado" placeholder="Estado" required class="form-control input-lg" />
+					</div>
+					<div class="form-group">
+						<input type="text" id="titulo" name="titulo" placeholder="T&iacute;tulo" required class="form-control input-lg" />
+					</div>
+					<div class="form-group">        
+						<input type="text" id="email" name="email" placeholder="Email" required class="form-control input-lg" />
+					</div>
+					<div class="form-group">        
+						<input type="text" id="descripcion" name="descripcion" placeholder="Descripci&oacute;n" required class="form-control input-lg" />
+					</div>
+					<div class="form-group">        
+						<button type="submit" id="volver" class="btn btn-lg btn-primary btn-block">Volver</button>
+					</div>
+				</form>
+				{{>bloques/link}}
+			</section>
+		</section>
+
+		{{>bloques/footer}}
+		<script src="js/elements/solicitud.js"></script>
+	</body>
+</html>

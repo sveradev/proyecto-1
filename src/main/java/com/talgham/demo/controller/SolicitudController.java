@@ -19,14 +19,14 @@ public class SolicitudController {
 	@Autowired
 	private SolicitudService solicitudService;
 	
-    @RequestMapping("/solicitud")
+    @RequestMapping("/crearSolicitud")
     public String solicitud(@RequestParam(value="numero", required=false, defaultValue="000001") String numero, Model model) {
         model.addAttribute("numero", numero);
-        return "solicitud";
+        return "crearSolicitud";
     }
 
 
-	@PostMapping(path="/solicitud")
+	@PostMapping(path="/crearSolicitud")
 	public @ResponseBody String addSolicitud (@RequestParam String nombre,
 			@RequestParam String titulo,
 			@RequestParam String email,
@@ -39,7 +39,7 @@ public class SolicitudController {
 	@Autowired // This means to get the bean called solicitudRepository
 	private SolicitudRepository solicitudRepository;
 
-	@GetMapping(path="/allSolicitudes")
+	@GetMapping(path="/solicitudes")
 	public @ResponseBody Iterable<Solicitud> getAllSolicitudes() {
 		return solicitudRepository.findAll();
 	}
