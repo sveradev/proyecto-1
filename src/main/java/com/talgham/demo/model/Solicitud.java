@@ -1,6 +1,6 @@
 package com.talgham.demo.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +12,7 @@ public class Solicitud {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long id;
+	private Long id;
 	private String nombre;
 	private String titulo;
 	private String email;
@@ -22,10 +22,10 @@ public class Solicitud {
 	private Date fechaFinalizado;
 	private String estado;
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getNombre() {
@@ -75,5 +75,14 @@ public class Solicitud {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public Boolean IsSuccess() {
+		return estado.equalsIgnoreCase("COMPLETA");
+	}
+	public Boolean IsPending() {
+		return estado.equalsIgnoreCase("SOLICITADO") && fechaRespuesta != null;
+	}
+	public Boolean IsOverdue() {
+		return estado.equalsIgnoreCase("SOLICITADO") && fechaRespuesta == null;
 	}
 }

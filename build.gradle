@@ -13,15 +13,13 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'war'
 
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
-
-war {
-    baseName = 'myapp'
-    version =  '0.5.0'
+jar {
+	baseName = 'gs-spring-boot'
+	version = '0.1.0'
 }
+
+sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
@@ -34,7 +32,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-mail')
 	compile('org.springframework.boot:spring-boot-starter-mustache')
 	compile('org.springframework.boot:spring-boot-starter-web')
-//	compile("org.springframework.boot:spring-boot-starter-security")
+	//compile("org.springframework.boot:spring-boot-starter-security")
 	
 	compile 'org.webjars:angularjs:1.2.16-2'
     compile 'org.webjars:ui-grid:3.0.0-rc.20'
@@ -44,6 +42,4 @@ dependencies {
 	runtime('mysql:mysql-connector-java')
 	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
-
 }

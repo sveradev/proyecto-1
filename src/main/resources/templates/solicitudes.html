@@ -6,42 +6,38 @@
 			<section class="login-form">
 				<form method="post" action="" role="login">
 					{{>bloques/imagenPpal}}
-					<div class="form-group">
-						<div class="form-control input-lg">
-							{{id}}
-						</div>	
-					</div>
-					<div class="form-group">
-						<label>Nombre</label>
-						<div class="form-control input-lg">
-							{{nombre}}
-						</div>	
-					</div>
-					<div class="form-group">
-						<div class="form-control input-lg">
-							{{titulo}}
-						</div>	
-					</div>
-					<div class="form-group">
-						<div class="form-control input-lg">
-							{{email}}
-						</div>	
-					</div>				
-					<div class="form-group">
-						<div class="form-control input-lg">
-							{{estado}}
-						</div>	
-					</div>
-					<div class="form-group">
-						<div class="form-control input-lg">
-							{{descripcion}}
-						</div>	
-					</div>			
-				</form>
+					
+					
+					
+					<table class="table">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>nombre</th>
+        <th>titulo</th>
+        <th>email</th>
+        <th>estado</th>
+        <th>descripcion</th>
+      </tr>
+    </thead>
+    <tbody>
+	{{#solicitudes}}
+		<tr class="{{#IsSuccess}}success{{/IsSuccess}} {{#IsPending}}warning{{/IsPending}} {{#IsOverdue}}danger{{/IsOverdue}}">
+        	<td class="id"><a href="/editarSolicitud?id={{id}}">{{id}}</a></td>
+        	<td>{{nombre}}</td>
+        	<td>{{titulo}}</td>
+        	<td>{{email}}</td>
+        	<td>{{estado}}</td>
+        	<td>{{descripcion}}</td>
+      </tr>
+	{{/solicitudes}}
+    </tbody>
+  </table>
+</form>
+
 				{{>bloques/link}}
 			</section>
 		</section>
-
 		{{>bloques/footer}}
 	</body>
 </html>

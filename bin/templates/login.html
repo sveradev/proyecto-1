@@ -4,19 +4,18 @@
 	<body>
 		<section class="container">
 			<section class="login-form">
-				<form action="#" method="post" role="login">
+				<form action="/login" method="post" role="login">
 					{{>bloques/imagenPpal}}
 					<div>
 						{{salida}}
 					</div>
-					<input id="alias" type="text" name="alias" placeholder="Usuario" class="form-control input-lg"/> 
+					<input id="username" type="text" name="username" placeholder="Usuario" class="form-control input-lg"/> 
 					<input id="password" type="password" name="password" placeholder="Password" class="form-control input-lg"/> 
-					<input id="validateLogin" type="submit" value="Sign In" name="go" class="btn btn-lg btn-primary btn-block"/>
+					<input type="submit" value="Sign In" name="go" class="btn btn-lg btn-primary btn-block"/>
 				</form>
 				{{>bloques/link}}
 			</section>
 		</section>
 		{{>bloques/footer}}
-		<script src="js/elements/login.js"></script>
 	</body>
 </html>

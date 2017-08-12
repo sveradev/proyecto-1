@@ -8,4 +8,6 @@ import com.talgham.demo.model.Usuario;
 
 public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
 
+	Usuario findByNombre(String nombre);
+
 }

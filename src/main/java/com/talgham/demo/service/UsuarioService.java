@@ -32,6 +32,7 @@ public class UsuarioService {
 	
 	public Usuario getUsuario(String alias){
 		ArrayList<Usuario> usuarios = (ArrayList<Usuario>) this.getAllUsuarios();
+		
 		if(usuarios != null && !usuarios.isEmpty()){
 			for(Usuario usuario: usuarios){
 				if(usuario.getAlias() == alias){
