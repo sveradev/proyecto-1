@@ -44,7 +44,7 @@ public class SolicitudController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "Guardado";
+		return "mensaje";
 	}
 	
 	@RequestMapping("/editarSolicitud")
