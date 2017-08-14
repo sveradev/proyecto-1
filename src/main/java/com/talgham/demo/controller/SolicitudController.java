@@ -19,9 +19,8 @@ public class SolicitudController {
 
 	@Autowired
 	private SolicitudService solicitudService;
-
 	@Autowired
-	private EmailService emailService;
+	private EmailRepository emailRepository;
 	@Autowired
 	private SolicitudRepository solicitudRepository;
 
@@ -36,9 +35,17 @@ public class SolicitudController {
 			@RequestParam String email,
 			@RequestParam String descripcion) {
 
-		Solicitud n = solicitudService.addSolicitud(nombre, titulo, email, descripcion);
+		Solicitud solicitud = solicitudService.addSolicitud(nombre, titulo, email, descripcion);
+		Email email = emailRepository.findByProceso("SolicitudNueva");
+		if(email != null){
+			String to = email.getEmail();
+			String subject = email.getSubject();
+			String text = email.getTexto();
+		}
+		
 		try {
-			emailService.sendEmail("//julian.n.vera@gmail.com", "Solicitid " + nombre + " creada", "Hola, se creo la solicitud " + n.getId() + " con estado " + n.getEstado());
+			emailService.sendEmail(to, subject, texto);
+			emailService.sendEmail("//julian.n.vera@gmail.com", "Solicitid " + solicitud.getNombre + " creada", "Hola, se creo la solicitud " + solicitud.getId() + " con estado " + solicitud.getEstado());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
