@@ -22,10 +22,11 @@ public class SolicitudController {
 
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private SolicitudRepository solicitudRepository;
 
 	@GetMapping("/crearSolicitud")
-	public String solicitud(@RequestParam(value="numero", required=false, defaultValue="000001") String numero, Model model) {
-		model.addAttribute("numero", numero);
+	public String solicitud(Model model) {
 		return "crearSolicitud";
 	}
 
@@ -37,7 +38,8 @@ public class SolicitudController {
 
 		Solicitud n = solicitudService.addSolicitud(nombre, titulo, email, descripcion);
 		try {
-			emailService.sendEmail("julian.n.vera@gmail.com", "Solicitid " + nombre + " creada", "Hola, se creo la solicitud " + n.getId() + " con estado " + n.getEstado());
+			
+			emailService.sendEmail("//julian.n.vera@gmail.com", "Solicitid " + nombre + " creada", "Hola, se creo la solicitud " + n.getId() + " con estado " + n.getEstado());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -63,11 +65,4 @@ public class SolicitudController {
 		
 		return "Guardado";
 	}
-	@Autowired // This means to get the bean called solicitudRepository
-	private SolicitudRepository solicitudRepository;
-
-//	@GetMapping(path="/solicitudes")
-//	public @ResponseBody Iterable<Solicitud> getAllSolicitudes() {
-//		return solicitudRepository.findAll();
-//	}
 }

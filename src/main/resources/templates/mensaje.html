@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	{{>bloques/header}}
+	<body>
+		<section class="container">
+			<section class="login-form">
+				<form role="login">
+					{{>bloques/imagenPpal}}
+					<div>
+						{{mensaje}}
+					</div>
+					<div>
+						<button class="btn btn-lg btn-primary btn-block" formaction="/home">Volver</button>
+					</div>
+				</form>
+				{{>bloques/link}}
+			</section>
+		</section>
+		{{>bloques/footer}}
+		<script src="js/elements/solicitud.js"></script>
+	</body>
+</html>

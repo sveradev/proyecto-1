@@ -16,18 +16,18 @@ public class SolicitudService {
 
 	public Solicitud addSolicitud (String nombre, String titulo, String email, String descripcion) {
 
-		Solicitud n = new Solicitud();
+		Solicitud solicitud = new Solicitud();
 		Date fechaSolicitado = new Date(Calendar.getInstance().getTime().getTime());
 		String estado = "SOLICITADO";
 		
-		n.setTitulo(titulo);
-		n.setEmail(email);
-		n.setNombre(nombre);
-		n.setFechaSolicitado(fechaSolicitado);
-		n.setEstado(estado);
-		n.setDescripcion(descripcion);
-		solicitudRepository.save(n);
-		return n;
+		solicitud.setTitulo(titulo);
+		solicitud.setEmail(email);
+		solicitud.setNombre(nombre);
+		solicitud.setFechaSolicitado(fechaSolicitado);
+		solicitud.setEstado(estado);
+		solicitud.setDescripcion(descripcion);
+		solicitudRepository.save(solicitud);
+		return solicitud;
 	}
 
 	public Iterable<Solicitud> getAllSolicitudes() {
@@ -35,24 +35,24 @@ public class SolicitudService {
 	}
 
 	public String updateSolicitud(Long id, String estado, String nombre, String titulo, String email, String descripcion) {
-		Solicitud n = solicitudRepository.findById(id);
-		if (n.getEstado() != estado) {
-			n.setEstado(estado);
+		Solicitud solicitud = solicitudRepository.findById(id);
+		if (solicitud.getEstado() != estado) {
+			solicitud.setEstado(estado);
 		}
-		if (!n.getNombre().equalsIgnoreCase(nombre)) {
-			n.setNombre(nombre);
+		if (!solicitud.getNombre().equalsIgnoreCase(nombre)) {
+			solicitud.setNombre(nombre);
 		}
-		if (!n.getTitulo().equalsIgnoreCase(titulo)) {
-			n.setTitulo(titulo);
+		if (!solicitud.getTitulo().equalsIgnoreCase(titulo)) {
+			solicitud.setTitulo(titulo);
 		}
-		if (!n.getEmail().equalsIgnoreCase(email)) {
-			n.setEmail(email);
+		if (!solicitud.getEmail().equalsIgnoreCase(email)) {
+			solicitud.setEmail(email);
 		}
-		if (!n.getDescripcion().equalsIgnoreCase(descripcion)) {
-			n.setDescripcion(descripcion);
+		if (!solicitud.getDescripcion().equalsIgnoreCase(descripcion)) {
+			solicitud.setDescripcion(descripcion);
 		}
-		n.setFechaRespuesta(new Date(System.currentTimeMillis()));
-		solicitudRepository.save(n);
+		solicitud.setFechaRespuesta(new Date(System.currentTimeMillis()));
+		solicitudRepository.save(solicitud);
 		return "updated";
 	}
 }

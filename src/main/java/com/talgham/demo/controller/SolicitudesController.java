@@ -22,17 +22,6 @@ public class SolicitudesController {
 
 		ArrayList<Solicitud> solicitudes = (ArrayList<Solicitud>) solicitudService.getAllSolicitudes();
 		model.addAttribute("solicitudes", solicitudes);
-//		for(Solicitud mySolicitud : solicitudes){
-//			if(id.equalsIgnoreCase("") || mySolicitud.getId() == Long.parseLong(id)){
-//				model.addAttribute("id", mySolicitud.getId());
-//				model.addAttribute("nombre", mySolicitud.getNombre());
-//				model.addAttribute("titulo", mySolicitud.getTitulo());
-//				model.addAttribute("email", mySolicitud.getEmail());
-//				model.addAttribute("estado", mySolicitud.getEstado());
-//				model.addAttribute("descripcion", mySolicitud.getDescripcion());
-//			}
-//		}
-//		
 		return "solicitudes";
 	}
 }
