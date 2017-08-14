@@ -38,12 +38,12 @@ public class SolicitudController {
 
 		Solicitud n = solicitudService.addSolicitud(nombre, titulo, email, descripcion);
 		try {
-			
 			emailService.sendEmail("//julian.n.vera@gmail.com", "Solicitid " + nombre + " creada", "Hola, se creo la solicitud " + n.getId() + " con estado " + n.getEstado());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		model.addAttribute("mensaje", "<p>Su solicitud se ha generado con exito.</p>");
 		return "mensaje";
 	}
 	
