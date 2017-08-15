@@ -12,33 +12,5 @@ public class MensajeController {
 		model.addAttribute("mensaje", mensaje);
 		return "mensaje";
 	}
-
-//	@Autowired 
-//	private UsuarioService usuarioService;
-//	
-//	@PostMapping(path="/checkUser")
-//	public ModelAndView login(@ModelAttribute Usuario usuario) {
-//		
-//		ModelAndView model = new ModelAndView("login");
-//		model.addObject("usuario", usuario);
-//		String alias = usuario.getAlias();
-//
-//		String salida="Usuario inexistente";
-//		ArrayList<Usuario> usuarios = (ArrayList<Usuario>) usuarioService.getAllUsuarios();
-//		if(!usuarios.isEmpty()){
-//			for (Usuario myUsuario : usuarios){
-//				if(myUsuario.getAlias().equalsIgnoreCase(alias)){
-//					if(myUsuario.getPassword().equalsIgnoreCase(usuario.getPassword())){
-//							salida = "Usuario Valido";	
-//							model = new ModelAndView("solicitud");
-//					} else {
-//						salida = "Password Incorrecto";
-//					}
-//				}
-//			}
-//		}
-//		
-//		model.addObject("salida", salida);
-//		return model;
-//	}
+	
 }

@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.talgham.demo.model.Email;
 import com.talgham.demo.model.Solicitud;
+import com.talgham.demo.repository.EmailRepository;
 import com.talgham.demo.repository.SolicitudRepository;
 import com.talgham.demo.service.EmailService;
 import com.talgham.demo.service.SolicitudService;
@@ -19,11 +21,12 @@ public class SolicitudController {
 
 	@Autowired
 	private SolicitudService solicitudService;
-
+	@Autowired
+	private SolicitudRepository solicitudRepository;
 	@Autowired
 	private EmailService emailService;
 	@Autowired
-	private SolicitudRepository solicitudRepository;
+	private EmailRepository emailRepository;
 
 	@GetMapping("/crearSolicitud")
 	public String solicitud(Model model) {
@@ -34,17 +37,26 @@ public class SolicitudController {
 	public @ResponseBody String addSolicitud (@RequestParam String nombre,
 			@RequestParam String titulo,
 			@RequestParam String email,
-			@RequestParam String descripcion) {
+			@RequestParam String descripcion,
+			Model model) {
 
-		Solicitud n = solicitudService.addSolicitud(nombre, titulo, email, descripcion);
-		try {
-			
-			emailService.sendEmail("//julian.n.vera@gmail.com", "Solicitid " + nombre + " creada", "Hola, se creo la solicitud " + n.getId() + " con estado " + n.getEstado());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return "Guardado";
+		Solicitud solicitud = solicitudService.addSolicitud(nombre, titulo, email, descripcion);
+//		Email emailModel = emailRepository.findByProceso("SolicitudNueva");
+//		if(email != null){
+//			String to = emailModel.getEmail();
+//			String subject = emailModel.getSubject();
+//			String texto = emailModel.getTexto();
+//		
+			try {
+//				emailService.sendEmail(to, subject, texto);
+				emailService.sendEmail("//julian.n.vera@gmail.com", "Solicitid " + solicitud.getNombre() + " creada", "Hola, se creo la solicitud " + solicitud.getId() + " con estado " + solicitud.getEstado());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+//		}
+		model.addAttribute("mensaje", "<p>Su solicitud se ha generado con exito.</p>");
+		return "mensaje";
 	}
 	
 	@RequestMapping("/editarSolicitud")
