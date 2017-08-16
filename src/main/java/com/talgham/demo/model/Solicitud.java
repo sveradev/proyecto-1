@@ -18,10 +18,11 @@ public class Solicitud {
 	private String email;
 	private String descripcion;
 	private Date fechaSolicitado;
-	private Date fechaRespuesta;
+	private Date fechaModificado;
 	private Date fechaFinalizado;
 	private String estado;
-	
+	private Date fechaHoy = new Date();
+
 	public Long getId() {
 		return id;
 	}
@@ -58,11 +59,11 @@ public class Solicitud {
 	public void setFechaSolicitado(Date fechaSolicitado) {
 		this.fechaSolicitado = fechaSolicitado;
 	}
-	public Date getFechaRespuesta() {
-		return fechaRespuesta;
+	public Date getFechaModificado() {
+		return fechaModificado;
 	}
-	public void setFechaRespuesta(Date fechaRespuesta) {
-		this.fechaRespuesta = fechaRespuesta;
+	public void setFechaModificado(Date fechaModificado) {
+		this.fechaModificado = fechaModificado;
 	}
 	public Date getFechaFinalizado() {
 		return fechaFinalizado;
@@ -76,13 +77,15 @@ public class Solicitud {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	public Boolean IsSuccess() {
-		return estado.equalsIgnoreCase("COMPLETA");
+	public Boolean IsVerde() {
+		Calendar fechaRespuesta = new GregorianCalendar();
+		calendar.add(Calendar.DATE, 7);
+		return estado.equalsIgnoreCase("SOLICITADO") && DateUtils.isSameDay(fechaRespuesta.before(fechaSolicitado)) ;
 	}
-	public Boolean IsPending() {
+	public Boolean IsAmarillo() {
 		return estado.equalsIgnoreCase("SOLICITADO") && fechaRespuesta != null;
 	}
-	public Boolean IsOverdue() {
+	public Boolean IsRojo() {
 		return estado.equalsIgnoreCase("SOLICITADO") && fechaRespuesta == null;
 	}
 }
