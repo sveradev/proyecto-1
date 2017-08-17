@@ -62,7 +62,7 @@ public class SolicitudController {
 	
 	@RequestMapping("/editarSolicitud")
 	public String editarSolicitud(@RequestParam(value="id") Long id, Model model) {
-		model.addAttribute("solicitud", solicitudRepository.findById(id));
+		model.addAttribute("solicitud", solicitudService.buscarPorId(id));
 		return "editarSolicitud";
 	}
 
