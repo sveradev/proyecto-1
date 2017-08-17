@@ -33,6 +33,10 @@ public class SolicitudService {
 	public Iterable<Solicitud> getAllSolicitudes() {
 		return solicitudRepository.findAll();
 	}
+	
+	public Solicitud buscarPorId(Integer id){
+		return solicitudRepository.findById(id);
+	}
 
 	public String updateSolicitud(Long id, String estado, String nombre, String titulo, String email, String descripcion) {
 		Solicitud solicitud = solicitudRepository.findById(id);
