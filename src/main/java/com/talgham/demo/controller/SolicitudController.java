@@ -30,7 +30,7 @@ public class SolicitudController {
 	}
 
 	@PostMapping(path="/crearSolicitud")
-	public @ResponseBody String addSolicitud (@RequestParam String nombre,
+	public @ResponseBody ModelAndView addSolicitud (@RequestParam String nombre,
 			@RequestParam String titulo,
 			@RequestParam String email,
 			@RequestParam String descripcion) {
@@ -50,8 +50,14 @@ public class SolicitudController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		model.addAttribute("mensaje", "<p>Su solicitud se ha generado con exito.</p>");
-		return "mensaje";
+		
+		// new ModelAndView("userAdd", "command", newUser);
+		
+		ModelAndView result = new ModelAndView();
+		result.addObject("mensaje", "<p>Su solicitud se ha generado con &eacute;xito.</p><p>Muchas Gracias.</p>");
+		result.setViewName("mensaje");
+		
+		return result;
 	}
 	
 	@RequestMapping("/editarSolicitud")
@@ -61,7 +67,7 @@ public class SolicitudController {
 	}
 
 	@PostMapping(path="/editarSolicitud")
-	public @ResponseBody String editarSolicitud (@RequestParam Long id,
+	public @ResponseBody ModelAndView editarSolicitud (@RequestParam Long id,
 			@RequestParam String nombre,
 			@RequestParam String estado,
 			@RequestParam String titulo,
@@ -70,6 +76,10 @@ public class SolicitudController {
 
 		solicitudService.updateSolicitud(id, estado, nombre, titulo, email, descripcion);
 		
-		return "Guardado";
+		ModelAndView result = new ModelAndView();
+		result.addObject("mensaje", "<p>La solicitud "+ id +" se ha modificado con &eacute;xito.</p><p>Muchas Gracias.</p>");
+		result.setViewName("mensaje");
+		
+		return result;
 	}
 }
