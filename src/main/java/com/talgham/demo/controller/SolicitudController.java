@@ -1,6 +1,7 @@
 package com.talgham.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.talgham.demo.common.MessageSourceManager;
 import com.talgham.demo.model.Solicitud;
 import com.talgham.demo.repository.SolicitudRepository;
 import com.talgham.demo.service.EmailService;
@@ -21,8 +23,6 @@ public class SolicitudController {
 	private SolicitudService solicitudService;
 	@Autowired
 	private EmailService emailService;
-	@Autowired
-	private SolicitudRepository solicitudRepository;
 
 	@GetMapping("/crearSolicitud")
 	public String solicitud(Model model) {
@@ -54,7 +54,8 @@ public class SolicitudController {
 		// new ModelAndView("userAdd", "command", newUser);
 		
 		ModelAndView result = new ModelAndView();
-		result.addObject("mensaje", "<p>Su solicitud se ha generado con &eacute;xito.</p><p>Muchas Gracias.</p>");
+		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.creada.exitoso"));
+		// result.addObject("mensaje", "<p>Su solicitud se ha generado con &eacute;xito.</p><p>Muchas Gracias.</p>");
 		result.setViewName("mensaje");
 		
 		return result;
@@ -77,7 +78,8 @@ public class SolicitudController {
 		solicitudService.updateSolicitud(id, estado, nombre, titulo, email, descripcion);
 		
 		ModelAndView result = new ModelAndView();
-		result.addObject("mensaje", "<p>La solicitud "+ id +" se ha modificado con &eacute;xito.</p><p>Muchas Gracias.</p>");
+		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.editada.exitoso",id));
+		//result.addObject("mensaje", "<p>La solicitud "+ id +" se ha modificado con &eacute;xito.</p><p>Muchas Gracias.</p>");
 		result.setViewName("mensaje");
 		
 		return result;
