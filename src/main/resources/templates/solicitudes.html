@@ -5,36 +5,49 @@
 		<section class="container">
 			<section class="login-form">
 				<form method="post" action="" role="login">
+					<div class="btn-group open pull-right">
+						<a class="btn btn-primary" href="#"><i class="fa fa-user fa-fw"></i> Usuario</a>
+						<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+							<span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
+							<li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
+							<li><a href="#"><i class="fa fa-ban fa-fw"></i> Ban</a></li>
+							<li class="divider"></li>
+							<li><a href="#"><i class="fa fa-unlock"></i> Make admin</a></li>
+						</ul>
+					</div>
 					{{>bloques/imagenPpal}}
-					
-					
-					
+					<div>
+						<a class="btn btn-default pull-right" href="/crearSolicitud">
+							<i class="fa fa-trash-o fa-lg"></i> Nueva</a>
+					</div>
 					<table class="table">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>nombre</th>
-        <th>titulo</th>
-        <th>email</th>
-        <th>estado</th>
-        <th>descripcion</th>
-      </tr>
-    </thead>
-    <tbody>
-	{{#solicitudes}}
-		<tr class="{{#IsSuccess}}success{{/IsSuccess}} {{#IsPending}}warning{{/IsPending}} {{#IsOverdue}}danger{{/IsOverdue}}">
-        	<td class="id"><a href="/editarSolicitud?id={{id}}">{{id}}</a></td>
-        	<td>{{nombre}}</td>
-        	<td>{{titulo}}</td>
-        	<td>{{email}}</td>
-        	<td>{{estado}}</td>
-        	<td>{{descripcion}}</td>
-      </tr>
-	{{/solicitudes}}
-    </tbody>
-  </table>
-</form>
-
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Nombre</th>
+								<th>T&iacute;tulo</th>
+								<th>Email</th>
+								<th>Estado</th>
+								<th>Descripcion</th>
+							</tr>
+						</thead>
+						<tbody>
+							{{#solicitudes}}
+								<tr class="{{#IsSuccess}}success{{/IsSuccess}} {{#IsPending}}warning{{/IsPending}} {{#IsOverdue}}danger{{/IsOverdue}}">
+									<td class="id"><a href="/editarSolicitud?id={{id}}">{{id}}</a></td>
+									<td>{{nombre}}</td>
+									<td>{{titulo}}</td>
+									<td>{{email}}</td>
+									<td>{{estado}}</td>
+									<td>{{descripcion}}</td>
+								</tr>
+							{{/solicitudes}}
+						</tbody>
+					</table>
+				</form>
 				{{>bloques/link}}
 			</section>
 		</section>

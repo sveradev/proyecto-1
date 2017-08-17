@@ -1,6 +1,8 @@
 package com.talgham.demo.model;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +23,7 @@ public class Solicitud {
 	private Date fechaModificado;
 	private Date fechaFinalizado;
 	private String estado;
-	private Date fechaHoy = new Date();
+	private Calendar calendario = new GregorianCalendar();
 
 	public Long getId() {
 		return id;
@@ -77,15 +79,16 @@ public class Solicitud {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	public Boolean IsVerde() {
-		Calendar fechaRespuesta = new GregorianCalendar();
-		calendar.add(Calendar.DATE, 7);
-		return estado.equalsIgnoreCase("SOLICITADO") && DateUtils.isSameDay(fechaRespuesta.before(fechaSolicitado)) ;
+	public Boolean IsSuccess() {
+		calendario.add(Calendar.DATE, 7);
+		return estado.equalsIgnoreCase("SOLICITADO") && calendario.before(fechaSolicitado);
 	}
-	public Boolean IsAmarillo() {
-		return estado.equalsIgnoreCase("SOLICITADO") && fechaRespuesta != null;
+	public Boolean IsPending() {
+		calendario.add(Calendar.DATE, 7);
+		return estado.equalsIgnoreCase("SOLICITADO") && calendario.after(fechaSolicitado);
 	}
-	public Boolean IsRojo() {
-		return estado.equalsIgnoreCase("SOLICITADO") && fechaRespuesta == null;
+	public Boolean IsOverdue() {
+		calendario.add(Calendar.DATE, 15);
+		return estado.equalsIgnoreCase("SOLICITADO") && calendario.after(fechaSolicitado);
 	}
 }

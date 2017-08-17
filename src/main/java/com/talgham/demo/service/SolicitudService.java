@@ -51,7 +51,7 @@ public class SolicitudService {
 		if (!solicitud.getDescripcion().equalsIgnoreCase(descripcion)) {
 			solicitud.setDescripcion(descripcion);
 		}
-		solicitud.setFechaRespuesta(new Date(System.currentTimeMillis()));
+		solicitud.setFechaModificado(new Date(System.currentTimeMillis()));
 		solicitudRepository.save(solicitud);
 		return "updated";
 	}
