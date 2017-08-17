@@ -54,7 +54,7 @@ public class SolicitudController {
 		// new ModelAndView("userAdd", "command", newUser);
 		
 		ModelAndView result = new ModelAndView();
-		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.creada.exitoso"));
+		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.creada.exito"));
 		// result.addObject("mensaje", "<p>Su solicitud se ha generado con &eacute;xito.</p><p>Muchas Gracias.</p>");
 		result.setViewName("mensaje");
 		
@@ -78,7 +78,7 @@ public class SolicitudController {
 		solicitudService.updateSolicitud(id, estado, nombre, titulo, email, descripcion);
 		
 		ModelAndView result = new ModelAndView();
-		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.editada.exitoso",id));
+		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.editada.exito",id));
 		//result.addObject("mensaje", "<p>La solicitud "+ id +" se ha modificado con &eacute;xito.</p><p>Muchas Gracias.</p>");
 		result.setViewName("mensaje");
 		
