@@ -4,7 +4,7 @@
 	<body>
 		<section class="container">
 			<section class="form">
-				<form role="login">
+				<form method="post" action="" role="login">
 					<div class="btn-group pull-right">
 						<a class="btn btn-primary" href="/verUsuario"><i class="fa fa-user fa-fw"></i> Usuario</a>
 						<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
@@ -17,12 +17,12 @@
 							<li><a href="/usuarioAdm"><i class="fa fa-unlock"></i> Make admin</a></li>
 						</ul>
 					</div>
-				</form>
-				<form method="post" action="" role="login">
+					<hr class="half-rule"/>
 <!-- 					{{>bloques/imagenPpal}} -->
-					<div>
+					<div class="form-group">
+						<label class="title pull-left"><h2>Solicitudes</h2></label>
 						<a class="btn btn-default pull-right" href="/crearSolicitud">
-							<i class="fa fa-trash-o fa-lg"></i> Nueva</a>
+							<i class="fa fa-plus fa-lg"></i> Nueva</a>
 					</div>
 					<table class="table">
 						<thead>

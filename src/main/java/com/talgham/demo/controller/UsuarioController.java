@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.talgham.demo.service.UsuarioService;
 
@@ -16,24 +17,32 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 	
-    @RequestMapping("/usuario")
+    @RequestMapping("/crearUsuario")
     public String usuario(Model model) {
         model.addAttribute("nombre", "");
         model.addAttribute("alias", "");
         model.addAttribute("email", "");
         model.addAttribute("password", "");
-        return "usuario";
+        model.addAttribute("showModal", Boolean.FALSE);
+        model.addAttribute("msgModalSalida", "");
+        return "crearUsuario";
     }
 
-	@PostMapping(path="/usuario")
-	public @ResponseBody String createUsuario (@RequestParam String nombre,
+	@PostMapping(path="/crearUsuario")
+	public @ResponseBody ModelAndView createUsuario (@RequestParam String nombre,
 			@RequestParam String alias,
 			@RequestParam String email,
 			@RequestParam String password) {
 
-		usuarioService.createUsuario(nombre, alias,email,password);
+		String response = usuarioService.crearUsuario(nombre, alias,email,password);
+		ModelAndView model = new ModelAndView("crearUsuario");
 
-		return "Saved";
+		if(response.equalsIgnoreCase("saved")){
+			model.addObject("showModal", Boolean.TRUE);
+			model.addObject("msgModalSalida", "Guadado");
+		}
+
+		return model;
 	}
 
 }

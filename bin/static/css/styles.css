@@ -53,3 +53,10 @@ form[role=login] > div {
 .form-links a {
 	color: #fff;
 }
+
+/* Nuevo */
+.half-rule { 
+    margin-left: 0;
+    text-align: left;
+    width: 50%;
+}

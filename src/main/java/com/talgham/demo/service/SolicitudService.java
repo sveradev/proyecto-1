@@ -12,7 +12,7 @@ import com.talgham.demo.repository.SolicitudRepository;
 @Component
 public class SolicitudService {
 	
-	@Autowired // This means to get the bean called solicitudRepository
+	@Autowired
 	private SolicitudRepository solicitudRepository;
 
 	public Solicitud addSolicitud (String nombre, String titulo, String email, String descripcion) {

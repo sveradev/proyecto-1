@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	{{>bloques/header}}
+	<body>
+		<section class="container">
+			<section class="	form">
+				<form method="post" action="#" role="login">
+<!-- 					{{>bloques/imagenPpal}} -->
+					<label class="title" ><h2>Usuario</h2></label>
+					<div class="modal fade" id="myModal" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+<!-- 									<h4 class="modal-title">titulo</h4> -->
+								</div>
+								<div class="modal-body">
+									<p>El usuario ha sido Guardado. Muchas Gracias.</p>
+								</div>
+<!-- 								<div class="modal-footer"> -->
+									<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+<!-- 								</div> -->
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<input type="text" id="nombre" name="nombre" placeholder="Nombre" required class="form-control input-lg" />
+					</div>
+					<div class="form-group">
+						<input type="text" id="alias" name="alias" placeholder="Alias" required class="form-control input-lg" />
+					</div>
+					<div class="form-group">        
+						<input type="text" id="email" name="email" placeholder="Email" required class="form-control input-lg" />
+					</div>
+					<div class="form-group">        
+						<input type="password" id="password" name="password" placeholder="Password" required class="form-control input-lg" />
+					</div>
+					<div class="form-group">        
+						<button id="createUsuario" type="submit" class="btn btn-lg btn-primary btn-block"  {{#showModal}}data-toggle="modal" data-target="#myModal"{{/showModal}}>Aceptar</button>
+					</div>
+				</form>
+				{{>bloques/link}}
+			</section>
+		</section>
+		{{>bloques/footer}}
+<!-- 		<script src="js/elements/usuario.js"></script> -->
+	</body>
+</html>

@@ -1,7 +1,6 @@
 package com.talgham.demo.service;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ public class UsuarioService {
 	@Autowired 
 	private UsuarioRepository usuarioRepository;
 
-	public String createUsuario (String nombre,String alias,String email, String password) {
+	public String crearUsuario (String nombre,String alias,String email, String password) {
 
 		Usuario n = new Usuario();
 		Date fechaAlta = new Date(Calendar.getInstance().getTime().getTime());
@@ -30,20 +29,11 @@ public class UsuarioService {
 		return "Saved";
 	}
 	
-	public Usuario getUsuario(String alias){
-		ArrayList<Usuario> usuarios = (ArrayList<Usuario>) this.getAllUsuarios();
-		
-		if(usuarios != null && !usuarios.isEmpty()){
-			for(Usuario usuario: usuarios){
-				if(usuario.getAlias() == alias){
-					return usuario;
-				}
-			}
-		}
-		return null;
+	public Usuario buscarUsuarioPorEmail(String email){
+		return usuarioRepository.findByEmail(email);
 	}
 
-	public Iterable<Usuario> getAllUsuarios() {
+	public Iterable<Usuario> buscarUsuarios() {
 		return usuarioRepository.findAll();
 	}
 }
