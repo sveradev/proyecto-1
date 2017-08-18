@@ -1,5 +1,6 @@
 package com.talgham.demo.model;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -23,7 +24,7 @@ public class Solicitud {
 	private Date fechaModificado;
 	private Date fechaFinalizado;
 	private String estado;
-	private Calendar calendario = new GregorianCalendar();
+	private String responsable;
 
 	public Long getId() {
 		return id;
@@ -79,16 +80,25 @@ public class Solicitud {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+	public String getResponsable() {
+		return responsable;
+	}
+	public void setResponsable(String responsable) {
+		this.responsable = responsable;
+	}
+
+	private Date addDays (Date date,Integer days){
+		Long result = date.getTime() + (1000 * 60 * 60 * 24 * days);
+		return new Date(result);
+	}
+	
 	public Boolean IsSuccess() {
-		calendario.add(Calendar.DATE, 7);
-		return estado.equalsIgnoreCase("SOLICITADO") && calendario.before(fechaSolicitado);
+		return estado.equalsIgnoreCase("SOLICITADO") && new Date().before(addDays(fechaSolicitado, 7));
 	}
 	public Boolean IsPending() {
-		calendario.add(Calendar.DATE, 7);
-		return estado.equalsIgnoreCase("SOLICITADO") && calendario.after(fechaSolicitado);
+		return estado.equalsIgnoreCase("SOLICITADO") && new Date().after(addDays(fechaSolicitado, 7));
 	}
 	public Boolean IsOverdue() {
-		calendario.add(Calendar.DATE, 15);
-		return estado.equalsIgnoreCase("SOLICITADO") && calendario.after(fechaSolicitado);
+		return estado.equalsIgnoreCase("SOLICITADO") && new Date().after(addDays(fechaSolicitado, 15));
 	}
 }

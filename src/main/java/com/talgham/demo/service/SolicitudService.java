@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.talgham.demo.model.Solicitud;
+import com.talgham.demo.model.Usuario;
 import com.talgham.demo.repository.SolicitudRepository;
 
 @Component
@@ -33,8 +34,12 @@ public class SolicitudService {
 	public Iterable<Solicitud> getAllSolicitudes() {
 		return solicitudRepository.findAll();
 	}
+	
+	public Solicitud buscarPorId(Long id){
+		return solicitudRepository.findById(id);
+	}
 
-	public String updateSolicitud(Long id, String estado, String nombre, String titulo, String email, String descripcion) {
+	public String updateSolicitud(Long id, String estado, String nombre, String titulo, String email, String descripcion, String responsable) {
 		Solicitud solicitud = solicitudRepository.findById(id);
 		if (solicitud.getEstado() != estado) {
 			solicitud.setEstado(estado);
@@ -50,6 +55,9 @@ public class SolicitudService {
 		}
 		if (!solicitud.getDescripcion().equalsIgnoreCase(descripcion)) {
 			solicitud.setDescripcion(descripcion);
+		}
+		if (!solicitud.getResponsable().equalsIgnoreCase(responsable)) {
+			solicitud.setResponsable(responsable);
 		}
 		solicitud.setFechaModificado(new Date(System.currentTimeMillis()));
 		solicitudRepository.save(solicitud);

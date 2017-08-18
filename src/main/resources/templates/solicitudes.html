@@ -3,22 +3,23 @@
 	{{>bloques/header}}
 	<body>
 		<section class="container">
-			<section class="login-form">
-				<form method="post" action="" role="login">
-					<div class="btn-group open pull-right">
-						<a class="btn btn-primary" href="#"><i class="fa fa-user fa-fw"></i> Usuario</a>
+			<section class="form">
+				<form role="login">
+					<div class="btn-group pull-right">
+						<a class="btn btn-primary" href="/verUsuario"><i class="fa fa-user fa-fw"></i> Usuario</a>
 						<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
 							<span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
 						</a>
 						<ul class="dropdown-menu">
-							<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
-							<li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
-							<li><a href="#"><i class="fa fa-ban fa-fw"></i> Ban</a></li>
+							<li><a href="/usuario"><i class="fa fa-pencil fa-fw"></i> Editar</a></li>
+							<li><a href="/usuarioDel"><i class="fa fa-trash-o fa-fw"></i> Eliminar</a></li>
 							<li class="divider"></li>
-							<li><a href="#"><i class="fa fa-unlock"></i> Make admin</a></li>
+							<li><a href="/usuarioAdm"><i class="fa fa-unlock"></i> Make admin</a></li>
 						</ul>
 					</div>
-					{{>bloques/imagenPpal}}
+				</form>
+				<form method="post" action="" role="login">
+<!-- 					{{>bloques/imagenPpal}} -->
 					<div>
 						<a class="btn btn-default pull-right" href="/crearSolicitud">
 							<i class="fa fa-trash-o fa-lg"></i> Nueva</a>
