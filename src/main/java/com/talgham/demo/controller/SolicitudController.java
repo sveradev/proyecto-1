@@ -54,8 +54,8 @@ public class SolicitudController {
 		// new ModelAndView("userAdd", "command", newUser);
 		
 		ModelAndView result = new ModelAndView();
-		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.creada.exito"));
-		// result.addObject("mensaje", "<p>Su solicitud se ha generado con &eacute;xito.</p><p>Muchas Gracias.</p>");
+		//result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.creada.exito"));
+		 result.addObject("mensaje", "<p>Su solicitud se ha generado con &eacute;xito.</p><p>Muchas Gracias.</p>");
 		result.setViewName("mensaje");
 		
 		return result;
