@@ -2,6 +2,7 @@
 package com.talgham.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,6 +57,7 @@ public class SolicitudController {
 		ModelAndView result = new ModelAndView();
 		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.creada.exito"));
 //		result.addObject("mensaje", "<p>Su solicitud se ha generado con &eacute;xito.</p><p>Muchas Gracias.</p>");
+
 		result.setViewName("mensaje");
 		
 		return result;

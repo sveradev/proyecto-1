@@ -36,6 +36,7 @@ public class SolicitudService {
 	}
 	
 	public Solicitud buscarPorId(Long id){
+
 		return solicitudRepository.findById(id);
 	}
 
