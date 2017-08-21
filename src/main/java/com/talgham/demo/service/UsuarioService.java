@@ -2,6 +2,7 @@ package com.talgham.demo.service;
 
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,5 +36,10 @@ public class UsuarioService {
 
 	public Iterable<Usuario> buscarUsuarios() {
 		return usuarioRepository.findAll();
+	}
+
+	public List<Usuario> buscarUsuariosPorRol(Long rol) {
+		List<Usuario> users = usuarioRepository.findByRol(rol);
+		return usuarioRepository.findByRol(rol);
 	}
 }

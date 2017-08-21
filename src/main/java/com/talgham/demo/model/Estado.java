@@ -17,6 +17,7 @@ public class Estado {
 	private String descripcion;
 	private Date fechaCreacion;
 	private String color;
+	private Integer orden;
 	
 	public long getId() {
 		return id;
@@ -47,5 +48,11 @@ public class Estado {
 	}
 	public void setColor(String color) {
 		this.color = color;
+	}
+	public Integer getOrden() {
+		return orden;
+	}
+	public void setOrden(Integer orden) {
+		this.orden = orden;
 	}
 }

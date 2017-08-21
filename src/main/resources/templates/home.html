@@ -3,22 +3,21 @@
 	{{>bloques/header}}
 	<body>
 		<section class="container">
-			<section class="login-form">
+			<section class="form">
 				<form role="login">
 					{{>bloques/imagenPpal}}
-					<div>
-						<button type="submit" class="btn btn-lg btn-primary btn-block" formaction="/crearSolicitud">Nueva Solicitud</button>
+					<div class="header">
+						<h4 class="text-center">Bienvenido, Selecciones Ingresar Solicitud o Si es empleado, Ingrese con nombre de usuario y password</h4>
 					</div>
 					<div>
-						<button type="submit" class="btn btn-lg btn-primary btn-block" formaction="/solicitudes">Ver Solicitudes</button>
+						<button type="submit" class="btn btn-lg btn-primary" formaction="/crearSolicitud">Crear Solicitud</button>
+						<button type="submit" class="btn btn-lg btn-primary" formaction="/login">Ingreso</button>
 					</div>
-
 				</form>
 				{{>bloques/link}}
 			</section>
 		</section>
-
 		{{>bloques/footer}}
-		<script src="js/elements/solicitud.js"></script>
+	<script src="js/elements/solicitud.js"></script>
 	</body>
 </html>

@@ -101,4 +101,7 @@ public class Solicitud {
 	public Boolean IsOverdue() {
 		return estado.equalsIgnoreCase("SOLICITADO") && new Date().after(addDays(fechaSolicitado, 15));
 	}
+	public Boolean IsActive() {
+		return !estado.equalsIgnoreCase("SOLICITADO") && !estado.equalsIgnoreCase("FINALIZADO");
+	}
 }

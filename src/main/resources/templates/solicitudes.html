@@ -12,38 +12,53 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li><a href="/usuario"><i class="fa fa-pencil fa-fw"></i> Editar</a></li>
-							<li><a href="/usuarioDel"><i class="fa fa-trash-o fa-fw"></i> Eliminar</a></li>
+							<li><a href="/cambiarPass"><i class="fa fa-trash-o fa-fw"></i>Cambiar Contraseña</a></li>
 							<li class="divider"></li>
-							<li><a href="/usuarioAdm"><i class="fa fa-unlock"></i> Make admin</a></li>
+							<li><a href="/logout"><i class="fa fa-unlock"></i>Salir</a></li>
 						</ul>
 					</div>
 					<hr class="half-rule"/>
-<!-- 					{{>bloques/imagenPpal}} -->
 					<div class="form-group">
 						<label class="title pull-left"><h2>Solicitudes</h2></label>
 						<a class="btn btn-default pull-right" href="/crearSolicitud">
 							<i class="fa fa-plus fa-lg"></i> Nueva</a>
 					</div>
-					<table class="table">
+					<table class="table table-hover">
 						<thead>
 							<tr>
+								<th></th>
 								<th>Id</th>
 								<th>Nombre</th>
-								<th>T&iacute;tulo</th>
 								<th>Email</th>
+								<th>T&iacute;tulo</th>
 								<th>Estado</th>
-								<th>Descripcion</th>
+								<th>Fecha</th>
+								<th>Responsable</th>
+								<th>Descripci&oacute;n</th>
 							</tr>
 						</thead>
 						<tbody>
 							{{#solicitudes}}
-								<tr class="{{#IsSuccess}}success{{/IsSuccess}} {{#IsPending}}warning{{/IsPending}} {{#IsOverdue}}danger{{/IsOverdue}}">
+								<tr class= "{{#IsSuccess}}success{{/IsSuccess}} {{#IsPending}}warning{{/IsPending}} {{#IsOverdue}}danger{{/IsOverdue}} {{#IsActive}}active{{/IsActive}}">
+									<td>
+										<a href="/editarSolicitud?id={{id}}"><i class="fa fa-pencil fa-fw"></i></a>
+										<a href="/eliminarSolicitud?id={{id}}"><i class="fa fa-trash-o fa-fw"></i></a>
+									</td>
 									<td class="id"><a href="/editarSolicitud?id={{id}}">{{id}}</a></td>
 									<td>{{nombre}}</td>
-									<td>{{titulo}}</td>
 									<td>{{email}}</td>
+									<td>{{titulo}}</td>
 									<td>{{estado}}</td>
-									<td>{{descripcion}}</td>
+									<td>{{fechaSolicitado}}</td>
+									<td>{{responsable}}</td>
+									<td>
+										<div class="dropdown">
+											<i id="dropdownMenu" class="fa fa-search fa-fw dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+											<div class="dropdown-menu" aria-labelledby="dropdownMenu">
+												<label class="dropdown-item">{{descripcion}}</label>
+											</div>
+										</div>
+									</td>
 								</tr>
 							{{/solicitudes}}
 						</tbody>

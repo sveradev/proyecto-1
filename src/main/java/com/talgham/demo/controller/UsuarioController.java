@@ -1,5 +1,7 @@
 package com.talgham.demo.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.talgham.demo.model.Rol;
+import com.talgham.demo.service.RolService;
 import com.talgham.demo.service.UsuarioService;
 
 @Controller
@@ -16,6 +20,8 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
+	@Autowired
+	private RolService rolService;
 	
     @RequestMapping("/crearUsuario")
     public String usuario(Model model) {
@@ -25,6 +31,9 @@ public class UsuarioController {
         model.addAttribute("password", "");
         model.addAttribute("showModal", Boolean.FALSE);
         model.addAttribute("msgModalSalida", "");
+        
+        ArrayList<Rol> roles = (ArrayList<Rol>) rolService.getAllRoles();
+		model.addAttribute("roles",roles);
         return "crearUsuario";
     }
 

@@ -2,9 +2,9 @@
 <html>
 	{{>bloques/header}}
 	<body>
-		<section class="container">
-			<section class="	form">
-				<form method="post" action="#" role="login">
+		<section class="container custom-container">
+			<section class="form">
+				<form method="post" action="#">
 <!-- 					{{>bloques/imagenPpal}} -->
 					<label class="title" ><h2>Usuario</h2></label>
 					<div class="modal fade" id="myModal" role="dialog">
@@ -35,11 +35,19 @@
 					<div class="form-group">        
 						<input type="password" id="password" name="password" placeholder="Password" required class="form-control input-lg" />
 					</div>
-					<div class="form-group">        
-						<button id="createUsuario" type="submit" class="btn btn-lg btn-primary btn-block"  {{#showModal}}data-toggle="modal" data-target="#myModal"{{/showModal}}>Aceptar</button>
+					<div class="form-group">
+						<select id="rol" name="rol" required class="form-control input-lg">
+								<option value ="0">Seleccione un Rol</option>
+							{{#roles}}
+								<option value ="{{id}}">{{nombre}}</option>
+							{{/roles}}
+						</select>
+					</div>
+					<div class="form-group form-inline pull-right">
+						<button class="btn btn-lg btn-primary" formaction="/solicitudes">Cancelar</button>
+						<button type="submit" id="aceptar" class="btn btn-lg btn-primary">Aceptar</button>
 					</div>
 				</form>
-				{{>bloques/link}}
 			</section>
 		</section>
 		{{>bloques/footer}}

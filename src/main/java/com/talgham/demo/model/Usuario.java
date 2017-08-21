@@ -12,17 +12,19 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
+    private Long id;
     private String nombre;
     private String alias;
     private String email;
     private Date fechaAlta;
+    private Date fechaBaja;
     private String password;
+    private Long rol;
     
-    public Integer getId() {
+    public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getNombre() {
@@ -49,10 +51,22 @@ public class Usuario {
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
+	public Date getFechaBaja() {
+		return fechaBaja;
+	}
+	public void setFechaBaja(Date fechaBaja) {
+		this.fechaBaja = fechaBaja;
+	}
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public Long getRol() {
+		return rol;
+	}
+	public void setRol(Long rol) {
+		this.rol = rol;
 	}
 }

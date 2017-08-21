@@ -15,4 +15,5 @@ $("#createSolicitud").click(function() {
 			    }
 			  });
 	});
+
 });
