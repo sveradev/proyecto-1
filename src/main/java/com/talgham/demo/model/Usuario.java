@@ -1,6 +1,6 @@
 package com.talgham.demo.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +19,7 @@ public class Usuario {
     private Date fechaAlta;
     private Date fechaBaja;
     private String password;
-    private Long rol;
+    private String rol;
     
     public Long getId() {
 		return id;
@@ -63,10 +63,16 @@ public class Usuario {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Long getRol() {
+	public String getRol() {
 		return rol;
 	}
-	public void setRol(Long rol) {
+	public void setRol(String rol) {
 		this.rol = rol;
+	}
+	public Boolean isActive() {
+		return fechaBaja == null || (fechaBaja != null && fechaBaja.after(new Date()));
+	}
+	public Boolean isNotActive() {
+		return !isActive();
 	}
 }

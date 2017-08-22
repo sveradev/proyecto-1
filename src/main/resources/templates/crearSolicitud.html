@@ -5,7 +5,14 @@
 		<section class="container custom-container" >
 			<section class="form">
 				<form method="post" action="">
-					<label class="title pull-left"><h2><i class="fa fa-bars fa-fw"></i>Nueva Solicitud</h2></label>
+					<div class="form-group">
+						<label class="title"><h2><i class="fa fa-bars fa-fw"></i>Nueva Solicitud</h2></label>
+					<div>
+					{{#salida}}
+						<div class="form-group alert {{tipoSalida}}" role="alert">
+							{{salida}}
+						</div>
+					{{/salida}}
 					<div class="form-group">
 						<input type="text" id="nombre" name="nombre" placeholder="Razon Social" required class="form-control input-lg" />
 					</div>
@@ -20,7 +27,7 @@
 					</div>
 					<div class="form-group">
 						<select id="responsable" name="responsable" required class="form-control input-lg">
-								<option value ="0">Seleccione un Responsable</option>
+							<option value ="0">Seleccione un Responsable</option>
 							{{#responsables}}
 								<option value ="{{nombre}}">{{nombre}}</option>
 							{{/responsables}}
@@ -35,7 +42,7 @@
 							</span>
 						</div>
 					</div>
-					<label class="pull-left"><input type="checkbox" name="crearOtra">&nbsp;Voy a crear otra solicitud</label>
+<!-- 					<label class="pull-left"><input type="checkbox" name="crearOtra">&nbsp;Voy a crear otra solicitud</label> -->
 					<div class="form-group form-inline pull-right">
 						<button class="btn btn-lg btn-primary" formaction="/solicitudes">Cancelar</button>
 						<button type="submit" id="aceptar" class="btn btn-lg btn-primary">Aceptar</button>

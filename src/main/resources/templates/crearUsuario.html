@@ -5,24 +5,12 @@
 		<section class="container custom-container">
 			<section class="form">
 				<form method="post" action="#">
-<!-- 					{{>bloques/imagenPpal}} -->
 					<label class="title" ><h2>Usuario</h2></label>
-					<div class="modal fade" id="myModal" role="dialog">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal">&times;</button>
-<!-- 									<h4 class="modal-title">titulo</h4> -->
-								</div>
-								<div class="modal-body">
-									<p>El usuario ha sido Guardado. Muchas Gracias.</p>
-								</div>
-<!-- 								<div class="modal-footer"> -->
-									<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-<!-- 								</div> -->
-							</div>
+					{{#salida}}
+						<div class="form-group alert {{tipoSalida}}" role="alert">
+							{{salida}}
 						</div>
-					</div>
+					{{/salida}}
 					<div class="form-group">
 						<input type="text" id="nombre" name="nombre" placeholder="Nombre" required class="form-control input-lg" />
 					</div>

@@ -33,4 +33,8 @@ public class EmailService {
 	public Email buscarPorProceso(String proceso){
 		return emailRepository.findByProceso(proceso);
 	}
+
+	public Iterable<Email> getAllEmails() {
+		return emailRepository.findAll();
+	}
 }

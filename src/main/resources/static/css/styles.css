@@ -54,8 +54,14 @@ form[role=login] > div {
 	color: #fff;
 }
 
+/* custom */
 .custom-container {
 	background: #eee;
 	border-radius: 6px;
+}
+
+.half-rule { 
+    margin-left: 0;
+    border-color: #000000;
 }
 

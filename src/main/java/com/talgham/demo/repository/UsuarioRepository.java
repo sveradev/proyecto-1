@@ -7,7 +7,8 @@ import com.talgham.demo.model.Usuario;
 
 public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
 
+	Usuario findById(Long id);
 	Usuario findByNombre(String nombre);
 	Usuario findByEmail(String email);
-	List<Usuario> findByRol(Long idRol);
+	List<Usuario> findByRol(String idRol);
 }

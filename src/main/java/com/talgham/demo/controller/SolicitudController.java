@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.talgham.demo.common.MessageSourceManager;
 import com.talgham.demo.model.Email;
 import com.talgham.demo.model.Estado;
+import com.talgham.demo.model.Rol;
 import com.talgham.demo.model.Solicitud;
 import com.talgham.demo.model.Usuario;
 import com.talgham.demo.service.EmailService;
 import com.talgham.demo.service.EstadoService;
+import com.talgham.demo.service.RolService;
 import com.talgham.demo.service.SolicitudService;
 import com.talgham.demo.service.UsuarioService;
 
@@ -37,12 +38,25 @@ public class SolicitudController {
 	private UsuarioService usuarioService;
 	@Autowired
 	private EstadoService estadoService;
-
+	@Autowired
+	private RolService rolService;
+	
 	@GetMapping("/crearSolicitud")
 	public String solicitud(Model model) {
-		Long idRol = new Long(2);
-		ArrayList<Usuario> responsables = (ArrayList<Usuario>) usuarioService.buscarUsuariosPorRol(idRol);
-		model.addAttribute("responsables",responsables);
+		Long idRol = new Long(3);
+		Rol rol = rolService.buscarRolesPorId(idRol);
+		if(rol != null){
+			ArrayList<Usuario> responsables = (ArrayList<Usuario>) usuarioService.buscarUsuariosPorRol(rol.getNombre());
+			if(!responsables.isEmpty()){
+				model.addAttribute("responsables",responsables);
+			} else {
+				model.addAttribute("tipoSalida","alert-danger");
+				model.addAttribute("salida","No existen empleados para tomar su solicitud. Muchas Gracias.");
+			}
+		} else {
+			model.addAttribute("tipoSalida","alert-danger");
+			model.addAttribute("salida","No existen empleados para tomar su solicitud. Muchas Gracias.");
+		}
 		return "crearSolicitud";
 	}
 
@@ -73,16 +87,15 @@ public class SolicitudController {
 			try {
 				emailService.sendEmail(to, subject, texto);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		
-		ModelAndView result = new ModelAndView();
+		ModelAndView result = solicitudes();
 //		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.creada.exito"));
-		result.addObject("mensaje", "Su solicitud se ha generado con éxito. Muchas Gracias.");
-
-		result.setViewName("mensaje");
+		result.addObject("tipoSalida","alert-success");
+		result.addObject("salida","Su solicitud se ha generado con éxito. Muchas Gracias.");
+		
 		
 		return result;
 	}
@@ -98,8 +111,9 @@ public class SolicitudController {
 		model.addAttribute("fechaSol", fechaSol);
 		model.addAttribute("solicitud", solicitudService.buscarPorId(id));
 		ArrayList<Estado> estados = (ArrayList<Estado>) estadoService.getAllEstados();
-		Long idRol = new Long(2);
-		ArrayList<Usuario> responsables = (ArrayList<Usuario>) usuarioService.buscarUsuariosPorRol(idRol);
+		Long idRol = new Long(3);
+		Rol rol = rolService.buscarRolesPorId(idRol);
+		ArrayList<Usuario> responsables = (ArrayList<Usuario>) usuarioService.buscarUsuariosPorRol(rol.getNombre());
 		model.addAttribute("responsables",responsables);
 		model.addAttribute("estados",estados);
 		return "editarSolicitud";
@@ -137,10 +151,11 @@ public class SolicitudController {
 		
 		solicitudService.updateSolicitud(solicitud);
 		
-		ModelAndView result = new ModelAndView();
+		ModelAndView result = solicitudes();
 //		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.editada.exito",id));
-		result.addObject("mensaje", "La solicitud "+ id +" se ha modificado con éxito. Muchas Gracias.");
-		result.setViewName("mensaje");
+		result.addObject("tipoSalida","alert-success");
+		result.addObject("salida","La solicitud "+ id +" se ha modificado con éxito. Muchas Gracias.");
+		result.setViewName("solicitudes");
 		
 		return result;
 	}
@@ -151,5 +166,14 @@ public class SolicitudController {
 		ArrayList<Solicitud> solicitudes = (ArrayList<Solicitud>) solicitudService.getAllSolicitudes();
 		model.addAttribute("solicitudes", solicitudes);
 		return "solicitudes";
+	}
+	
+	public ModelAndView solicitudes() {
+		
+		ModelAndView result = new ModelAndView();
+		ArrayList<Solicitud> solicitudes = (ArrayList<Solicitud>) solicitudService.getAllSolicitudes();
+		result.setViewName("solicitudes");
+		result.addObject("solicitudes", solicitudes);
+		return result;
 	}
 }

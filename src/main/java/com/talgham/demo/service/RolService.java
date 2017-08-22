@@ -15,4 +15,8 @@ public class RolService {
 	public Iterable<Rol> getAllRoles() {
 		return rolRepository.findAll();
 	}
+
+	public Rol buscarRolesPorId(Long id) {
+		return rolRepository.findById(id);
+	}
 }

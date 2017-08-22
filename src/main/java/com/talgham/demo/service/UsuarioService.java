@@ -1,7 +1,7 @@
 package com.talgham.demo.service;
 
-import java.sql.Date;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,10 @@ public class UsuarioService {
 		return "Saved";
 	}
 	
+	public Usuario buscarUsuarioPorId(Long id){
+		return usuarioRepository.findById(id);
+	}
+	
 	public Usuario buscarUsuarioPorEmail(String email){
 		return usuarioRepository.findByEmail(email);
 	}
@@ -38,8 +42,39 @@ public class UsuarioService {
 		return usuarioRepository.findAll();
 	}
 
-	public List<Usuario> buscarUsuariosPorRol(Long rol) {
-		List<Usuario> users = usuarioRepository.findByRol(rol);
+	public List<Usuario> buscarUsuariosPorRol(String rol) {
 		return usuarioRepository.findByRol(rol);
+	}
+
+	public String updateUsuario(Usuario myUsuario) {
+		Long id = myUsuario.getId();
+		String nombre = myUsuario.getNombre();
+		String alias = myUsuario.getAlias();
+		String email = myUsuario.getEmail();
+		String rol = myUsuario.getRol();
+		String password = myUsuario.getPassword();
+		Date fechaBaja = myUsuario.getFechaBaja();
+
+		Usuario usuario = usuarioRepository.findById(id);
+		if (!"".equalsIgnoreCase(nombre) && !usuario.getNombre().equalsIgnoreCase(nombre)) {
+			usuario.setNombre(nombre);
+		}
+		if (!"".equalsIgnoreCase(alias) && !usuario.getAlias().equalsIgnoreCase(alias)) {
+			usuario.setAlias(alias);
+		}
+		if (!"".equalsIgnoreCase(email) && !usuario.getEmail().equalsIgnoreCase(email)) {
+			usuario.setEmail(email);
+		}
+		if (!"".equalsIgnoreCase(rol) && !usuario.getRol().equalsIgnoreCase(rol)) {
+			usuario.setRol(rol);
+		}
+		if (!"".equalsIgnoreCase(password) && usuario.getPassword() != (password)) {
+			usuario.setPassword(password);
+		}
+		if (fechaBaja != null && usuario.getFechaBaja() != null) {
+			usuario.setFechaBaja(fechaBaja);
+		}
+		usuarioRepository.save(usuario);
+		return "updated";
 	}
 }
