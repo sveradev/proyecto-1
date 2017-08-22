@@ -75,6 +75,6 @@ public class UsuarioService {
 			usuario.setFechaBaja(fechaBaja);
 		}
 		usuarioRepository.save(usuario);
-		return "updated";
+		return "guardado";
 	}
 }

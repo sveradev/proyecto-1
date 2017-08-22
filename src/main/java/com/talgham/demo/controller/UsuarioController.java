@@ -89,12 +89,31 @@ public class UsuarioController {
 		return result;
 	}
 	
+	@RequestMapping("/eliminarUsuario")
+	public ModelAndView eliminarUsuario(@RequestParam(value="id") Long id, Model model) {
+		ModelAndView result = usuarios();
+		Usuario usuario = usuarioService.buscarUsuarioPorId(id);
+		usuario.setFechaBaja(new Date());
+		usuarioService.updateUsuario(usuario);
+		
+		result.addObject("tipoSalida","alert-success");
+		result.addObject("salida","El usuario "+usuario.getNombre()+" se ha dado de baja. Muchas Gracias.");
+		return result;
+	}
+	
 	@RequestMapping("/usuarios")
-	public String solicitudes(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
-
+	public String usuarios(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
 		ArrayList<Usuario> usuarios = (ArrayList<Usuario>) usuarioService.buscarUsuarios();
 		model.addAttribute("usuarios", usuarios);
 		return "usuarios";
+	}
+	
+	public ModelAndView usuarios() {
+		ModelAndView result = new ModelAndView();
+		result.setViewName("usuarios");
+		ArrayList<Usuario> usuarios = (ArrayList<Usuario>) usuarioService.buscarUsuarios();
+		result.addObject("usuarios", usuarios);
+		return result;
 	}
 
 }

@@ -5,7 +5,10 @@
 		<section class="container custom-container" >
 			<section class="form">
 				<form method="post" action="">
-					<label class="title pull-left"><h2><i class="fa fa-pencil fa-fw"></i>Editar Usuario</h2></label>
+					<div class="form-group">
+						<label class="title"><h2><i class="fa fa-pencil fa-fw"></i>Editar Usuario</h2></label>
+						<hr class="half-rule"/>
+					</div>
 					{{#usuario}}
 						<div class="form-group">
 							<label for="nombre">Nombre</label>
@@ -16,7 +19,7 @@
 							<input type="text" id="alias" name="alias" placeholder="Alias" required class="form-control input-lg" value="{{alias}}"/>
 						</div>
 						<div class="form-group">
-							<label for="Email">Alias</label>
+							<label for="Email">Email</label>
 							<input type="text" id="email" name="email" placeholder="Email" pattern="^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$" required class="form-control input-lg" value="{{email}}"/>
 						</div>
 						<div class="form-group">
@@ -28,7 +31,7 @@
 							</select>
 						</div>
 						<div class="form-group form-inline pull-right">
-							<button class="btn btn-lg btn-primary" formaction="/usuarioes">Cancelar</button>
+							<button class="btn btn-lg btn-primary" formaction="/usuarios">Cancelar</button>
 							<button type="submit" id="aceptar" class="btn btn-lg btn-primary">Aceptar</button>
 						</div>
 					{{/usuario}}
