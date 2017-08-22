@@ -2,9 +2,7 @@
 package com.talgham.demo.controller;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,84 +15,35 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.talgham.demo.model.Email;
-import com.talgham.demo.model.Estado;
-import com.talgham.demo.model.Rol;
-import com.talgham.demo.model.Solicitud;
-import com.talgham.demo.model.Usuario;
 import com.talgham.demo.service.EmailService;
-import com.talgham.demo.service.EstadoService;
-import com.talgham.demo.service.RolService;
-import com.talgham.demo.service.SolicitudService;
-import com.talgham.demo.service.UsuarioService;
 
 @Controller
 public class EmailController {
 
 	@Autowired
-	private SolicitudService solicitudService;
-	@Autowired
 	private EmailService emailService;
-	@Autowired
-	private UsuarioService usuarioService;
-	@Autowired
-	private EstadoService estadoService;
-	@Autowired
-	private RolService rolService;
 	
-//	@GetMapping("/crearEmail")
-//	public String solicitud(Model model) {
-//		Long idRol = new Long(3);
-//		Rol rol = rolService.buscarRolesPorId(idRol);
-//		if(rol != null){
-//			ArrayList<Usuario> responsables = (ArrayList<Usuario>) usuarioService.buscarUsuariosPorRol(rol.getNombre());
-//			model.addAttribute("responsables",responsables);
-//		} else {
-//			model.addAttribute("tipoSalida","alert-danger");
-//			model.addAttribute("salida","No existen responsables para tomar su solicitud. Muchas Gracias.");
-//		}
-//		return "crearEmail";
-//	}
-//
-//	@PostMapping(path="/crearEmail")
-//	public @ResponseBody ModelAndView addSolicitud (
-//			@RequestParam String nombre,
-//			@RequestParam String titulo,
-//			@RequestParam String email,
-//			@RequestParam String descripcion,
-//			@RequestParam String responsable,
-//			@RequestParam String fechaSol
-//			) throws ParseException {
-//		
-//		Date date = new Date();
-//		
-//		if(fechaSol!= null && !fechaSol.equalsIgnoreCase("")){
-//			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-//			date = formatter.parse(fechaSol);
-//		}
-//		
-//		Solicitud solicitud = solicitudService.addSolicitud(nombre, titulo, email, descripcion,responsable,date);
-//		Email emailTemplate = emailService.buscarPorProceso("SolicitudNueva");
-//		if(emailTemplate != null){
-//			String to = emailTemplate.getEmail();
-//			String subject = emailTemplate.getSubject();
-//			String texto = emailTemplate.getTexto();
-//		
-//			try {
-//				emailService.sendEmail(to, subject, texto);
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//		ModelAndView result = new ModelAndView();
-////		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.creada.exito"));
-//		result.addObject("mensaje", "Su solicitud se ha generado con éxito. Muchas Gracias.");
-//
-//		result.setViewName("mensaje");
-//		
-//		return result;
-//	}
+	@GetMapping("/crearEmail")
+	public String crearEmail(Model model) {
+		return "crearEmail";
+	}
+
+	@PostMapping(path="/crearEmail")
+	public @ResponseBody ModelAndView addEmail (
+			@RequestParam String email,
+			@RequestParam String proceso,
+			@RequestParam String subject,
+			@RequestParam String texto
+			) throws ParseException {
+		
+		Email emailModel = emailService.addEmail(email, proceso, subject, texto);
+		
+		ModelAndView result = this.emails();
+		result.addObject("tipoSalida","alert-success");
+		result.addObject("salida", "La configuracion del Email para el proceso "+emailModel.getProceso()+" se ha realizado con éxito. Muchas Gracias.");
+		
+		return result;
+	}
 //	
 //	@RequestMapping("/editarSolicitud")
 //	public String editarSolicitud(@RequestParam(value="id") Long id, Model model) {
@@ -156,10 +105,18 @@ public class EmailController {
 //	}
 
 	@RequestMapping("/emails")
-	public String solicitudes(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
+	public String emails(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
 
 		ArrayList<Email> emails = (ArrayList<Email>) emailService.getAllEmails();
 		model.addAttribute("emails", emails);
 		return "emails";
+	}
+	
+	public ModelAndView emails() {
+		ModelAndView result = new ModelAndView();
+		ArrayList<Email> emails = (ArrayList<Email>) emailService.getAllEmails();
+		result.setViewName("emails");
+		result.addObject("emails", emails);
+		return result;
 	}
 }
