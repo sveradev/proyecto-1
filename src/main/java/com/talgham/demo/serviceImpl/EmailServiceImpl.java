@@ -15,7 +15,7 @@ import com.talgham.demo.model.Solicitud;
 import com.talgham.demo.repository.EmailRepository;
 
 @Service
-public class EmailService {
+public class EmailServiceImpl implements EmailService{
 
 	@Autowired
 	private JavaMailSender sender;
