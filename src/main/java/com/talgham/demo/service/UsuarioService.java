@@ -1,4 +1,4 @@
-package com.talgham.demo.serviceImpl;
+package com.talgham.demo.service;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -7,12 +7,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.talgham.demo.service.UsuarioService;
 import com.talgham.demo.model.Usuario;
 import com.talgham.demo.repository.UsuarioRepository;
 
 @Component
-public class UsuarioServiceImpl implements UsuarioService {
+public class UsuarioService {
 	
 	@Autowired 
 	private UsuarioRepository usuarioRepository;
