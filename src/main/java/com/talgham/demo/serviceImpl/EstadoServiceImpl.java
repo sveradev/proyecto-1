@@ -7,7 +7,7 @@ import com.talgham.demo.model.Estado;
 import com.talgham.demo.repository.EstadoRepository;
 
 @Component
-public class EstadoServiceImpl {
+public class EstadoServiceImpl implements EstadoService {
 	
 	@Autowired
 	private EstadoRepository estadoRepository;
