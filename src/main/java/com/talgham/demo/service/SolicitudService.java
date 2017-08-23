@@ -41,7 +41,35 @@ public class SolicitudService {
 	}
 	
 	public Iterable<Solicitud> buscarPorCampos(String nombre, String titulo, String responsable) {
-		return solicitudRepository.findByNombreOrTituloOrResponsable(nombre,titulo,responsable);
+		Iterable<Solicitud> solicitudes = null;
+		if(nombre != null && !nombre.trim().equalsIgnoreCase("")){
+			if(titulo != null && !titulo.trim().equalsIgnoreCase("")){
+				if(responsable != null && !responsable.trim().equalsIgnoreCase("")){
+					solicitudes = findByNombreAndTituloAndResponsable(nombre,titulo,responsable);
+				} else {
+					solicitudes = findByNombreAndTitulo(nombre,titulo);
+				}
+			} else {
+				if(responsable != null && !responsable.trim().equalsIgnoreCase("")){
+					solicitudes = findByNombreAndResponsable(nombre,responsable);
+				} else {
+					solicitudes = findByNombre(nombre);
+				}
+			}	
+		} else {
+			if(titulo != null && !titulo.trim().equalsIgnoreCase("")){
+				if(responsable != null && !responsable.trim().equalsIgnoreCase("")){
+					solicitudes = findByTituloAndResponsable(titulo,responsable);
+				} else {
+					solicitudes = findByTitulo(titulo);
+				}
+			} else {
+				if(responsable != null && !responsable.trim().equalsIgnoreCase("")){
+					solicitudes = findByResponsable(responsable);
+				}
+			}
+		}
+		return solicitudes;
 	}
 
 	public String updateSolicitud(Solicitud mySolicitud) {
