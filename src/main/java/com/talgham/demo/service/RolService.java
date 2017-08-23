@@ -7,7 +7,7 @@ import com.talgham.demo.model.Rol;
 import com.talgham.demo.repository.RolRepository;
 
 @Component
-public class RolServiceImpl implements RolService {
+public class RolService{
 	
 	@Autowired
 	private RolRepository rolRepository;
