@@ -1,4 +1,4 @@
-package com.talgham.demo.service;
+package com.talgham.demo.serviceImpl;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -10,6 +10,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import com.talgham.demo.service.EmailService;
 import com.talgham.demo.model.Email;
 import com.talgham.demo.model.Solicitud;
 import com.talgham.demo.repository.EmailRepository;
