@@ -97,7 +97,7 @@ public class SolicitudController {
 		ModelAndView result = solicitudes(null);
 //		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.creada.exito"));
 		result.addObject("tipoSalida","alert-success");
-		result.addObject("salida","Su solicitud se ha generado con éxito. Muchas Gracias.");
+		result.addObject("salida","Su solicitud se ha generado con Ã©xito. Muchas Gracias.");
 		
 		return result;
 	}
@@ -154,7 +154,7 @@ public class SolicitudController {
 		ModelAndView result = solicitudes(null);
 //		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.editada.exito",id));
 		result.addObject("tipoSalida","alert-success");
-		result.addObject("salida","La solicitud "+ id +" se ha modificado con éxito. Muchas Gracias.");
+		result.addObject("salida","La solicitud "+ id +" se ha modificado con Ã©xito. Muchas Gracias.");
 		
 		return result;
 	}
@@ -212,6 +212,7 @@ public class SolicitudController {
 				}
 			}
 			if(solicitadoDesde != null || solicitadoHasta != null) {
+				solicitudService.buscarPorFechaSolicitudEntre(solicitadoDesde,solicitadoHasta);
 				if(solicitudes == null || solicitudes.isEmpty()){
 					solicitudes = (List<Solicitud>) solicitudService.getAllSolicitudes();
 				}
