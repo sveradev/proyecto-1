@@ -10,7 +10,7 @@ import com.talgham.demo.model.Solicitud;
 import com.talgham.demo.repository.SolicitudRepository;
 
 @Component
-public class SolicitudServiceImpl implements SolicitudService {
+public class SolicitudService {
 	
 	@Autowired
 	private SolicitudRepository solicitudRepository;
