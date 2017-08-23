@@ -15,5 +15,7 @@ public interface SolicitudRepository extends CrudRepository<Solicitud, Long> {
 	Iterable<Solicitud> findByNombreAndResponsable(String nombre, String responsable);
 	Iterable<Solicitud> findByTituloAndResponsable(String titulo, String responsable);
 	Iterable<Solicitud> findByNombreAndTituloAndResponsable(String nombre,String titulo, String responsable);
+	
+	Iterable<Solicitud> findByfechaSolicitudBetween(Date fechaDesde,Date fechaHasta);
 
 }
