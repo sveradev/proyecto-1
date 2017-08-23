@@ -10,7 +10,10 @@ public interface SolicitudRepository extends CrudRepository<Solicitud, Long> {
 	
 	Iterable<Solicitud> findByNombre(String nombre); 
 	Iterable<Solicitud> findByTitulo(String titulo);
-	Iterable<Solicitud> findByResponsable(String responsable);	
+	Iterable<Solicitud> findByResponsable(String responsable);
+	Iterable<Solicitud> findByNombreOrTitulo(String nombre, String titulo,);
+	Iterable<Solicitud> findByNombreOrResponsable(String nombre, String responsable);
+	Iterable<Solicitud> findByTituloOrResponsable(String titulo, String responsable);
 	Iterable<Solicitud> findByNombreOrTituloOrResponsable(String nombre,String titulo, String responsable);
-	
+
 }
