@@ -8,4 +8,6 @@ public interface SolicitudRepository extends CrudRepository<Solicitud, Long> {
 
 	Solicitud findById(Long id);
 
+	Iterable<Solicitud> findByNombreOrTituloOrResponsable(String nombre,String titulo, String responsable); 
+
 }

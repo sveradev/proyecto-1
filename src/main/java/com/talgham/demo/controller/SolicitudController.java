@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,8 +42,11 @@ public class SolicitudController {
 	@Autowired
 	private RolService rolService;
 	
+	private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+	private SimpleDateFormat formatterTime = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+	
 	@GetMapping("/crearSolicitud")
-	public String solicitud(Model model) {
+	public String crearSolicitud(Model model) {
 		Long idRol = new Long(3);
 		Rol rol = rolService.buscarRolesPorId(idRol);
 		if(rol != null){
@@ -73,7 +77,6 @@ public class SolicitudController {
 		Date date = new Date();
 		
 		if(fechaSol!= null && !fechaSol.equalsIgnoreCase("")){
-			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 			date = formatter.parse(fechaSol);
 		}
 		
@@ -91,11 +94,10 @@ public class SolicitudController {
 			}
 		}
 		
-		ModelAndView result = solicitudes();
+		ModelAndView result = solicitudes(null);
 //		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.creada.exito"));
 		result.addObject("tipoSalida","alert-success");
 		result.addObject("salida","Su solicitud se ha generado con éxito. Muchas Gracias.");
-		
 		
 		return result;
 	}
@@ -105,7 +107,6 @@ public class SolicitudController {
 		Solicitud solicitud = solicitudService.buscarPorId(id);
 		
 		Date date = solicitud.getFechaSolicitado();
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		String fechaSol = formatter.format(date);
 		
 		model.addAttribute("fechaSol", fechaSol);
@@ -131,7 +132,6 @@ public class SolicitudController {
 		
 		Date fechaSolicitado = new Date();
 		if(fechaSol!= null && !fechaSol.equalsIgnoreCase("")){
-			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 			fechaSolicitado = formatter.parse(fechaSol);
 		}
 		
@@ -151,12 +151,86 @@ public class SolicitudController {
 		
 		solicitudService.updateSolicitud(solicitud);
 		
-		ModelAndView result = solicitudes();
+		ModelAndView result = solicitudes(null);
 //		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.editada.exito",id));
 		result.addObject("tipoSalida","alert-success");
 		result.addObject("salida","La solicitud "+ id +" se ha modificado con éxito. Muchas Gracias.");
-		result.setViewName("solicitudes");
 		
+		return result;
+	}
+	
+	@GetMapping("/buscarSolicitud")
+	public String buscarSolicitud(Model model) {
+		Long idRol = new Long(3);
+		Rol rol = rolService.buscarRolesPorId(idRol);
+		if(rol != null){
+			ArrayList<Usuario> responsables = (ArrayList<Usuario>) usuarioService.buscarUsuariosPorRol(rol.getNombre());
+			if(!responsables.isEmpty()){
+				model.addAttribute("responsables",responsables);
+			}
+		}
+		return "buscarSolicitud";
+	}
+	
+	@PostMapping(path="/buscarSolicitud")
+	public @ResponseBody ModelAndView buscarSolicitud (@RequestParam Long id,
+			@RequestParam String nombre,
+			@RequestParam String titulo,
+			@RequestParam String responsable,
+			@RequestParam String fechaDesde,
+			@RequestParam String fechaHasta) throws ParseException {
+		
+		Date solicitadoDesde = null;
+		if(fechaDesde!= null && !fechaDesde.equalsIgnoreCase("")){
+			solicitadoDesde = formatter.parse(fechaDesde);
+		}
+		Date solicitadoHasta = null;
+		if(fechaHasta!= null && !fechaHasta.equalsIgnoreCase("")){
+			solicitadoHasta = formatterTime.parse(fechaHasta+" 23:23:59");
+		}
+		
+		Solicitud solicitud = new Solicitud();
+		List<Solicitud> solicitudesResult = new ArrayList<Solicitud>();
+		String tipoSalida = "";
+		String salida = "";
+		
+		if(id != null){
+			solicitud = solicitudService.buscarPorId(id);
+			if(solicitud != null){
+				solicitudesResult.add(solicitud);
+			} else {
+				tipoSalida = "alert-warning";
+				salida = "La solicitud "+ id +" no se ha encontrado. Muchas Gracias.";
+			}
+		} else {
+			List<Solicitud> solicitudes = null;
+			if((nombre != null && !nombre.trim().equalsIgnoreCase("")) || (titulo != null && !titulo.trim().equalsIgnoreCase("")) || (responsable != null && !responsable.trim().equalsIgnoreCase(""))){
+				solicitudes = (List<Solicitud>) solicitudService.buscarPorCampos(nombre,titulo,responsable);
+				if(solicitudes == null || solicitudes.isEmpty()){
+					tipoSalida = "alert-warning";
+					salida = "No se han encontrado solicitudes con los datos ingresados. Muchas Gracias.";
+				}
+			}
+			if(solicitadoDesde != null || solicitadoHasta != null) {
+				if(solicitudes == null || solicitudes.isEmpty()){
+					solicitudes = (List<Solicitud>) solicitudService.getAllSolicitudes();
+				}
+				for(Solicitud mySolicitud : solicitudes){
+					Date fechaSolicitado = mySolicitud.getFechaSolicitado();
+					if(solicitadoDesde.before(fechaSolicitado) && solicitadoHasta.after(fechaSolicitado)){
+						solicitudesResult.add(mySolicitud);
+					}
+				}
+				if(solicitudesResult == null || solicitudesResult.isEmpty()){
+					tipoSalida = "alert-warning";
+					salida = "No se han encontrado solicitudes para los rangos de fecha ingresados. Muchas Gracias.";
+				}
+			}
+		}
+		
+		ModelAndView result = this.solicitudes(solicitudesResult);
+		result.addObject("tipoSalida",tipoSalida);
+		result.addObject("salida",salida);
 		return result;
 	}
 
@@ -168,10 +242,14 @@ public class SolicitudController {
 		return "solicitudes";
 	}
 	
-	public ModelAndView solicitudes() {
-		
+	private ModelAndView solicitudes(List<Solicitud> solicitudes) {
 		ModelAndView result = new ModelAndView();
-		ArrayList<Solicitud> solicitudes = (ArrayList<Solicitud>) solicitudService.getAllSolicitudes();
+		
+		if(solicitudes == null || solicitudes.isEmpty()){
+			List<Solicitud> allSolicitudes = (ArrayList<Solicitud>) solicitudService.getAllSolicitudes();
+			solicitudes = allSolicitudes;
+		} 
+			
 		result.setViewName("solicitudes");
 		result.addObject("solicitudes", solicitudes);
 		return result;

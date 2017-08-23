@@ -43,7 +43,7 @@
 										<a href="/editarSolicitud?id={{id}}"><i class="fa fa-pencil fa-fw"></i></a>
 										<a href="/eliminarSolicitud?id={{id}}"><i class="fa fa-trash-o fa-fw"></i></a>
 									</td>
-									<td class="id"><a href="/editarSolicitud?id={{id}}">{{id}}</a></td>
+									<td>{{id}}</td>
 									<td>{{nombre}}</td>
 									<td>{{email}}</td>
 									<td>{{titulo}}</td>
@@ -67,7 +67,16 @@
 							No existen solicitudes.
 						</div>
 					{{/solicitudes}}
-					{{>bloques/link}}
+<!-- 					Paginado -->
+					<ul class="pagination">
+						<li><a href="#"><i class="fa fa-backward fa-fw"></i></a></li>
+						<li><a href="#">1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">5</a></li>
+						<li><a href="#"><i class="fa fa-forward fa-fw"></i></a></li>
+					</ul>
 				</form>
 			</section>
 		</section>

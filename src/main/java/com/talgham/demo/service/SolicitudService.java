@@ -1,6 +1,7 @@
 package com.talgham.demo.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Calendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,6 +39,10 @@ public class SolicitudService {
 	public Solicitud buscarPorId(Long id){
 		return solicitudRepository.findById(id);
 	}
+	
+	public Iterable<Solicitud> buscarPorCampos(String nombre, String titulo, String responsable) {
+		return solicitudRepository.findByNombreOrTituloOrResponsable(nombre,titulo,responsable);
+	}
 
 	public String updateSolicitud(Solicitud mySolicitud) {
 		Long id = mySolicitud.getId();
@@ -51,7 +56,7 @@ public class SolicitudService {
 		Date fechaModificado = mySolicitud.getFechaModificado();
 		Date fechaFinalizado = mySolicitud.getFechaFinalizado();
 		
-		Solicitud solicitud = solicitudRepository.findById(id);
+		Solicitud solicitud = this.buscarPorId(id);
 		if (!"".equalsIgnoreCase(estado) && solicitud.getEstado() != estado) {
 			solicitud.setEstado(estado);
 		}
