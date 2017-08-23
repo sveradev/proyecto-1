@@ -71,6 +71,10 @@ public class SolicitudService {
 		}
 		return solicitudes;
 	}
+	
+	public Iterable<Solicitud> buscarPorFechaSolicitudEntre (Date desde, Date hasta){
+		return findByfechaSolicitudBetween(desde, hasta);
+	}
 
 	public String updateSolicitud(Solicitud mySolicitud) {
 		Long id = mySolicitud.getId();
