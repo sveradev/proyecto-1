@@ -258,4 +258,60 @@ public class SolicitudController {
 		result.addObject("solicitudes", solicitudes);
 		return result;
 	}
+	
+	@PostMapping(path="/enviarMailSolicitudes")
+	public @ResponseBody ModelAndView enviarMailSolicitudes (
+			@RequestParam String fechaDesde,
+			@RequestParam String fechaHasta) throws ParseException {
+		
+		Date solicitadoDesde = null;
+		if(fechaDesde!= null && !fechaDesde.equalsIgnoreCase("")){
+			solicitadoDesde = formatter.parse(fechaDesde);
+		}
+		Date solicitadoHasta = null;
+		if(fechaHasta!= null && !fechaHasta.equalsIgnoreCase("")){
+			solicitadoHasta = formatterTime.parse(fechaHasta+" 23:23:59");
+		}
+		
+		String tipoSalida = "";
+		String salida = "";
+		
+		if(solicitadoDesde != null && solicitadoHasta != null) {
+			List<Solicitud> solicitudesResult = new ArrayList<Solicitud>();
+			List<Solicitud> solicitudes = (List<Solicitud>) solicitudService.getAllSolicitudes();
+			for(Solicitud mySolicitud : solicitudes){
+				Date fechaSolicitado = mySolicitud.getFechaSolicitado();
+				if(solicitadoDesde.before(fechaSolicitado) && solicitadoHasta.after(fechaSolicitado)){
+					solicitudesResult.add(mySolicitud);
+				}
+			}
+			if(solicitudesResult == null || solicitudesResult.isEmpty()){
+				tipoSalida = "alert-warning";
+				salida = "No se han encontrado solicitudes para los rangos de fecha ingresados. Muchas Gracias.";
+			} else {
+				Email emailTemplate = emailService.buscarPorProceso("reporteSolicitudes");//parametrizar.
+				if(emailTemplate != null){
+					String to = emailTemplate.getEmail();
+					String subject = emailTemplate.getSubject();
+					String texto = emailTemplate.getTexto();
+
+					try {
+						emailService.sendEmail(to, subject, texto);
+					} catch (Exception e) {
+						e.printStackTrace();
+						tipoSalida = "alert-danger";
+						salida = "Hubo un error al enviar el mail."
+					}
+				} else {
+					tipoSalida = "alert-info";
+					salida = "No se ha encontrado un email configurado para la acción requerida";
+				}
+			}
+		}
+		
+		ModelAndView result = this.solicitudes(solicitudesResult);
+		result.addObject("tipoSalida",tipoSalida);
+		result.addObject("salida",salida);
+		return result;
+	}
 }
