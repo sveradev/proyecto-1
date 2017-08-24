@@ -1,8 +1,8 @@
 package com.talgham.demo.service;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Calendar;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -45,36 +45,36 @@ public class SolicitudService {
 		if(nombre != null && !nombre.trim().equalsIgnoreCase("")){
 			if(titulo != null && !titulo.trim().equalsIgnoreCase("")){
 				if(responsable != null && !responsable.trim().equalsIgnoreCase("")){
-					solicitudes = findByNombreAndTituloAndResponsable(nombre,titulo,responsable);
+					solicitudes = solicitudRepository.findByNombreAndTituloAndResponsable(nombre,titulo,responsable);
 				} else {
-					solicitudes = findByNombreAndTitulo(nombre,titulo);
+					solicitudes = solicitudRepository.findByNombreAndTitulo(nombre,titulo);
 				}
 			} else {
 				if(responsable != null && !responsable.trim().equalsIgnoreCase("")){
-					solicitudes = findByNombreAndResponsable(nombre,responsable);
+					solicitudes = solicitudRepository.findByNombreAndResponsable(nombre,responsable);
 				} else {
-					solicitudes = findByNombre(nombre);
+					solicitudes = solicitudRepository.findByNombre(nombre);
 				}
 			}	
 		} else {
 			if(titulo != null && !titulo.trim().equalsIgnoreCase("")){
 				if(responsable != null && !responsable.trim().equalsIgnoreCase("")){
-					solicitudes = findByTituloAndResponsable(titulo,responsable);
+					solicitudes = solicitudRepository.findByTituloAndResponsable(titulo,responsable);
 				} else {
-					solicitudes = findByTitulo(titulo);
+					solicitudes = solicitudRepository.findByTitulo(titulo);
 				}
 			} else {
 				if(responsable != null && !responsable.trim().equalsIgnoreCase("")){
-					solicitudes = findByResponsable(responsable);
+					solicitudes = solicitudRepository.findByResponsable(responsable);
 				}
 			}
 		}
 		return solicitudes;
 	}
 	
-	public Iterable<Solicitud> buscarPorFechaSolicitudEntre (Date desde, Date hasta){
-		return findByfechaSolicitudBetween(desde, hasta);
-	}
+//	public Iterable<Solicitud> buscarPorFechaSolicitudEntre (Date desde, Date hasta){
+//		return solicitudRepository.findByfechaSolicitudBetween(desde, hasta);
+//	}
 
 	public String updateSolicitud(Solicitud mySolicitud) {
 		Long id = mySolicitud.getId();

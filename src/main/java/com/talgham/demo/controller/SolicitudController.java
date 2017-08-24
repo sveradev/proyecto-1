@@ -211,8 +211,7 @@ public class SolicitudController {
 					salida = "No se han encontrado solicitudes con los datos ingresados. Muchas Gracias.";
 				}
 			}
-			if(solicitadoDesde != null || solicitadoHasta != null) {
-				solicitudService.buscarPorFechaSolicitudEntre(solicitadoDesde,solicitadoHasta);
+			if(solicitadoDesde != null && solicitadoHasta != null) {
 				if(solicitudes == null || solicitudes.isEmpty()){
 					solicitudes = (List<Solicitud>) solicitudService.getAllSolicitudes();
 				}

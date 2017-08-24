@@ -1,5 +1,8 @@
 package com.talgham.demo.repository;
 
+import java.util.Date;
+
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.talgham.demo.model.Solicitud;
@@ -11,11 +14,9 @@ public interface SolicitudRepository extends CrudRepository<Solicitud, Long> {
 	Iterable<Solicitud> findByNombre(String nombre); 
 	Iterable<Solicitud> findByTitulo(String titulo);
 	Iterable<Solicitud> findByResponsable(String responsable);
-	Iterable<Solicitud> findByNombreAndTitulo(String nombre, String titulo,);
+	Iterable<Solicitud> findByNombreAndTitulo(String nombre, String titulo);
 	Iterable<Solicitud> findByNombreAndResponsable(String nombre, String responsable);
 	Iterable<Solicitud> findByTituloAndResponsable(String titulo, String responsable);
 	Iterable<Solicitud> findByNombreAndTituloAndResponsable(String nombre,String titulo, String responsable);
 	
-	Iterable<Solicitud> findByfechaSolicitudBetween(Date fechaDesde,Date fechaHasta);
-
 }
