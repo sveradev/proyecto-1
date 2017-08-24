@@ -81,7 +81,8 @@ public class SolicitudController {
 		}
 		
 		Solicitud solicitud = solicitudService.addSolicitud(nombre, titulo, email, descripcion,responsable,date);
-		Email emailTemplate = emailService.buscarPorProceso("SolicitudNueva");
+		//Envio de mail.
+		Email emailTemplate = emailService.buscarPorProceso("nuevaSolicitud");//parametrizar.
 		if(emailTemplate != null){
 			String to = emailTemplate.getEmail();
 			String subject = emailTemplate.getSubject();
@@ -91,7 +92,10 @@ public class SolicitudController {
 				emailService.sendEmail(to, subject, texto);
 			} catch (Exception e) {
 				e.printStackTrace();
+				return "Hubo un error al enviar el mail."
 			}
+		} else {
+			return "No se ha encontrado un email configurado para la acción requerida";
 		}
 		
 		ModelAndView result = solicitudes(null);
