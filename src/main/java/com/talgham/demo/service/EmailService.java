@@ -54,23 +54,4 @@ public class EmailService {
 	public Iterable<Email> getAllEmails() {
 		return emailRepository.findAll();
 	}
-	
-	public String enviarMailPor(String proceso, Object[] object ){
-		Email emailTemplate = this.buscarPorProceso(proceso);
-		if(emailTemplate != null){
-			String to = emailTemplate.getEmail();
-			String subject = emailTemplate.getSubject();
-			String texto = emailTemplate.getTexto();
-		
-			try {
-				emailService.sendEmail(to, subject, texto);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return "Hubo un error al enviar el mail."
-			}
-		} else {
-			return "No se ha encontrado un email configurado para la acción requerida";
-		}
-		return "enviado";
-	}
 }
