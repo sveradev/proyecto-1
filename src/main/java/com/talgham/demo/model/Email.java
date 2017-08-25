@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Email {
@@ -13,11 +15,15 @@ public class Email {
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-	private String email;
+	private String direccion;
 	private String subject;
 	private Date fechaCreacion;
+	private Date fechaModificacion;
 	private String texto;
-	private String proceso;
+	@ManyToOne @JoinColumn(name="actividad_id")
+	private Actividad actividadNormalizado;
+	
+	private String actividad;
 	
 	public Long getId() {
 		return id;
@@ -25,11 +31,11 @@ public class Email {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getEmail() {
-		return email;
+	public String getDireccion() {
+		return direccion;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 	public String getSubject() {
 		return subject;
@@ -43,17 +49,22 @@ public class Email {
 	public void setFechaCreacion(Date fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
 	}
+	public Date getFechaModificacion() {
+		return fechaModificacion;
+	}
+	public void setFechaModificacion(Date fechaModificacion) {
+		this.fechaModificacion = fechaModificacion;
+	}
 	public String getTexto() {
 		return texto;
 	}
 	public void setTexto(String texto) {
 		this.texto = texto;
 	}
-	public String getProceso() {
-		return proceso;
+	public String getActividad() {
+		return actividad;
 	}
-	public void setProceso(String proceso) {
-		this.proceso = proceso;
+	public void setActividad(String actividad) {
+		this.actividad = actividad;
 	}
-		
 }

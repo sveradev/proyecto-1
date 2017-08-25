@@ -6,22 +6,28 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Usuario {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
-    private String nombre;
-    private String alias;
-    private String email;
-    private Date fechaAlta;
-    private Date fechaBaja;
-    private String password;
-    private String rol;
-    
-    public Long getId() {
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long id;
+	private String nombre;
+	private String alias;
+	private String email;
+	private Date fechaAlta;
+	private Date fechaBaja;
+	private String password;
+	
+	@ManyToOne @JoinColumn(name="rol_id")	
+	private Rol rolNormalizado;
+	
+	private String rol;
+	
+	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {

@@ -12,19 +12,19 @@
 					{{#usuario}}
 						<div class="form-group">
 							<label for="nombre">Nombre</label>
-							<input type="text" id="nombre" name="nombre" placeholder="Nombre" required class="form-control input-lg" value="{{nombre}}"/>
+							<input type="text" id="nombre" name="nombre" placeholder="Nombre" class="form-control input-lg" value="{{nombre}}"/>
 						</div>
 						<div class="form-group">
 							<label for="nombre">Alias</label>
-							<input type="text" id="alias" name="alias" placeholder="Alias" required class="form-control input-lg" value="{{alias}}"/>
+							<input type="text" id="alias" name="alias" placeholder="Alias" class="form-control input-lg" value="{{alias}}"/>
 						</div>
 						<div class="form-group">
 							<label for="Email">Email</label>
-							<input type="text" id="email" name="email" placeholder="Email" pattern="^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$" required class="form-control input-lg" value="{{email}}"/>
+							<input type="text" id="email" name="email" placeholder="Email" class="form-control input-lg" value="{{email}}"/>
 						</div>
 						<div class="form-group">
 							<label for="Rol">Rol</label>
-							<select name="estado" placeholder="Rol" required class="form-control input-lg">
+							<select name="estado" placeholder="Rol" class="form-control input-lg">
 								{{#roles}}
 									<option value ="{{nombre}}">{{nombre}}</option>
 								{{/roles}}
@@ -40,5 +40,6 @@
 		</section>
 		{{>bloques/footer}}
 		<script src="js/elements/usuario.js"></script>
+		<script src="js/elements/utils.js"></script>
 	</body>
 </html>

@@ -14,16 +14,21 @@
 						</div>
 					{{/salida}}
 					<div class="form-group">
-						<input type="text" id="email" name="email" placeholder="Direcci&oacute;n Email" pattern="^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$" required class="form-control input-lg" />
+						<input type="text" id="direccion" name="direccion" placeholder="Email" class="form-control input-lg" />
 					</div>
 					<div class="form-group">
-						<input type="text" id="proceso" name="proceso" placeholder="Proceso" required class="form-control input-lg" />
+						<select id="actividad" name="actividad" class="form-control input-lg">
+							<option value ="">Elija actividad que envie el EMail</option>
+							{{#actividades}}
+								<option value ="{{nombre}}">{{nombre}}</option>
+							{{/actividades}}
+						</select>
 					</div>
 					<div class="form-group">
-						<input type="text" id="subject" name="subject" placeholder="Asunto" required class="form-control input-lg" />
+						<input type="text" id="subject" name="subject" placeholder="Asunto" class="form-control input-lg" />
 					</div>
 					<div class="form-group">        
-						<textarea id="texto" name="texto" placeholder="Cuerpo del Email" required class="form-control input-lg" rows="5"/></textarea>
+						<textarea id="texto" name="texto" placeholder="Cuerpo del Email" class="form-control input-lg" rows="5"/></textarea>
 					</div>
 					<div class="form-group form-inline pull-right">
 						<button class="btn btn-lg btn-primary" formaction="/solicitudes">Cancelar</button>
@@ -34,5 +39,6 @@
 		</section>
 		{{>bloques/footer}}
 		<script src="js/elements/solicitud.js"></script>
+		<script src="js/elements/utils.js"></script>
 	</body>
 </html>

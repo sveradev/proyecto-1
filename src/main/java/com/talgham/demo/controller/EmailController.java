@@ -3,6 +3,8 @@ package com.talgham.demo.controller;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.talgham.demo.model.Actividad;
 import com.talgham.demo.model.Email;
+import com.talgham.demo.service.ActividadService;
 import com.talgham.demo.service.EmailService;
 
 @Controller
@@ -22,9 +26,13 @@ public class EmailController {
 
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private ActividadService actividadService;
 	
 	@GetMapping("/crearEmail")
 	public String crearEmail(Model model) {
+		List<Actividad> actividades = (List<Actividad>) actividadService.getAllActividades();
+		model.addAttribute("actividades", actividades);
 		return "crearEmail";
 	}
 
@@ -40,72 +48,46 @@ public class EmailController {
 		
 		ModelAndView result = this.emails();
 		result.addObject("tipoSalida","alert-success");
-		result.addObject("salida", "La configuracion del Email para el proceso "+emailModel.getProceso()+" se ha realizado con éxito. Muchas Gracias.");
+		result.addObject("salida", "La configuracion del Email para la actividad "+emailModel.getActividad()+" se ha realizado con éxito. Muchas Gracias.");
 		
 		return result;
 	}
-//	
-//	@RequestMapping("/editarSolicitud")
-//	public String editarSolicitud(@RequestParam(value="id") Long id, Model model) {
-//		Solicitud solicitud = solicitudService.buscarPorId(id);
-//		
-//		Date date = solicitud.getFechaSolicitado();
-//		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-//		String fechaSol = formatter.format(date);
-//		
-//		model.addAttribute("fechaSol", fechaSol);
-//		model.addAttribute("solicitud", solicitudService.buscarPorId(id));
-//		ArrayList<Estado> estados = (ArrayList<Estado>) estadoService.getAllEstados();
-//		Long idRol = new Long(3);
-//		Rol rol = rolService.buscarRolesPorId(idRol);
-//		ArrayList<Usuario> responsables = (ArrayList<Usuario>) usuarioService.buscarUsuariosPorRol(rol.getNombre());
-//		model.addAttribute("responsables",responsables);
-//		model.addAttribute("estados",estados);
-//		return "editarSolicitud";
-//	}
-//
-//	@PostMapping(path="/editarSolicitud")
-//	public @ResponseBody ModelAndView editarSolicitud (@RequestParam Long id,
-//			@RequestParam String nombre,
-//			@RequestParam String estado,
-//			@RequestParam String titulo,
-//			@RequestParam String email,
-//			@RequestParam String descripcion, 
-//			@RequestParam String responsable,
-//			@RequestParam String fechaSol ) throws ParseException {
-//		
-//		Date fechaSolicitado = new Date();
-//		if(fechaSol!= null && !fechaSol.equalsIgnoreCase("")){
-//			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-//			fechaSolicitado = formatter.parse(fechaSol);
-//		}
-//		
-//		Solicitud solicitud = new Solicitud();
-//		solicitud.setId(id);
-//		solicitud.setNombre(nombre);
-//		solicitud.setTitulo(titulo);
-//		solicitud.setEmail(email);
-//		solicitud.setDescripcion(descripcion);
-//		solicitud.setResponsable(responsable);
-//		solicitud.setEstado(estado);
-//		solicitud.setFechaSolicitado(fechaSolicitado);
-//		solicitud.setFechaModificado(new Date());
-//		if(estado!= null && estado.equalsIgnoreCase("FINALIZADO")){
-//			solicitud.setFechaFinalizado(new Date());
-//		}
-//		
-//		solicitudService.updateSolicitud(solicitud);
-//		
-//		ModelAndView result = new ModelAndView();
-////		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.editada.exito",id));
-//		result.addObject("mensaje", "La solicitud "+ id +" se ha modificado con éxito. Muchas Gracias.");
-//		result.setViewName("mensaje");
-//		
-//		return result;
-//	}
+	
+	@RequestMapping("/editarEmail")
+	public String editarEmail(@RequestParam(value="id") Long id, Model model) {
+		model.addAttribute("email", emailService.buscarPorId(id));
+		List<Actividad> actividades = (List<Actividad>) actividadService.getAllActividades();
+		model.addAttribute("actividades", actividades);
+		return "editarEmail";
+	}
+
+	@PostMapping(path="/editarEmail")
+	public @ResponseBody ModelAndView editarEmail (@RequestParam Long id,
+			@RequestParam String direccion,
+			@RequestParam String actividad,
+			@RequestParam String subject,
+			@RequestParam String texto) throws ParseException {
+				
+		Email email = emailService.buscarPorId(id);
+		email.setDireccion(direccion);
+		email.setActividad(actividad);
+		email.setSubject(subject);
+		email.setTexto(texto);
+		email.setFechaModificacion(new Date());
+		
+		emailService.guardarEmail(email);
+		
+		ModelAndView result = new ModelAndView();
+//		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.editada.exito",id));
+		result.addObject("tipoSalida", "alert-success");
+		result.addObject("salida", "El Email para la actividad"+ actividad +" se ha modificado con éxito. Muchas Gracias.");
+		result.setViewName("emails");
+		
+		return result;
+	}
 
 	@RequestMapping("/emails")
-	public String emails(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
+	public String emails(Model model) {
 
 		ArrayList<Email> emails = (ArrayList<Email>) emailService.getAllEmails();
 		model.addAttribute("emails", emails);

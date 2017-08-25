@@ -1,14 +1,13 @@
 package com.talgham.demo.model;
 
-import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Solicitud {
@@ -23,7 +22,13 @@ public class Solicitud {
 	private Date fechaSolicitado;
 	private Date fechaModificado;
 	private Date fechaFinalizado;
+	@ManyToOne @JoinColumn(name="estado_id")
+	private Estado estadoNormalizado;
+	
 	private String estado;
+	
+	@ManyToOne @JoinColumn(name="usuario_id")
+	private Usuario responsableNormalizado;
 	private String responsable;
 
 	public Long getId() {

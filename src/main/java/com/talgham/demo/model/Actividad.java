@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Estado {
+public class Actividad {
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -16,8 +16,6 @@ public class Estado {
 	private String nombre;
 	private String descripcion;
 	private Date fechaCreacion;
-	private Integer color;
-	private Integer orden;
 	
 	public long getId() {
 		return id;
@@ -42,17 +40,5 @@ public class Estado {
 	}
 	public void setFechaCreacion(Date fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
-	}
-	public Integer getColor() {
-		return color;
-	}
-	public void setColor(Integer color) {
-		this.color = color;
-	}
-	public Integer getOrden() {
-		return orden;
-	}
-	public void setOrden(Integer orden) {
-		this.orden = orden;
 	}
 }

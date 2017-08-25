@@ -82,9 +82,10 @@ public class SolicitudController {
 		
 		Solicitud solicitud = solicitudService.addSolicitud(nombre, titulo, email, descripcion,responsable,date);
 		//Envio de mail.
-		Email emailTemplate = emailService.buscarPorProceso("nuevaSolicitud");//parametrizar.
+		Email emailTemplate = emailService.buscarPorActividad("nuevaSolicitud");//parametrizar.
+
 		if(emailTemplate != null){
-			String to = emailTemplate.getEmail();
+			String to = emailTemplate.getDireccion();
 			String subject = emailTemplate.getSubject();
 			String texto = emailTemplate.getTexto();
 		
@@ -92,12 +93,11 @@ public class SolicitudController {
 				emailService.sendEmail(to, subject, texto);
 			} catch (Exception e) {
 				e.printStackTrace();
-				return "Hubo un error al enviar el mail."
+//				"Hubo un error al enviar el mail.";
 			}
-		} else {
-			return "No se ha encontrado un email configurado para la acción requerida";
-		}
-		
+//		} else {
+//			No se ha encontrado un email configurado para la acción requerida.
+		}		
 		ModelAndView result = solicitudes(null);
 //		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.creada.exito"));
 		result.addObject("tipoSalida","alert-success");
@@ -289,9 +289,9 @@ public class SolicitudController {
 				tipoSalida = "alert-warning";
 				salida = "No se han encontrado solicitudes para los rangos de fecha ingresados. Muchas Gracias.";
 			} else {
-				Email emailTemplate = emailService.buscarPorProceso("reporteSolicitudes");//parametrizar.
+				Email emailTemplate = emailService.buscarPorActividad("reporteSolicitudes");//parametrizar.
 				if(emailTemplate != null){
-					String to = emailTemplate.getEmail();
+					String to = emailTemplate.getDireccion();
 					String subject = emailTemplate.getSubject();
 					String texto = emailTemplate.getTexto();
 
@@ -300,7 +300,7 @@ public class SolicitudController {
 					} catch (Exception e) {
 						e.printStackTrace();
 						tipoSalida = "alert-danger";
-						salida = "Hubo un error al enviar el mail."
+						salida = "Hubo un error al enviar el mail.";
 					}
 				} else {
 					tipoSalida = "alert-info";
@@ -309,7 +309,7 @@ public class SolicitudController {
 			}
 		}
 		
-		ModelAndView result = this.solicitudes(solicitudesResult);
+		ModelAndView result = this.solicitudes(null);
 		result.addObject("tipoSalida",tipoSalida);
 		result.addObject("salida",salida);
 		return result;

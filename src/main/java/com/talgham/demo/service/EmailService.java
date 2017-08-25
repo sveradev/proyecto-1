@@ -1,6 +1,5 @@
 package com.talgham.demo.service;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.mail.internet.MimeMessage;
@@ -11,7 +10,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.talgham.demo.model.Email;
-import com.talgham.demo.model.Solicitud;
 import com.talgham.demo.repository.EmailRepository;
 
 @Service
@@ -34,24 +32,32 @@ public class EmailService {
 		sender.send(message);
 	}
 	
-	public Email addEmail (String email, String proceso, String subject, String texto) {
+	public Email addEmail (String direccion, String actividad, String subject, String texto) {
 
 		Email emailModel = new Email();
 		
-		emailModel.setEmail(email);
-		emailModel.setProceso(proceso);
+		emailModel.setDireccion(direccion);
+		emailModel.setActividad(actividad);;
 		emailModel.setSubject(subject);
 		emailModel.setTexto(texto);
-		emailRepository.save(emailModel);
 		emailModel.setFechaCreacion(new Date());
+		emailRepository.save(emailModel);
 		return emailModel;
 	}
 	
-	public Email buscarPorProceso(String proceso){
-		return emailRepository.findByProceso(proceso);
+	public Email buscarPorActividad(String actividad){
+		return emailRepository.findByActividad(actividad);
 	}
 
 	public Iterable<Email> getAllEmails() {
 		return emailRepository.findAll();
+	}
+
+	public Email buscarPorId(Long id) {
+		return emailRepository.findById(id);
+	}
+
+	public void guardarEmail(Email email) {
+		emailRepository.save(email);
 	}
 }
