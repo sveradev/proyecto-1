@@ -1,7 +1,6 @@
 package com.talgham.demo.controller;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.talgham.demo.model.Estado;
 import com.talgham.demo.model.Rol;
-import com.talgham.demo.model.Solicitud;
 import com.talgham.demo.model.Usuario;
 import com.talgham.demo.service.RolService;
 import com.talgham.demo.service.UsuarioService;
@@ -29,15 +26,15 @@ public class UsuarioController {
 	@Autowired
 	private RolService rolService;
 	
-    @RequestMapping("/crearUsuario")
-    public String usuario(Model model) {
-        model.addAttribute("showModal", Boolean.FALSE);
-        model.addAttribute("msgModalSalida", "");
-        
-        ArrayList<Rol> roles = (ArrayList<Rol>) rolService.getAllRoles();
+	@RequestMapping("/crearUsuario")
+	public String usuario(Model model) {
+		model.addAttribute("showModal", Boolean.FALSE);
+		model.addAttribute("msgModalSalida", "");
+
+		ArrayList<Rol> roles = (ArrayList<Rol>) rolService.getAllRoles();
 		model.addAttribute("roles",roles);
-        return "crearUsuario";
-    }
+		return "crearUsuario";
+	}
 
 	@PostMapping(path="/crearUsuario")
 	public @ResponseBody ModelAndView createUsuario (@RequestParam String nombre,
@@ -47,13 +44,12 @@ public class UsuarioController {
 			@RequestParam String rol) {
 
 		String response = usuarioService.crearUsuario(nombre, alias,email,password);
-		ModelAndView model = new ModelAndView("crearUsuario");
+		ModelAndView model = new ModelAndView("usuarios");
 
 		if(response.equalsIgnoreCase("saved")){
 			model.addObject("showModal", Boolean.TRUE);
 			model.addObject("msgModalSalida", "Guadado");
 		}
-
 		return model;
 	}
 	

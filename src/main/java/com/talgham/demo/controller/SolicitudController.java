@@ -6,13 +6,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -45,6 +49,9 @@ public class SolicitudController {
 	private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 	private SimpleDateFormat formatterTime = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 	
+	@Autowired
+	private MessageSource messageSource;
+
 	@GetMapping("/crearSolicitud")
 	public String crearSolicitud(Model model) {
 		Long idRol = new Long(3);
@@ -93,15 +100,16 @@ public class SolicitudController {
 				emailService.sendEmail(to, subject, texto);
 			} catch (Exception e) {
 				e.printStackTrace();
-//				"Hubo un error al enviar el mail.";
+//				loggin "Hubo un error al enviar el mail.";
 			}
 //		} else {
-//			No se ha encontrado un email configurado para la acción requerida.
+//			loggin No se ha encontrado un email configurado para la acción requerida.
 		}		
+		
 		ModelAndView result = solicitudes(null);
-//		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.creada.exito"));
+		
 		result.addObject("tipoSalida","alert-success");
-		result.addObject("salida","Su solicitud se ha generado con éxito. Muchas Gracias.");
+		result.addObject("salida", messageSource.getMessage("solicitud.creada.exito",new Object[]{solicitud.getId()},new Locale("")));
 		
 		return result;
 	}
@@ -156,9 +164,8 @@ public class SolicitudController {
 		solicitudService.updateSolicitud(solicitud);
 		
 		ModelAndView result = solicitudes(null);
-//		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.editada.exito",id));
 		result.addObject("tipoSalida","alert-success");
-		result.addObject("salida","La solicitud "+ id +" se ha modificado con éxito. Muchas Gracias.");
+		result.addObject("salida", messageSource.getMessage("solicitud.editada.exito",new Object[]{solicitud.getId()},new Locale("")));
 		
 		return result;
 	}
