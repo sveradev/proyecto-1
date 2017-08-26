@@ -79,7 +79,7 @@ public class UsuarioController {
 		
 		ModelAndView result = new ModelAndView();
 //		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.editada.exito",id));
-		result.addObject("mensaje", "La solicitud "+ id +" se ha modificado con éxito. Muchas Gracias.");
+		result.addObject("mensaje", "La solicitud "+ id +" se ha modificado con Ã©xito. Muchas Gracias.");
 		result.setViewName("mensaje");
 		
 		return result;

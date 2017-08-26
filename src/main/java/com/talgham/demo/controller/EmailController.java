@@ -38,17 +38,17 @@ public class EmailController {
 
 	@PostMapping(path="/crearEmail")
 	public @ResponseBody ModelAndView addEmail (
-			@RequestParam String email,
-			@RequestParam String proceso,
+			@RequestParam String direccion,
+			@RequestParam String actividad,
 			@RequestParam String subject,
 			@RequestParam String texto
 			) throws ParseException {
 		
-		Email emailModel = emailService.addEmail(email, proceso, subject, texto);
+		Email emailModel = emailService.addEmail(direccion, actividad, subject, texto);
 		
 		ModelAndView result = this.emails();
 		result.addObject("tipoSalida","alert-success");
-		result.addObject("salida", "La configuracion del Email para la actividad "+emailModel.getActividad()+" se ha realizado con éxito. Muchas Gracias.");
+		result.addObject("salida", "La configuracion del Email para la actividad "+emailModel.getActividad()+" se ha realizado con Ã©xito. Muchas Gracias.");
 		
 		return result;
 	}
@@ -80,7 +80,7 @@ public class EmailController {
 		ModelAndView result = new ModelAndView();
 //		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.editada.exito",id));
 		result.addObject("tipoSalida", "alert-success");
-		result.addObject("salida", "El Email para la actividad"+ actividad +" se ha modificado con éxito. Muchas Gracias.");
+		result.addObject("salida", "El Email para la actividad"+ actividad +" se ha modificado con Ã©xito. Muchas Gracias.");
 		result.setViewName("emails");
 		
 		return result;
