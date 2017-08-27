@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Email {
@@ -20,7 +20,7 @@ public class Email {
 	private Date fechaCreacion;
 	private Date fechaModificacion;
 	private String texto;
-	@ManyToOne @JoinColumn(name="actividad_id")
+	@OneToOne @JoinColumn(name="actividad_id")
 	private Actividad actividad;
 	
 	public Long getId() {
