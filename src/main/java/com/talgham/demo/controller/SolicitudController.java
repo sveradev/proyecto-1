@@ -21,11 +21,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.talgham.demo.common.Constantes;
 import com.talgham.demo.model.Email;
 import com.talgham.demo.model.Estado;
 import com.talgham.demo.model.Rol;
 import com.talgham.demo.model.Solicitud;
 import com.talgham.demo.model.Usuario;
+import com.talgham.demo.repository.EstadoRepository;
 import com.talgham.demo.service.EmailService;
 import com.talgham.demo.service.EstadoService;
 import com.talgham.demo.service.RolService;
@@ -77,7 +79,7 @@ public class SolicitudController {
 			@RequestParam String titulo,
 			@RequestParam String email,
 			@RequestParam String descripcion,
-			@RequestParam String responsable,
+			@RequestParam Long responsable,
 			@RequestParam String fechaSol
 			) throws ParseException {
 		
@@ -87,10 +89,19 @@ public class SolicitudController {
 			date = formatter.parse(fechaSol);
 		}
 		
-		Solicitud solicitud = solicitudService.addSolicitud(nombre, titulo, email, descripcion,responsable,date);
+		Solicitud solicitud = new Solicitud();
+		solicitud.setNombre(nombre);
+		solicitud.setTitulo(titulo);
+		solicitud.setEmail(email);
+		solicitud.setDescripcion(descripcion);
+		Usuario usuario = usuarioService.buscarUsuarioPorId(responsable);
+		solicitud.setResponsable(usuario);
+		solicitud.setFechaSolicitado(date);
+		
+		solicitudService.addSolicitud(solicitud);
 		//Envio de mail.
-		Email emailTemplate = emailService.buscarPorActividad("nuevaSolicitud");//parametrizar.
-
+		Email emailTemplate = emailService.buscarPorActividad(Constantes.ACTIVIDAD_NUEVA_SOLICITUD);
+		
 		if(emailTemplate != null){
 			String to = emailTemplate.getDireccion();
 			String subject = emailTemplate.getSubject();
@@ -135,11 +146,11 @@ public class SolicitudController {
 	@PostMapping(path="/editarSolicitud")
 	public @ResponseBody ModelAndView editarSolicitud (@RequestParam Long id,
 			@RequestParam String nombre,
-			@RequestParam String estado,
+			@RequestParam Long estado,
 			@RequestParam String titulo,
 			@RequestParam String email,
 			@RequestParam String descripcion, 
-			@RequestParam String responsable,
+			@RequestParam Long responsable,
 			@RequestParam String fechaSol ) throws ParseException {
 		
 		Date fechaSolicitado = new Date();
@@ -153,11 +164,12 @@ public class SolicitudController {
 		solicitud.setTitulo(titulo);
 		solicitud.setEmail(email);
 		solicitud.setDescripcion(descripcion);
-		solicitud.setResponsable(responsable);
-		solicitud.setEstado(estado);
+		solicitud.setResponsable(usuarioService.buscarUsuarioPorId(responsable));
+		Estado estadoSeleccionado = estadoService.BuscarPorId(estado);
+		solicitud.setEstado(estadoService.BuscarPorId(estado));
 		solicitud.setFechaSolicitado(fechaSolicitado);
 		solicitud.setFechaModificado(new Date());
-		if(estado!= null && estado.equalsIgnoreCase("FINALIZADO")){
+		if(estado!= null && estadoSeleccionado.getOrden() == Constantes.ESTADO_FINALIZADO){
 			solicitud.setFechaFinalizado(new Date());
 		}
 		
@@ -296,7 +308,7 @@ public class SolicitudController {
 				tipoSalida = "alert-warning";
 				salida = "No se han encontrado solicitudes para los rangos de fecha ingresados. Muchas Gracias.";
 			} else {
-				Email emailTemplate = emailService.buscarPorActividad("reporteSolicitudes");//parametrizar.
+				Email emailTemplate = emailService.buscarPorActividad(Constantes.ACTIVIDAD_REPORTE_SOLICITUDES);
 				if(emailTemplate != null){
 					String to = emailTemplate.getDireccion();
 					String subject = emailTemplate.getSubject();

@@ -1,20 +1,31 @@
-package com.talgham.demo.model;
+package com.talgham.demo.dao;
 
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Permiso {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private Date fechaCreacion;
 	private Date fechaModificado;
 	private Date fechaFinalizado;
-	private Actividad actividadNormalizado;
+	@ManyToOne @JoinColumn(name="actividad_id")
+	private Actividad actividad;
 	private String permiso;
-	private Usuario usuarioNormalizado;
-	private String usuario;
+	@ManyToOne @JoinColumn(name="rol_id")
+	private Rol rol;
+	@ManyToOne @JoinColumn(name="usuario_id")
+	private Usuario usuarioModificador;
+	
 	public Long getId() {
 		return id;
 	}
@@ -36,31 +47,13 @@ public class Permiso {
 	public Date getFechaFinalizado() {
 		return fechaFinalizado;
 	}
-	public void setFechaFinalizado(Date fechaFinalizado) {
-		this.fechaFinalizado = fechaFinalizado;
-	}
-	public Actividad getActividadNormalizado() {
-		return actividadNormalizado;
-	}
-	public void setActividadNormalizado(Actividad actividadNormalizado) {
-		this.actividadNormalizado = actividadNormalizado;
-	}
 	public String getPermiso() {
 		return permiso;
 	}
 	public void setPermiso(String permiso) {
 		this.permiso = permiso;
 	}
-	public Usuario getUsuarioNormalizado() {
-		return usuarioNormalizado;
-	}
-	public void setUsuarioNormalizado(Usuario usuarioNormalizado) {
-		this.usuarioNormalizado = usuarioNormalizado;
-	}
-	public String getUsuario() {
-		return usuario;
-	}
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setFechaFinalizado(Date fechaFinalizado) {
+		this.fechaFinalizado = fechaFinalizado;
 	}
 }

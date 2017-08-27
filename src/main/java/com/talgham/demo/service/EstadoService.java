@@ -15,4 +15,8 @@ public class EstadoService {
 	public Iterable<Estado> getAllEstados() {
 		return estadoRepository.findAll();
 	}
+
+	public Estado BuscarPorId(Long id) {
+		return estadoRepository.findById(id);
+	}
 }

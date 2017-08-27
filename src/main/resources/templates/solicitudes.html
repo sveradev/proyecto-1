@@ -3,30 +3,18 @@
 	{{>bloques/header}}
 	<body>
 		<section class="container custom-container">
-			<section class="form">
-<!-- 				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button> -->
-<!-- 				<div class="modal fade" id="myModal" role="dialog"> -->
-<!-- 					<div class="modal-dialog"> -->
-<!-- 						<div class="modal-content"> -->
-<!-- 							<div class="modal-header"> -->
-								<!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
-<!-- 								<h4 class="modal-title">Aviso importante.</h4> -->
-<!-- 							</div> -->
-<!-- 							<div class="modal-body"> -->
-<!-- 								<p>¿Desea enviar el reporte mesual?</p> -->
-<!-- 							</div> -->
-<!-- 							<div class="modal-footer"> -->
-<!-- 								<button type="button" id="enviar" class="btn btn-default btn-info" data-dismiss="modal">Enviar</button> -->
-<!-- 								<button type="button" id="diferir" class="btn btn-default btn-info" data-dismiss="modal">Mostrar m&aacute;s tarde</button> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-				<form method="post" action="">
-					<div class="form-group pull-right">
-						{{>bloques/botonConfiguracion}}
-						{{>bloques/botonUsuario}}
+			<nav class="navbar border-bottom-width" role="navigation"">
+				<div class="container-fluid">
+					<div class="collapse navbar-collapse" id="myNavbar">
+						<div class="form-group pull-right">
+							{{>bloques/botonConfiguracion}}
+							{{>bloques/botonUsuario}}
+						</div>
 					</div>
+				</div>
+			</nav>
+			<section class="form">
+				<form method="post" action="">
 					<div class="form-group">
 						<label class="title"><h2><i class="fa fa-bars fa-fw"></i>Solicitudes</h2></label>
 						<hr class="half-rule"/>
@@ -40,46 +28,48 @@
 						<a class="btn btn-default" href="/crearSolicitud"><i class="fa fa-plus fa-lg"></i> Nueva</a>
 						<a class="btn btn-default" href="/buscarSolicitud"><i class="fa fa-search fa-lg"></i> Buscar</a>
 					</div>
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th></th>
-								<th>Id</th>
-								<th>Nombre</th>
-								<th>Email</th>
-								<th>T&iacute;tulo</th>
-								<th>Estado</th>
-								<th>Fecha</th>
-								<th>Responsable</th>
-								<th>Descripci&oacute;n</th>
-							</tr>
-						</thead>
-						<tbody>
-							{{#solicitudes}}
-								<tr class= "{{#IsSuccess}}success{{/IsSuccess}} {{#IsPending}}warning{{/IsPending}} {{#IsOverdue}}danger{{/IsOverdue}} {{#IsActive}}active{{/IsActive}}">
-									<td>
-										<a href="/editarSolicitud?id={{id}}"><i class="fa fa-pencil fa-fw"></i></a>
-										<a href="/eliminarSolicitud?id={{id}}"><i class="fa fa-trash-o fa-fw"></i></a>
-									</td>
-									<td>{{id}}</td>
-									<td>{{nombre}}</td>
-									<td>{{email}}</td>
-									<td>{{titulo}}</td>
-									<td>{{estado}}</td>
-									<td>{{fechaSolicitado}}</td>
-									<td>{{responsable}}</td>
-									<td>
-										<div class="dropdown">
-											<i id="dropdownMenu" class="fa fa-search fa-fw dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-											<div class="dropdown-menu" aria-labelledby="dropdownMenu">
-												<label class="dropdown-item">{{descripcion}}</label>
-											</div>
-										</div>
-									</td>
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Id</th>
+									<th>Nombre</th>
+									<th>Email</th>
+									<th>T&iacute;tulo</th>
+									<th>Estado</th>
+									<th>Fecha</th>
+									<th>Responsable</th>
+									<th>Descripci&oacute;n</th>
 								</tr>
-							{{/solicitudes}}
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								{{#solicitudes}}
+									<tr class= "{{#IsSuccess}}success{{/IsSuccess}} {{#IsPending}}warning{{/IsPending}} {{#IsOverdue}}danger{{/IsOverdue}} {{#IsActive}}active{{/IsActive}}">
+										<td>
+											<a href="/editarSolicitud?id={{id}}"><i class="fa fa-pencil fa-fw"></i></a>
+											<a href="/eliminarSolicitud?id={{id}}"><i class="fa fa-trash-o fa-fw"></i></a>
+										</td>
+										<td>{{id}}</td>
+										<td>{{nombre}}</td>
+										<td>{{email}}</td>
+										<td>{{titulo}}</td>
+										<td>{{estado}}</td>
+										<td>{{fechaSolicitado}}</td>
+										<td>{{responsable}}</td>
+										<td>
+											<div class="dropdown">
+												<i id="dropdownMenu" class="fa fa-search fa-fw dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+												<div class="dropdown-menu" aria-labelledby="dropdownMenu">
+													<label class="dropdown-item">{{descripcion}}</label>
+												</div>
+											</div>
+										</td>
+									</tr>
+								{{/solicitudes}}
+							</tbody>
+						</table>
+					</div>
 					{{^solicitudes}}
 						<div class="form-group alert alert-info" role="alert">
 							No existen solicitudes.

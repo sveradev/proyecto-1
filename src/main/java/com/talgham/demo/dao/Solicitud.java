@@ -1,4 +1,4 @@
-package com.talgham.demo.model;
+package com.talgham.demo.dao;
 
 import java.util.Date;
 
@@ -6,8 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import com.talgham.demo.common.Constantes;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Solicitud {
@@ -22,7 +22,9 @@ public class Solicitud {
 	private Date fechaSolicitado;
 	private Date fechaModificado;
 	private Date fechaFinalizado;
+	@ManyToOne @JoinColumn(name="estado_id")
 	private Estado estado;
+	@ManyToOne @JoinColumn(name="usuario_id")
 	private Usuario responsable;
 
 	public Long getId() {
@@ -72,35 +74,5 @@ public class Solicitud {
 	}
 	public void setFechaFinalizado(Date fechaFinalizado) {
 		this.fechaFinalizado = fechaFinalizado;
-	}
-	public Estado getEstado() {
-		return estado;
-	}
-	public void setEstado(Estado estado) {
-		this.estado = estado;
-	}
-	public Usuario getResponsable() {
-		return responsable;
-	}
-	public void setResponsable(Usuario responsable) {
-		this.responsable = responsable;
-	}
-
-	private Date addDays (Date date,Integer days){
-		Long result = date.getTime() + (1000 * 60 * 60 * 24 * days);
-		return new Date(result);
-	}
-	
-	public Boolean IsSuccess() {
-		return estado.getId() == Constantes.ESTADO_SOLICITADO && new Date().before(addDays(fechaSolicitado, 7));
-	}
-	public Boolean IsPending() {
-		return estado.getId() == Constantes.ESTADO_SOLICITADO && new Date().after(addDays(fechaSolicitado, 7));
-	}
-	public Boolean IsOverdue() {
-		return estado.getId() == Constantes.ESTADO_SOLICITADO && new Date().after(addDays(fechaSolicitado, 15));
-	}
-	public Boolean IsActive() {
-		return estado.getId() != Constantes.ESTADO_SOLICITADO && estado.getId() != Constantes.ESTADO_FINALIZADO;
 	}
 }

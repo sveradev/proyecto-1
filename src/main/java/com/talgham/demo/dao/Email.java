@@ -1,13 +1,15 @@
-package com.talgham.demo.model;
+package com.talgham.demo.dao;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+@Entity
 public class Email {
 	
 	@Id
@@ -18,6 +20,7 @@ public class Email {
 	private Date fechaCreacion;
 	private Date fechaModificacion;
 	private String texto;
+	@ManyToOne @JoinColumn(name="actividad_id")
 	private Actividad actividad;
 	
 	public Long getId() {
@@ -55,11 +58,5 @@ public class Email {
 	}
 	public void setTexto(String texto) {
 		this.texto = texto;
-	}
-	public Actividad getActividad() {
-		return actividad;
-	}
-	public void setActividad(Actividad actividad) {
-		this.actividad = actividad;
 	}
 }

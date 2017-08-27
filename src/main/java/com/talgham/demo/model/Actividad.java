@@ -2,16 +2,12 @@ package com.talgham.demo.model;
 
 import java.sql.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.talgham.demo.repository.ActividadRepository;
 
-@Entity
 public class Actividad {
 	
-	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+	ActividadRepository actividadRepository;
+	
 	private long id;
 	private String nombre;
 	private String descripcion;

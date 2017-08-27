@@ -1,7 +1,5 @@
 package com.talgham.demo.service;
 
-import java.util.Date;
-
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,21 +30,13 @@ public class EmailService {
 		sender.send(message);
 	}
 	
-	public Email addEmail (String direccion, String actividad, String subject, String texto) {
-
-		Email emailModel = new Email();
-		
-		emailModel.setDireccion(direccion);
-		emailModel.setActividad(actividad);;
-		emailModel.setSubject(subject);
-		emailModel.setTexto(texto);
-		emailModel.setFechaCreacion(new Date());
-		emailRepository.save(emailModel);
-		return emailModel;
+	public String addEmail (Email email){
+		emailRepository.save(email);
+		return "Guardado";
 	}
 	
-	public Email buscarPorActividad(String actividad){
-		return emailRepository.findByActividad(actividad);
+	public Email buscarPorActividad(Long actividad){
+		return emailRepository.findByActividad_ActividadId(actividad);
 	}
 
 	public Iterable<Email> getAllEmails() {

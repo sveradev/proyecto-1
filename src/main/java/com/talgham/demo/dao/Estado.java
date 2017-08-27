@@ -1,15 +1,24 @@
-package com.talgham.demo.model;
+package com.talgham.demo.dao;
 
 import java.sql.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Estado {
 	
+	@Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
+	private Integer orden;
 	private String nombre;
 	private String descripcion;
 	private Date fechaCreacion;
+	private Date fechaBaja;
 	private Integer color;
-	private Integer orden;
 	
 	public long getId() {
 		return id;
@@ -34,6 +43,12 @@ public class Estado {
 	}
 	public void setFechaCreacion(Date fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
+	}
+	public Date getFechaBaja() {
+		return fechaBaja;
+	}
+	public void setFechaBaja(Date fechaBaja) {
+		this.fechaBaja = fechaBaja;
 	}
 	public Integer getColor() {
 		return color;

@@ -2,20 +2,31 @@
 <html>
 	{{>bloques/header}}
 	<body>
-		<section class="container">
-			<section class="form">
-				<form role="login">
-					{{>bloques/imagenPpal}}
-					<div class="header">
-						<h4 class="text-center">Bienvenido, Selecciones Ingresar Solicitud o Si es empleado, Ingrese con nombre de usuario y password</h4>
+		<section class="container custom-container text-center">
+			<nav class="navbar" role="navigation"">
+				<div class="container-fluid">
+					<div class="collapse navbar-collapse" id="myNavbar">
+							<ul class="nav navbar-nav">
+								<li><a href="/home">Home</a></li>
+								<li><a href="/crearSolicitud">Nueva Solicitud</a></li>
+							</ul>
+							<ul class="nav navbar-nav navbar-right">
+								<li><a href="/login"><span class="fa fa-sign-in fa-lg"></span> Login</a></li>
+							</ul>
 					</div>
-					<div>
-						<button type="submit" class="btn btn-lg btn-primary" formaction="/crearSolicitud">Crear Solicitud</button>
-						<button type="submit" class="btn btn-lg btn-primary" formaction="/login">Ingreso</button>
-					</div>
-				</form>
-				{{>bloques/link}}
-			</section>
+				</div>
+			</nav>
+			<div class="container-fluid">
+				{{>bloques/imagenPpal}}
+				<div class="well">
+					<div class="panel-body"><h4 class="text-center">{{bienvenida}}</h4></div>
+					<div class="panel-body">{{textBody}}</div>
+				</div>
+			</div>
+			<footer class="container-fluid text-center">
+  				<p> </p>
+<!-- 			{{>bloques/link}} -->
+			</footer>
 		</section>
 		{{>bloques/footer}}
 	<script src="js/elements/solicitud.js"></script>

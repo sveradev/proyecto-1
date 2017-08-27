@@ -66,14 +66,15 @@ public class UsuarioController {
 			@RequestParam String nombre,
 			@RequestParam String alias,
 			@RequestParam String email,
-			@RequestParam String rol) throws ParseException {
+			@RequestParam Long rol) throws ParseException {
 		
 		Usuario usuario = new Usuario();
+		Rol rolSeleccionado = rolService.buscarRolesPorId(rol);
 		usuario.setId(id);
 		usuario.setNombre(nombre);
 		usuario.setAlias(alias);
 		usuario.setEmail(email);
-		usuario.setRol(rol);
+		usuario.setRol(rolSeleccionado);
 		
 		usuarioService.updateUsuario(usuario);
 		

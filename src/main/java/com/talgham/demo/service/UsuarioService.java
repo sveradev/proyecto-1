@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.talgham.demo.model.Rol;
 import com.talgham.demo.model.Usuario;
 import com.talgham.demo.repository.UsuarioRepository;
 
@@ -51,7 +52,7 @@ public class UsuarioService {
 		String nombre = myUsuario.getNombre();
 		String alias = myUsuario.getAlias();
 		String email = myUsuario.getEmail();
-		String rol = myUsuario.getRol();
+		Rol rol = myUsuario.getRol();
 		String password = myUsuario.getPassword();
 		Date fechaBaja = myUsuario.getFechaBaja();
 
@@ -65,7 +66,7 @@ public class UsuarioService {
 		if (!"".equalsIgnoreCase(email) && !usuario.getEmail().equalsIgnoreCase(email)) {
 			usuario.setEmail(email);
 		}
-		if (!"".equalsIgnoreCase(rol) && !usuario.getRol().equalsIgnoreCase(rol)) {
+		if (rol!=null && usuario.getRol().getId() != rol.getId()) {
 			usuario.setRol(rol);
 		}
 		if (!"".equalsIgnoreCase(password) && usuario.getPassword() != (password)) {

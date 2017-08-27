@@ -1,4 +1,4 @@
-package com.talgham.demo.model;
+package com.talgham.demo.dao;
 
 import java.util.Date;
 
@@ -9,8 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+@Entity
 public class Usuario {
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private String nombre;
 	private String alias;
@@ -18,6 +21,7 @@ public class Usuario {
 	private Date fechaAlta;
 	private Date fechaBaja;
 	private String password;
+	@ManyToOne @JoinColumn(name="rol_id")	
 	private Rol rol;
 	
 	public Long getId() {
@@ -61,17 +65,5 @@ public class Usuario {
 	}
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	public Rol getRol() {
-		return rol;
-	}
-	public void setRol(Rol rol) {
-		this.rol = rol;
-	}
-	public Boolean isActive() {
-		return fechaBaja == null || (fechaBaja != null && fechaBaja.after(new Date()));
-	}
-	public Boolean isNotActive() {
-		return !isActive();
 	}
 }
