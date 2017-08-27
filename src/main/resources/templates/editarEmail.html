@@ -19,9 +19,9 @@
 						</div>
 						<div class="form-group">
 							<select id="actividad" name="actividad" class="form-control input-lg">
-								<option value ="{{actividad}}">{{actividad}}</option>
+								<option value ="{{actividad.id}}">{{actividad.nombre}}</option>
 								{{#actividades}}
-									<option value ="{{nombre}}">{{nombre}}</option>
+									<option value ="id">{{nombre}}</option>
 								{{/actividades}}
 							</select>
 						</div>

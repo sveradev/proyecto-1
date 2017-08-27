@@ -7,7 +7,7 @@
 				<form method="post" action="">
 					<div class="form-group">
 						<label class="title"><h2><i class="fa fa-search fa-fw"></i>Buscar Solicitud</h2></label>
-					<div>
+					</div>
 					{{#salida}}
 						<div class="form-group alert {{tipoSalida}}" role="alert">
 							{{salida}}
@@ -26,7 +26,7 @@
 						<select id="responsable" name="responsable"  class="form-control input-lg">
 							<option value ="">Responsable</option>
 							{{#responsables}}
-								<option value ="{{nombre}}">{{nombre}}</option>
+								<option value ="{{id}}">{{nombre}}</option>
 							{{/responsables}}
 						</select>
 					</div>
@@ -37,8 +37,6 @@
 								<span class="fa fa-calendar fa-fw"></span>
 							</span>
 						</div>
-<!-- 					</div> -->
-<!-- 					<div class="form-group"> -->
 						<div class="input-group pull-right">
 						<input type="text" name="fechaHasta" placeholder="Fecha Hasta" class="form-control input-lg" />
 							<span class="input-group-addon">

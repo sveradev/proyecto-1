@@ -21,16 +21,16 @@
 						</div>
 						<div class="form-group">
 							<select name="estado" placeholder="Estado" class="form-control input-lg">
-								<option value ="{{estado}}">{{estado}}</option>
+								<option value ="{{estado.id}}">{{estado.nombre}}</option>
 								{{#estados}}
-									<option value ="{{nombre}}" {{#nombre == estado}}selected{{/nombre == estado}}>{{nombre}}</option>
+									<option value ="{{id}}">{{nombre}}</option>
 								{{/estados}}
 							</select>
 						</div>
 						<div class="form-group">
 							<select id="responsable" name="responsable" class="form-control input-lg">
 								{{#responsables}}
-									<option value ="{{nombre}}" {{#nombre == responsable}}selected{{/nombre == responsable}}>{{nombre}}</option>
+									<option value ="{{id}}">{{nombre}}</option>
 								{{/responsables}}
 							</select>
 						</div>
