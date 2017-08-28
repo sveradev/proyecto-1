@@ -3,8 +3,10 @@ package com.talgham.demo.controller;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +27,8 @@ public class UsuarioController {
 	private UsuarioService usuarioService;
 	@Autowired
 	private RolService rolService;
+	@Autowired
+	private MessageSource messageSource;
 	
 	@RequestMapping("/crearUsuario")
 	public String usuario(Model model) {
@@ -69,18 +73,18 @@ public class UsuarioController {
 			@RequestParam Long rol) throws ParseException {
 		
 		Usuario usuario = new Usuario();
-		Rol rolSeleccionado = rolService.buscarRolesPorId(rol);
 		usuario.setId(id);
 		usuario.setNombre(nombre);
 		usuario.setAlias(alias);
 		usuario.setEmail(email);
-		usuario.setRol(rolSeleccionado);
+		Rol rolSelected = rolService.buscarRolesPorId(rol);
+		usuario.setRol(rolSelected);
 		
 		usuarioService.updateUsuario(usuario);
 		
 		ModelAndView result = new ModelAndView();
-//		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.editada.exito",id));
-		result.addObject("mensaje", "La solicitud "+ id +" se ha modificado con éxito. Muchas Gracias.");
+		result.addObject("tipoSalida","alert-success");
+		result.addObject("salida", messageSource.getMessage("usuario.creado.exito",new Object[]{usuario.getId()},new Locale("")));
 		result.setViewName("mensaje");
 		
 		return result;

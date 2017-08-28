@@ -1,6 +1,5 @@
 package com.talgham.demo.service;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import com.talgham.demo.common.Constantes;
 import com.talgham.demo.model.Estado;
 import com.talgham.demo.model.Solicitud;
 import com.talgham.demo.model.Usuario;
-import com.talgham.demo.repository.EstadoRepository;
 import com.talgham.demo.repository.SolicitudRepository;
 
 @Component
@@ -18,18 +16,17 @@ public class SolicitudService {
 	
 	@Autowired
 	private SolicitudRepository solicitudRepository;
-	@Autowired
-	EstadoRepository estadoRepository;
-	
-	public Solicitud addSolicitud (Solicitud solicitud) {
+	EstadoService estadoService = new EstadoService();
 
-		if(solicitud.getFechaSolicitado() != null){
+	public String addSolicitud (Solicitud solicitud) {
+
+		if(solicitud.getFechaSolicitado() == null){
 			solicitud.setFechaSolicitado(new Date());
 		}
-		Estado estado = estadoRepository.findByOrden(Constantes.ESTADO_SOLICITADO);
+		Estado estado = estadoService.buscarPorId(Constantes.ESTADO_SOLICITADO);
 		solicitud.setEstado(estado);
 		solicitudRepository.save(solicitud);
-		return solicitud;
+		return "Guardado";
 	}
 
 	public Iterable<Solicitud> getAllSolicitudes() {
@@ -40,37 +37,37 @@ public class SolicitudService {
 		return solicitudRepository.findById(id);
 	}
 	
-	public Iterable<Solicitud> buscarPorCampos(String nombre, String titulo, String responsable) {
-		Iterable<Solicitud> solicitudes = null;
-		if(nombre != null && !nombre.trim().equalsIgnoreCase("")){
-			if(titulo != null && !titulo.trim().equalsIgnoreCase("")){
-				if(responsable != null && !responsable.trim().equalsIgnoreCase("")){
-					solicitudes = solicitudRepository.findByNombreAndTituloAndResponsable(nombre,titulo,responsable);
-				} else {
-					solicitudes = solicitudRepository.findByNombreAndTitulo(nombre,titulo);
-				}
-			} else {
-				if(responsable != null && !responsable.trim().equalsIgnoreCase("")){
-					solicitudes = solicitudRepository.findByNombreAndResponsable(nombre,responsable);
-				} else {
-					solicitudes = solicitudRepository.findByNombre(nombre);
-				}
-			}	
-		} else {
-			if(titulo != null && !titulo.trim().equalsIgnoreCase("")){
-				if(responsable != null && !responsable.trim().equalsIgnoreCase("")){
-					solicitudes = solicitudRepository.findByTituloAndResponsable(titulo,responsable);
-				} else {
-					solicitudes = solicitudRepository.findByTitulo(titulo);
-				}
-			} else {
-				if(responsable != null && !responsable.trim().equalsIgnoreCase("")){
-					solicitudes = solicitudRepository.findByResponsable(responsable);
-				}
-			}
-		}
-		return solicitudes;
-	}
+//	public Iterable<Solicitud> buscarPorCampos(String nombre, String titulo, Long responsable) {
+//		Iterable<Solicitud> solicitudes = null;
+//		if(nombre != null && !nombre.trim().equalsIgnoreCase("")){
+//			if(titulo != null && !titulo.trim().equalsIgnoreCase("")){
+//				if(responsable != null && responsable != null){
+//					solicitudes = solicitudRepository.findByNombreAndTituloAndResponsable_usuario_id(nombre, titulo, responsable);
+//				} else {
+//					solicitudes = solicitudRepository.findByNombreAndTitulo(nombre,titulo);
+//				}
+//			} else {
+//				if(responsable != null && responsable != null){
+//					solicitudes = solicitudRepository.findByNombreAndResponsable_usuario_id(nombre, responsable);
+//				} else {
+//					solicitudes = solicitudRepository.findByNombre(nombre);
+//				}
+//			}	
+//		} else {
+//			if(titulo != null && !titulo.trim().equalsIgnoreCase("")){
+//				if(responsable != null && responsable != null){
+//					solicitudes = solicitudRepository.findByTituloAndResponsable_usuario_id(titulo,responsable);
+//				} else {
+//					solicitudes = solicitudRepository.findByTitulo(titulo);
+//				}
+//			} else {
+//				if(responsable != null && responsable != null){
+//					solicitudes = solicitudRepository.findByResponsable_usuario_id(responsable);
+//				}
+//			}
+//		}
+//		return solicitudes;
+//	}
 	
 //	public Iterable<Solicitud> buscarPorFechaSolicitudEntre (Date desde, Date hasta){
 //		return solicitudRepository.findByfechaSolicitudBetween(desde, hasta);
@@ -104,7 +101,7 @@ public class SolicitudService {
 		if (!"".equalsIgnoreCase(descripcion) && !solicitud.getDescripcion().equalsIgnoreCase(descripcion)) {
 			solicitud.setDescripcion(descripcion);
 		}
-		if (responsable!= null && solicitud.getResponsable() != (responsable)) {
+		if (responsable != null && solicitud.getResponsable() != (responsable)) {
 			solicitud.setResponsable(responsable);
 		}
 		if (fechaSolicitado != null && solicitud.getFechaSolicitado().compareTo(fechaSolicitado) == 0) {

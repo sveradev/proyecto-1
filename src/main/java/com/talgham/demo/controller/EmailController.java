@@ -39,22 +39,16 @@ public class EmailController {
 	@PostMapping(path="/crearEmail")
 	public @ResponseBody ModelAndView addEmail (
 			@RequestParam String direccion,
-			@RequestParam Long actividad,
+			@RequestParam Actividad actividad,
 			@RequestParam String subject,
 			@RequestParam String texto
 			) throws ParseException {
 		
-		Email email =  new Email();
-		email.setDireccion(direccion);
-		email.setActividad(actividadService.buscarPorId(actividad));
-		email.setSubject(subject);
-		email.setTexto(texto);
-		
-		emailService.addEmail(email);
+		Email emailModel = emailService.addEmail(direccion, actividad, subject, texto);
 		
 		ModelAndView result = this.emails();
 		result.addObject("tipoSalida","alert-success");
-		result.addObject("salida", "La configuracion del Email se ha realizado con éxito. Muchas Gracias.");
+		result.addObject("salida", "La configuracion del Email para la actividad "+emailModel.getActividad()+" se ha realizado con éxito. Muchas Gracias.");
 		
 		return result;
 	}
@@ -70,14 +64,13 @@ public class EmailController {
 	@PostMapping(path="/editarEmail")
 	public @ResponseBody ModelAndView editarEmail (@RequestParam Long id,
 			@RequestParam String direccion,
-			@RequestParam Long actividad,
+			@RequestParam Actividad actividad,
 			@RequestParam String subject,
 			@RequestParam String texto) throws ParseException {
 				
 		Email email = emailService.buscarPorId(id);
-		Actividad actividadSeleccionada = actividadService.buscarPorId(actividad);
 		email.setDireccion(direccion);
-		email.setActividad(actividadSeleccionada);
+		email.setActividad(actividad);
 		email.setSubject(subject);
 		email.setTexto(texto);
 		email.setFechaModificacion(new Date());

@@ -3,18 +3,24 @@
 	{{>bloques/header}}
 	<body>
 		<section class="container custom-container">
-			<nav class="navbar border-bottom-width" role="navigation"">
-				<div class="container-fluid">
-					<div class="collapse navbar-collapse" id="myNavbar">
-						<div class="form-group pull-right">
-							{{>bloques/botonConfiguracion}}
-							{{>bloques/botonUsuario}}
+			<section class="form">
+				<nav class="navbar" role="navigation">
+					<div class="container-fluid">
+						<div class="collapse navbar-collapse" id="myNavbar">
+								<ul class="nav navbar-nav">
+									<li><a href="/home">Home</a></li>
+									<li><a href="/crearSolicitud">Nueva Solicitud</a></li>
+								</ul>
+								<ul class="nav navbar-nav navbar-right">
+<!-- 									<li><a href="/login"><span class="fa fa-sign-in fa-lg"></span> Login</a></li> -->
+									<li>{{>bloques/botonConfiguracion}}</li>
+									<li>{{>bloques/botonUsuario}}</li>
+								</ul>
 						</div>
 					</div>
-				</div>
-			</nav>
-			<section class="form">
-				<form method="post" action="">
+				</nav>
+					<div class="form-group pull-right">
+					</div>
 					<div class="form-group">
 						<label class="title"><h2><i class="fa fa-bars fa-fw"></i>Solicitudes</h2></label>
 						<hr class="half-rule"/>
@@ -64,12 +70,12 @@
 													<label class="dropdown-item">{{descripcion}}</label>
 												</div>
 											</div>
-										</td>
-									</tr>
-								{{/solicitudes}}
-							</tbody>
-						</table>
-					</div>
+										</div>
+									</td>
+								</tr>
+							{{/solicitudes}}
+						</tbody>
+					</table>
 					{{^solicitudes}}
 						<div class="form-group alert alert-info" role="alert">
 							No existen solicitudes.
@@ -85,7 +91,6 @@
 <!-- 						<li><a href="#">5</a></li> -->
 <!-- 						<li><a href="#"><i class="fa fa-forward fa-fw"></i></a></li> -->
 <!-- 					</ul> -->
-				</form>
 			</section>
 		</section>
 		{{>bloques/footer}}

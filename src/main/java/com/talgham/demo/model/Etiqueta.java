@@ -1,4 +1,4 @@
-package com.talgham.demo.dao;
+package com.talgham.demo.model;
 
 import java.sql.Date;
 
@@ -8,13 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Actividad {
+public class Etiqueta{
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	private String nombre;
-	private String descripcion;
 	private Date fechaCreacion;
 	
 	public long getId() {
@@ -28,12 +27,6 @@ public class Actividad {
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-	public String getDescripcion() {
-		return descripcion;
-	}
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
 	}
 	public Date getFechaCreacion() {
 		return fechaCreacion;

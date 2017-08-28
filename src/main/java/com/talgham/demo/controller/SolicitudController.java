@@ -10,13 +10,11 @@ import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,7 +25,6 @@ import com.talgham.demo.model.Estado;
 import com.talgham.demo.model.Rol;
 import com.talgham.demo.model.Solicitud;
 import com.talgham.demo.model.Usuario;
-import com.talgham.demo.repository.EstadoRepository;
 import com.talgham.demo.service.EmailService;
 import com.talgham.demo.service.EstadoService;
 import com.talgham.demo.service.RolService;
@@ -83,10 +80,10 @@ public class SolicitudController {
 			@RequestParam String fechaSol
 			) throws ParseException {
 		
-		Date date = new Date();
+		Date fechaSolicitado = new Date();
 		
 		if(fechaSol!= null && !fechaSol.equalsIgnoreCase("")){
-			date = formatter.parse(fechaSol);
+			fechaSolicitado = formatter.parse(fechaSol);
 		}
 		
 		Solicitud solicitud = new Solicitud();
@@ -96,12 +93,12 @@ public class SolicitudController {
 		solicitud.setDescripcion(descripcion);
 		Usuario usuario = usuarioService.buscarUsuarioPorId(responsable);
 		solicitud.setResponsable(usuario);
-		solicitud.setFechaSolicitado(date);
-		
+		solicitud.setFechaSolicitado(fechaSolicitado);
 		solicitudService.addSolicitud(solicitud);
-		//Envio de mail.
-		Email emailTemplate = emailService.buscarPorActividad(Constantes.ACTIVIDAD_NUEVA_SOLICITUD);
 		
+		//Envio de mail.
+		Email emailTemplate = emailService.buscarPorActividad("nuevaSolicitud");//parametrizar.
+
 		if(emailTemplate != null){
 			String to = emailTemplate.getDireccion();
 			String subject = emailTemplate.getSubject();
@@ -146,7 +143,7 @@ public class SolicitudController {
 	@PostMapping(path="/editarSolicitud")
 	public @ResponseBody ModelAndView editarSolicitud (@RequestParam Long id,
 			@RequestParam String nombre,
-			@RequestParam Long estado,
+			@RequestParam Integer estado,
 			@RequestParam String titulo,
 			@RequestParam String email,
 			@RequestParam String descripcion, 
@@ -164,12 +161,13 @@ public class SolicitudController {
 		solicitud.setTitulo(titulo);
 		solicitud.setEmail(email);
 		solicitud.setDescripcion(descripcion);
-		solicitud.setResponsable(usuarioService.buscarUsuarioPorId(responsable));
-		Estado estadoSeleccionado = estadoService.BuscarPorId(estado);
-		solicitud.setEstado(estadoService.BuscarPorId(estado));
+		Usuario usuario = usuarioService.buscarUsuarioPorId(responsable);
+		solicitud.setResponsable(usuario);
+		Estado estadoSeleccionado = estadoService.buscarPorId(estado);
+		solicitud.setEstado(estadoSeleccionado);
 		solicitud.setFechaSolicitado(fechaSolicitado);
 		solicitud.setFechaModificado(new Date());
-		if(estado!= null && estadoSeleccionado.getOrden() == Constantes.ESTADO_FINALIZADO){
+		if(estadoSeleccionado!= null && estadoSeleccionado.getOrden() == Constantes.ESTADO_FINALIZADO){
 			solicitud.setFechaFinalizado(new Date());
 		}
 		
@@ -199,7 +197,7 @@ public class SolicitudController {
 	public @ResponseBody ModelAndView buscarSolicitud (@RequestParam Long id,
 			@RequestParam String nombre,
 			@RequestParam String titulo,
-			@RequestParam String responsable,
+			@RequestParam Long responsable,
 			@RequestParam String fechaDesde,
 			@RequestParam String fechaHasta) throws ParseException {
 		
@@ -227,8 +225,8 @@ public class SolicitudController {
 			}
 		} else {
 			List<Solicitud> solicitudes = null;
-			if((nombre != null && !nombre.trim().equalsIgnoreCase("")) || (titulo != null && !titulo.trim().equalsIgnoreCase("")) || (responsable != null && !responsable.trim().equalsIgnoreCase(""))){
-				solicitudes = (List<Solicitud>) solicitudService.buscarPorCampos(nombre,titulo,responsable);
+			if((nombre != null && !nombre.trim().equalsIgnoreCase("")) || (titulo != null && !titulo.trim().equalsIgnoreCase("")) || (responsable != null && responsable != null)){
+				solicitudes = (List<Solicitud>) solicitudService.getAllSolicitudes();//(List<Solicitud>) solicitudService.buscarPorCampos(nombre,titulo,responsable);
 				if(solicitudes == null || solicitudes.isEmpty()){
 					tipoSalida = "alert-warning";
 					salida = "No se han encontrado solicitudes con los datos ingresados. Muchas Gracias.";
@@ -308,7 +306,7 @@ public class SolicitudController {
 				tipoSalida = "alert-warning";
 				salida = "No se han encontrado solicitudes para los rangos de fecha ingresados. Muchas Gracias.";
 			} else {
-				Email emailTemplate = emailService.buscarPorActividad(Constantes.ACTIVIDAD_REPORTE_SOLICITUDES);
+				Email emailTemplate = emailService.buscarPorActividad("reporteSolicitudes");//parametrizar.
 				if(emailTemplate != null){
 					String to = emailTemplate.getDireccion();
 					String subject = emailTemplate.getSubject();

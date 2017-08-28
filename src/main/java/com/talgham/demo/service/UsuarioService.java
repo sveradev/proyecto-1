@@ -66,7 +66,7 @@ public class UsuarioService {
 		if (!"".equalsIgnoreCase(email) && !usuario.getEmail().equalsIgnoreCase(email)) {
 			usuario.setEmail(email);
 		}
-		if (rol!=null && usuario.getRol().getId() != rol.getId()) {
+		if (rol != null && usuario.getRol().equals(rol.getId())) {
 			usuario.setRol(rol);
 		}
 		if (!"".equalsIgnoreCase(password) && usuario.getPassword() != (password)) {

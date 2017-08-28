@@ -2,8 +2,18 @@ package com.talgham.demo.model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Usuario {
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private String nombre;
 	private String alias;
@@ -11,6 +21,8 @@ public class Usuario {
 	private Date fechaAlta;
 	private Date fechaBaja;
 	private String password;
+	
+	@ManyToOne @JoinColumn(name="rol_id")	
 	private Rol rol;
 	
 	public Long getId() {
