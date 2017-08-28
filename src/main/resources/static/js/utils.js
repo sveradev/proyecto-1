@@ -29,3 +29,9 @@ function formatoFecha(valor){
 function validarSize(){
 	
 }
+
+$('#sandbox-container .input-group.date').datepicker({
+    format: "dd/mm/yyyy",
+    weekStart: 7,
+    todayBtn: true,
+    language: "es"
