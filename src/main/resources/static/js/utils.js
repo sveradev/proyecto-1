@@ -35,3 +35,4 @@ $('#sandbox-container .input-group.date').datepicker({
     weekStart: 7,
     todayBtn: true,
     language: "es"
+});
