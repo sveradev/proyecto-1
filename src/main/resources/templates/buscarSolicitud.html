@@ -32,17 +32,25 @@
 					</div>
 					<div class="form-group form-inline">
 						<div class="input-group">
-						<input type="text" name="fechaDesde" placeholder="Fecha Desde" class="form-control input-lg" />
-							<span class="input-group-addon">
-								<span class="fa fa-calendar fa-fw"></span>
-							</span>
-						</div>
+						<div class="input-group date">
+							<input type="text" name="fechaDesde" placeholder="Fecha Desde" class="form-control input-lg"/>
+							<span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>
+						</div>							
+//						<input type="text" name="fechaDesde" placeholder="Fecha Desde" class="form-control input-lg" />
+//							<span class="input-group-addon">
+//								<span class="fa fa-calendar fa-fw"></span>
+//							</span>
+//						</div>
 						<div class="input-group pull-right">
-						<input type="text" name="fechaHasta" placeholder="Fecha Hasta" class="form-control input-lg" />
-							<span class="input-group-addon">
-								<span class="fa fa-calendar fa-fw"></span>
-							</span>
+						<div class="input-group date">
+							<input type="text" name="fechaHasta" placeholder="Fecha Hasta" class="form-control input-lg"/>
+							<span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>
 						</div>
+//						<input type="text" name="fechaHasta" placeholder="Fecha Hasta" class="form-control input-lg" />
+//							<span class="input-group-addon">
+//								<span class="fa fa-calendar fa-fw"></span>
+//							</span>
+//						</div>
 					</div>
 					<div class="form-group form-inline pull-right">
 						<button class="btn btn-lg btn-primary" formaction="/solicitudes">Volver</button>
@@ -53,5 +61,6 @@
 		</section>
 		{{>bloques/footer}}
 		<script src="js/elements/solicitud.js"></script>
+		<script src="js/utiles.js"></script>
 	</body>
 </html>
