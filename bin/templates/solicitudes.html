@@ -3,24 +3,23 @@
 	{{>bloques/header}}
 	<body>
 		<section class="container custom-container">
+			<nav class="navbar" role="navigation">
+				<div class="container-fluid">
+					<div class="collapse navbar-collapse" id="myNavbar">
+							<ul class="nav navbar-nav">
+								<div class="form-group">	
+									<a class="btn btn-default" href="/crearSolicitud"><i class="fa fa-plus fa-lg"></i> Nueva</a>
+									<a class="btn btn-default" href="/buscarSolicitud"><i class="fa fa-search fa-lg"></i> Buscar</a>
+								</div>
+							</ul>
+							<ul class="nav navbar-nav navbar-right">
+								{{>bloques/botonConfiguracion}}
+								{{>bloques/botonUsuario}}
+							</ul>
+					</div>
+				</div>
+			</nav>
 			<section class="form">
-				<nav class="navbar" role="navigation">
-					<div class="container-fluid">
-						<div class="collapse navbar-collapse" id="myNavbar">
-								<ul class="nav navbar-nav">
-									<li><a href="/home">Home</a></li>
-									<li><a href="/crearSolicitud">Nueva Solicitud</a></li>
-								</ul>
-								<ul class="nav navbar-nav navbar-right">
-<!-- 									<li><a href="/login"><span class="fa fa-sign-in fa-lg"></span> Login</a></li> -->
-									<li>{{>bloques/botonConfiguracion}}</li>
-									<li>{{>bloques/botonUsuario}}</li>
-								</ul>
-						</div>
-					</div>
-				</nav>
-					<div class="form-group pull-right">
-					</div>
 					<div class="form-group">
 						<label class="title"><h2><i class="fa fa-bars fa-fw"></i>Solicitudes</h2></label>
 						<hr class="half-rule"/>
@@ -30,10 +29,6 @@
 							{{salida}}
 						</div>
 					{{/salida}}
-					<div class="form-group">	
-						<a class="btn btn-default" href="/crearSolicitud"><i class="fa fa-plus fa-lg"></i> Nueva</a>
-						<a class="btn btn-default" href="/buscarSolicitud"><i class="fa fa-search fa-lg"></i> Buscar</a>
-					</div>
 					<div class="table-responsive">
 						<table class="table table-hover">
 							<thead>

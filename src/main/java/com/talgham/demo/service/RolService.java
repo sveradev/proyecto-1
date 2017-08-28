@@ -19,4 +19,8 @@ public class RolService{
 	public Rol buscarRolesPorId(Long id) {
 		return rolRepository.findById(id);
 	}
+
+	public Rol buscarPorOrden(Integer orden) {
+		return rolRepository.findByOrden(orden);
+	}
 }

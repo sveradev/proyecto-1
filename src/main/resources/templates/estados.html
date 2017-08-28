@@ -16,7 +16,7 @@
 			<section class="form">
 				<form method="post" action="">
 					<div class="form-group">
-						<label class="title"><h2><i class="fa fa-bars fa-fw"></i>Roles</h2></label>
+						<label class="title"><h2><i class="fa fa-bars fa-fw"></i>Estados</h2></label>
 						<hr class="half-rule"/>
 					</div>
 					{{#salida}}
@@ -29,24 +29,26 @@
 							<tr>
 								<th>Id</th>
 								<th>Nombre</th>
-								<th>Fecha</th>
+								<th>Descripci&oacute;n</th>
+								<th>Orden</th>
 							</tr>
 						</thead>
 						<tbody>
-							{{#roles}}
+							{{#estados}}
 								<tr>
 									<td>{{id}}</a></td>
 									<td>{{nombre}}</td>
-									<td>{{fechaCreacion}}</td>
+									<td>{{descripcion}}</td>
+									<td>{{orden}}</td>
 								</tr>
-							{{/roles}}
+							{{/estados}}
 						</tbody>
 					</table>
-					{{^roles}}
+					{{^estados}}
 						<div class="form-group alert alert-info" role="alert">
-							No existen roles cargados.
+							No existen estados cargados.
 						</div>
-					{{/roles}}
+					{{/estados}}
 					<div class="form-group form-inline pull-right">
 						<button class="btn btn-lg btn-primary" formaction="/solicitudes">Volver</button>
 					</div>

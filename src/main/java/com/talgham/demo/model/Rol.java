@@ -15,6 +15,7 @@ public class Rol {
 	private Long id;
 	private String nombre;
 	private Date fechaCreacion;
+	private Integer orden;
 
 	public Long getId() {
 		return id;
@@ -33,5 +34,11 @@ public class Rol {
 	}
 	public void setFechaCreacion(Date fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
+	}
+	public Integer getOrden() {
+		return orden;
+	}
+	public void setOrden(Integer orden) {
+		this.orden = orden;
 	}
 }

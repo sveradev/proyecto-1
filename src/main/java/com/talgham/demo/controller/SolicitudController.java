@@ -123,21 +123,33 @@ public class SolicitudController {
 	}
 	
 	@RequestMapping("/editarSolicitud")
-	public String editarSolicitud(@RequestParam(value="id") Long id, Model model) {
+	public ModelAndView editarSolicitud(@RequestParam(value="id") Long id, Model model) {
+		ModelAndView result = solicitudes(null);
 		Solicitud solicitud = solicitudService.buscarPorId(id);
+		if(solicitud !=null){
+			Date date = solicitud.getFechaSolicitado();
+			String fechaSol = formatter.format(date);
+			model.addAttribute("fechaSol", fechaSol);
+			model.addAttribute("solicitud", solicitud);
+			ArrayList<Estado> estados = (ArrayList<Estado>) estadoService.getAllEstados();
+			Integer rolOrden = Constantes.ROL_CONTADOR;
+			Rol rol = rolService.buscarPorOrden(rolOrden);
+			ArrayList<Usuario> responsables = (ArrayList<Usuario>) usuarioService.buscarUsuariosPorRol(rol.getNombre());
+			model.addAttribute("responsables",responsables);
+			model.addAttribute("estados",estados);
+			result.setViewName("editarSolicitud");
+		} else {
+			List<Solicitud> solicitudes = (List<Solicitud>) solicitudService.getAllSolicitudes();
+			if(solicitudes !=null && !solicitudes.isEmpty()){
+				result.addObject("solicitudes",solicitudes);
+//			} else {
+			}
+			result.addObject("tipoSalida","alert-danger");
+			result.addObject("salida", messageSource.getMessage("solicitud.no.encontrada",new Object[]{},new Locale("")));
+			result.setViewName("solicitudes");
+		}
 		
-		Date date = solicitud.getFechaSolicitado();
-		String fechaSol = formatter.format(date);
-		
-		model.addAttribute("fechaSol", fechaSol);
-		model.addAttribute("solicitud", solicitudService.buscarPorId(id));
-		ArrayList<Estado> estados = (ArrayList<Estado>) estadoService.getAllEstados();
-		Long idRol = new Long(3);
-		Rol rol = rolService.buscarRolesPorId(idRol);
-		ArrayList<Usuario> responsables = (ArrayList<Usuario>) usuarioService.buscarUsuariosPorRol(rol.getNombre());
-		model.addAttribute("responsables",responsables);
-		model.addAttribute("estados",estados);
-		return "editarSolicitud";
+		return result;
 	}
 
 	@PostMapping(path="/editarSolicitud")
