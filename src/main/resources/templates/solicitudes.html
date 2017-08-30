@@ -135,17 +135,26 @@
 		</section>
 		{{>bloques/footer}}
 		<script type="text/javascript">
-		    // When the document is ready
-		    $(document).ready(function () {
-			$('#fechaDesde').datepicker({
-			    format: "dd/mm/yyyy"
-			});  
-		    });
 			$(document).ready(function () {
-			$('#fechaHasta').datepicker({
-			    format: "dd/mm/yyyy"
-			});  
-		    });
+				$('#fechaDesde').datepicker({
+					format: "dd-mm-yyyy",
+					weekStart: 7,
+					todayBtn: true,
+					language: "es",
+					autoclose: true,
+					todayHighlight: true
+				});  
+		    	});
+			$(document).ready(function () {
+				$('#fechaHasta').datepicker({
+					format: "dd-mm-yyyy",
+					weekStart: 7,
+					todayBtn: true,
+					language: "es",
+					autoclose: true,
+					todayHighlight: true
+				});  
+		    	});
 		</script>
 	</body>
 </html>
