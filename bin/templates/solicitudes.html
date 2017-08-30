@@ -42,8 +42,31 @@
 			<div class="page-header">
 				<h2><i class="fa fa-bars fa-fw"></i>Solicitudes</h2>
 				<hr class="half-rule"/>
-				<a type="button" class="btn btn-default" href="/crearSolicitud"><i class="fa fa-plus fa-lg"></i> Nueva</a>
-				<a type="button" class="btn btn-default" href="/buscarSolicitud"><i class="fa fa-search fa-lg"></i> Buscar</a>
+				<a type="button" class="btn btn-default" href="/crearSolicitud"><i class="fa fa-plus fa-lg"></i>&nbsp;Nueva</a>
+				<a type="button" class="btn btn-default" href="/buscarSolicitud"><i class="fa fa-search fa-lg"></i>&nbsp;Buscar</a>
+<!-- 				<a type="button" class="btn btn-default" href="/buscarSolicitud"><i class="fa fa-envelope fa-lg"></i>&nbsp;Enviar Reporte</a> -->
+					<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#demo"><i class="fa fa-envelope fa-lg"></i>&nbsp;Enviar Reporte</button>
+					<div id="demo" class="panel-collapse collapse">
+						<div class="panel-body">
+							<form method="post" action="#">
+								<div class="form-group form-inline">
+									<div class="input-group">
+										<input type="text" name="fechaDesde" placeholder="Fecha Desde" class="form-control input-md" required/>
+										<span class="input-group-addon">
+											<span class="fa fa-calendar fa-fw"></span>
+										</span>
+									</div>
+									<div class="input-group">
+										<input type="text" name="fechaHasta" placeholder="Fecha Hasta" class="form-control input-md" required/>
+										<span class="input-group-addon">
+											<span class="fa fa-calendar fa-fw"></span>
+										</span>
+									</div>
+									<button type="submit" id="enviar" formaction="enviarReporte" class="btn btn-md btn-primary">Enviar</button>
+								</div>
+							</form>
+						</div>
+					</div>
 				{{#salida}}
 					<div class="alert {{tipoSalida}}" role="alert">
 						{{salida}}

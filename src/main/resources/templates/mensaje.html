@@ -5,12 +5,14 @@
 		<section class="container">
 			<section class="login-form">
 				<form role="login">
-					{{>bloques/imagenPpal}}
+					<img src="images/logotalgham.jpg" class="img-responsive center-block" alt=""/>
+					{{#salida}}
+						<div class="alert {{tipoSalida}}" role="alert">
+							{{salida}}
+						</div>
+					{{/salida}}
 					<div>
-						{{mensaje}}
-					</div>
-					<div>
-						<button class="btn btn-lg btn-primary btn-block" formaction="/solicitudes">Volver</button>
+						<a class="btn btn-lg btn-primary btn-block" href="/solicitudes">Volver</a>
 					</div>
 				</form>
 			</section>

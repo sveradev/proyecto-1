@@ -46,8 +46,8 @@ public class EmailService {
 		return emailModel;
 	}
 	
-	public Email buscarPorActividad(String actividad){
-		return emailRepository.findByActividad(actividad);
+	public Email buscarPorActividad(Long actividad){
+		return emailRepository.findByActividad_id(actividad);
 	}
 
 	public Iterable<Email> getAllEmails() {

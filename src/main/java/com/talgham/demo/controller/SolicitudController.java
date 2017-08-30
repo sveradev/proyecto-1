@@ -60,12 +60,12 @@ public class SolicitudController {
 			if(!responsables.isEmpty()){
 				model.addAttribute("responsables",responsables);
 			} else {
-				model.addAttribute("tipoSalida","alert-danger");
-				model.addAttribute("salida","No existen empleados para tomar su solicitud. Muchas Gracias.");
+				model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
+				model.addAttribute("salida",messageSource.getMessage("solicitud.no.existe.responsables",new Object[]{},new Locale("")));
 			}
 		} else {
-			model.addAttribute("tipoSalida","alert-danger");
-			model.addAttribute("salida","No existen empleados para tomar su solicitud. Muchas Gracias.");
+			model.addAttribute("tipoSalida", Constantes.ALERTA_SUCCESS);
+			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.responsables",new Object[]{},new Locale("")));
 		}
 		return "crearSolicitud";
 	}
@@ -97,7 +97,7 @@ public class SolicitudController {
 		solicitudService.addSolicitud(solicitud);
 		
 		//Envio de mail.
-		Email emailTemplate = emailService.buscarPorActividad("nuevaSolicitud");//parametrizar.
+		Email emailTemplate = emailService.buscarPorActividad(Constantes.ACTIVIDAD_CREAR_SOLICITUD);
 
 		if(emailTemplate != null){
 			String to = emailTemplate.getDireccion();
@@ -116,7 +116,7 @@ public class SolicitudController {
 		
 		ModelAndView result = solicitudes(null);
 		
-		result.addObject("tipoSalida","alert-success");
+		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("solicitud.creada.exito",new Object[]{solicitud.getId()},new Locale("")));
 		
 		return result;
@@ -144,7 +144,7 @@ public class SolicitudController {
 				result.addObject("solicitudes",solicitudes);
 //			} else {
 			}
-			result.addObject("tipoSalida","alert-danger");
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.encontrada",new Object[]{},new Locale("")));
 			result.setViewName("solicitudes");
 		}
@@ -186,7 +186,7 @@ public class SolicitudController {
 		solicitudService.updateSolicitud(solicitud);
 		
 		ModelAndView result = solicitudes(null);
-		result.addObject("tipoSalida","alert-success");
+		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("solicitud.editada.exito",new Object[]{solicitud.getId()},new Locale("")));
 		
 		return result;
@@ -200,6 +200,9 @@ public class SolicitudController {
 			ArrayList<Usuario> responsables = (ArrayList<Usuario>) usuarioService.buscarUsuariosPorRol(rol.getNombre());
 			if(!responsables.isEmpty()){
 				model.addAttribute("responsables",responsables);
+			} else {
+				model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
+				model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.responsables",new Object[]{},new Locale("")));
 			}
 		}
 		return "buscarSolicitud";
@@ -232,16 +235,16 @@ public class SolicitudController {
 			if(solicitud != null){
 				solicitudesResult.add(solicitud);
 			} else {
-				tipoSalida = "alert-warning";
-				salida = "La solicitud "+ id +" no se ha encontrado. Muchas Gracias.";
+				tipoSalida = Constantes.ALERTA_WARNING;
+				salida = messageSource.getMessage("buscar.solicitud.id.no.existe",new Object[]{id},new Locale(""));
 			}
 		} else {
 			List<Solicitud> solicitudes = null;
 			if((nombre != null && !nombre.trim().equalsIgnoreCase("")) || (titulo != null && !titulo.trim().equalsIgnoreCase("")) || (responsable != null && responsable != null)){
 				solicitudes = (List<Solicitud>) solicitudService.getAllSolicitudes();//(List<Solicitud>) solicitudService.buscarPorCampos(nombre,titulo,responsable);
 				if(solicitudes == null || solicitudes.isEmpty()){
-					tipoSalida = "alert-warning";
-					salida = "No se han encontrado solicitudes con los datos ingresados. Muchas Gracias.";
+					tipoSalida = Constantes.ALERTA_WARNING;
+					salida = messageSource.getMessage("buscar.solicitud.no.existe",new Object[]{},new Locale(""));
 				}
 			}
 			if(solicitadoDesde != null && solicitadoHasta != null) {
@@ -255,8 +258,8 @@ public class SolicitudController {
 					}
 				}
 				if(solicitudesResult == null || solicitudesResult.isEmpty()){
-					tipoSalida = "alert-warning";
-					salida = "No se han encontrado solicitudes para los rangos de fecha ingresados. Muchas Gracias.";
+					tipoSalida = Constantes.ALERTA_WARNING;
+					salida = messageSource.getMessage("buscar.solicitud.fechas.no.existe",new Object[]{},new Locale(""));
 				}
 			}
 		}
@@ -275,21 +278,9 @@ public class SolicitudController {
 		return "solicitudes";
 	}
 	
-	private ModelAndView solicitudes(List<Solicitud> solicitudes) {
-		ModelAndView result = new ModelAndView();
-		
-		if(solicitudes == null || solicitudes.isEmpty()){
-			List<Solicitud> allSolicitudes = (ArrayList<Solicitud>) solicitudService.getAllSolicitudes();
-			solicitudes = allSolicitudes;
-		} 
-			
-		result.setViewName("solicitudes");
-		result.addObject("solicitudes", solicitudes);
-		return result;
-	}
 	
-	@PostMapping(path="/enviarMailSolicitudes")
-	public @ResponseBody ModelAndView enviarMailSolicitudes (
+	@PostMapping(path="/enviarReporte")
+	public @ResponseBody ModelAndView enviarReporte (
 			@RequestParam String fechaDesde,
 			@RequestParam String fechaHasta) throws ParseException {
 		
@@ -315,10 +306,10 @@ public class SolicitudController {
 				}
 			}
 			if(solicitudesResult == null || solicitudesResult.isEmpty()){
-				tipoSalida = "alert-warning";
-				salida = "No se han encontrado solicitudes para los rangos de fecha ingresados. Muchas Gracias.";
+				tipoSalida = Constantes.ALERTA_DANGER;
+				salida = messageSource.getMessage("buscar.solicitud.fechas.no.existe",new Object[]{},new Locale(""));
 			} else {
-				Email emailTemplate = emailService.buscarPorActividad("reporteSolicitudes");//parametrizar.
+				Email emailTemplate = emailService.buscarPorActividad(Constantes.ACTIVIDAD_REPOTAR_SOLICITUD);
 				if(emailTemplate != null){
 					String to = emailTemplate.getDireccion();
 					String subject = emailTemplate.getSubject();
@@ -328,12 +319,12 @@ public class SolicitudController {
 						emailService.sendEmail(to, subject, texto);
 					} catch (Exception e) {
 						e.printStackTrace();
-						tipoSalida = "alert-danger";
-						salida = "Hubo un error al enviar el mail.";
+						tipoSalida = Constantes.ALERTA_DANGER;
+						salida = messageSource.getMessage("solicitud.error.envio",new Object[]{},new Locale(""));
 					}
 				} else {
-					tipoSalida = "alert-info";
-					salida = "No se ha encontrado un email configurado para la acción requerida";
+					tipoSalida = Constantes.ALERTA_INFO;
+					salida = messageSource.getMessage("solicitud.no.existe.email",new Object[]{},new Locale(""));
 				}
 			}
 		}
@@ -341,6 +332,21 @@ public class SolicitudController {
 		ModelAndView result = this.solicitudes(null);
 		result.addObject("tipoSalida",tipoSalida);
 		result.addObject("salida",salida);
+		result.setViewName("solicitudes");
+		return result;
+	}
+
+	//Metodos privados
+	private ModelAndView solicitudes(List<Solicitud> solicitudes) {
+		ModelAndView result = new ModelAndView();
+		
+		if(solicitudes == null || solicitudes.isEmpty()){
+			List<Solicitud> allSolicitudes = (ArrayList<Solicitud>) solicitudService.getAllSolicitudes();
+			solicitudes = allSolicitudes;
+		} 
+		
+		result.setViewName("solicitudes");
+		result.addObject("solicitudes", solicitudes);
 		return result;
 	}
 }

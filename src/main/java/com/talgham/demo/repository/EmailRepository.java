@@ -6,7 +6,7 @@ import com.talgham.demo.model.Email;
 
 public interface EmailRepository extends CrudRepository<Email, Long> {
 
-	Email findByActividad(String actividad);
-
 	Email findById(Long id);
+
+	Email findByActividad_id(Long actividad);
 }

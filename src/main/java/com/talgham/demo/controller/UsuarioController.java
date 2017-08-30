@@ -90,6 +90,55 @@ public class UsuarioController {
 		return result;
 	}
 	
+	@RequestMapping("/cambiarPassword")
+	public String cambiarPassword(@RequestParam(value="id") Long id, Model model) {
+		Usuario usuario = usuarioService.buscarUsuarioPorId(id);
+		if(usuario == null){
+			model.addAttribute("tipoSalida","alert-danger");
+			model.addAttribute("salida", messageSource.getMessage("error.usuario.no.encontrado",new Object[]{},new Locale("")));
+			return "mensaje";
+		}
+		model.addAttribute("usuario",usuario);
+		return "cambiarPassword";
+	}
+	
+	@PostMapping(path="/cambiarPassword")
+	public @ResponseBody ModelAndView cambiarPassword (@RequestParam Long id,
+			@RequestParam String oldPassword,
+			@RequestParam String newPassword1,
+			@RequestParam String newPassword2) throws ParseException {
+		
+		ModelAndView result = new ModelAndView();
+		Usuario usuario = usuarioService.buscarUsuarioPorId(id);
+		if(!newPassword1.equalsIgnoreCase(newPassword2)){
+			result.addObject("tipoSalida","alert-danger");
+			result.addObject("salida", messageSource.getMessage("newPassword.no.coincide",new Object[]{},new Locale("")));
+			result.setViewName("cambiarPassword");
+			return result;
+		}
+		if(usuario != null){
+			if(usuario.getPassword().equalsIgnoreCase(oldPassword)){
+				usuario.setPassword(newPassword1);
+				usuarioService.updateUsuario(usuario);
+			} else {
+				result.addObject("tipoSalida","alert-danger");
+				result.addObject("salida", messageSource.getMessage("oldPpassword.no.coincide",new Object[]{},new Locale("")));
+				result.setViewName("cambiarPassword");
+				return result;
+			}
+		} else {
+			result.addObject("tipoSalida","alert-danger");
+			result.addObject("salida", messageSource.getMessage("error.usuario.no.encontrado",new Object[]{},new Locale("")));
+			result.setViewName("mensaje");
+			return result;
+		}
+		
+		result.addObject("tipoSalida","alert-success");
+		result.addObject("salida", messageSource.getMessage("password.cambiada.exito",new Object[]{},new Locale("")));
+		result.setViewName("Solicitudes");
+		return result;
+	}
+	
 	@RequestMapping("/eliminarUsuario")
 	public ModelAndView eliminarUsuario(@RequestParam(value="id") Long id, Model model) {
 		ModelAndView result = usuarios();

@@ -23,4 +23,9 @@ public class RolService{
 	public Rol buscarPorOrden(Integer orden) {
 		return rolRepository.findByOrden(orden);
 	}
+
+	public String crearRol(Rol rol) {
+		rolRepository.save(rol);
+		return "Guardado";
+	}
 }

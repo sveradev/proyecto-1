@@ -3,44 +3,76 @@
 	{{>bloques/header}}
 	<body>
 		<section class="container custom-container" >
-			<section class="form">
-				<form method="post" action="">
-					<div class="form-group">
-						<label class="title"><h2><i class="fa fa-bars fa-fw"></i>Editar Email</h2></label>
-					<div>
-					{{#salida}}
-						<div class="form-group alert {{tipoSalida}}" role="alert">
-							{{salida}}
-						</div>
-					{{/salida}}
-					{{#email}}
-						<div class="form-group">
-							<input type="text" id="direccion" name="direccion" class="form-control input-lg" value="{{direccion}}"/>
-						</div>
-						<div class="form-group">
-							<select id="actividad" name="actividad" class="form-control input-lg">
-								<option value ="{{actividad.id}}">{{actividad.nombre}}</option>
-								{{#actividades}}
-									<option value ="id">{{nombre}}</option>
-								{{/actividades}}
-							</select>
-						</div>
-						<div class="form-group">
-							<input type="text" id="subject" name="subject" placeholder="Asunto" class="form-control input-lg" value="{{subject}}"/>
-						</div>
-						<div class="form-group">        
-							<textarea id="texto" name="texto" placeholder="Cuerpo del Email" class="form-control input-lg" rows="5" value="{{texto}}"/></textarea>
-						</div>
-					{{/email}}
-					<div class="form-group form-inline pull-right">
-						<button class="btn btn-lg btn-primary" formaction="/solicitudes">Volver</button>
-						<button type="submit" id="aceptar" class="btn btn-lg btn-primary">Aceptar</button>
+			<nav class="navbar">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<img src="images/logotalghamsmall.jpg" class="navbar-brand  center-block" alt=""/>
 					</div>
-				</form>
-			</section>
+					<div class="pull-right navbar-btn">
+						<div class="btn-group">
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+								<span class="fa fa-cog" title="Toggle dropdown menu"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="/usuarios"><i class="fa fa-user fa-fw"></i>Usuarios</a></li>
+								<li><a href="/emails"><i class="fa fa-envelope-o fa-fw"></i>Email</a></li>
+								<li class="divider"></li>
+								<li><a href="/roles"><i class="fa fa-male fa-fw"></i>Roles</a></li>
+								<li><a href="/estados"><i class="fa fa-check fa-fw"></i>Estados</a></li>
+							</ul>
+						</div>
+						<div class="btn-group">
+							<a class="btn btn-primary" href="/verUsuario?id="><i class="fa fa-user fa-fw"></i> Usuario</a>
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+								<span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="/usuario"><i class="fa fa-pencil fa-fw"></i>Editar</a></li>
+								<li><a href="/cambiarPass"><i class="fa fa-trash-o fa-fw"></i>Cambiar Contraseña</a></li>
+								<li class="divider"></li>
+								<li><a href="/logout"><i class="fa fa-unlock fa-fw"></i>Salir</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+			<div class="page-header">
+				<h2><i class="fa fa-bars fa-fw"></i>Nuevo Emails</h2>
+				<hr class="half-rule"/>
+				{{#salida}}
+					<div class="alert {{tipoSalida}}" role="alert">
+						{{salida}}
+					</div>
+				{{/salida}}
+			</div>
+			<form method="post" action="">
+				{{#email}}
+					<div class="form-group">
+						<input type="text" id="direccion" name="direccion" class="form-control input-lg" value="{{direccion}}" required/>
+					</div>
+					<div class="form-group">
+						<select id="actividad" name="actividad" class="form-control input-lg" required>
+							<option value ="{{actividad.id}}">{{actividad.nombre}}</option>
+							{{#actividades}}
+								<option value ="id">{{nombre}}</option>
+							{{/actividades}}
+						</select>
+					</div>
+					<div class="form-group">
+						<input type="text" id="subject" name="subject" placeholder="Asunto" class="form-control input-lg" value="{{subject}}" required/>
+					</div>
+					<div class="form-group">        
+						<textarea id="texto" name="texto" placeholder="Cuerpo del Email" class="form-control input-lg" rows="5" value="{{texto}}" required/></textarea>
+					</div>
+				{{/email}}
+				<div class="form-group form-inline pull-right">
+					<a class="btn btn-lg btn-primary" href="/solicitudes">Volver</a>
+					<button type="submit" id="aceptar" class="btn btn-lg btn-primary">Aceptar</button>
+				</div>
+			</form>
 		</section>
 		{{>bloques/footer}}
-		<script src="js/elements/solicitud.js"></script>
-		<script src="js/elements/utils.js"></script>
+		<script src="js/elements/email.js"></script>
+		<script src="js/utiles.js"></script>
 	</body>
 </html>

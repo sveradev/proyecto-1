@@ -18,5 +18,12 @@ public class Constantes {
 	public static final Integer ROL_CONTADOR = 4;
 	public static final Integer ROL_SUPLENTE = 5;
 	
+	public static final String GUARDADO = "Guardado";
+
+	public static final String ALERTA_SUCCESS = "alert-success";
+	public static final String ALERTA_DANGER = "alert-danger";
+	public static final String ALERTA_INFO = "alert-info";
+	public static final String ALERTA_WARNING = "alert-warning";
+	
 	
 }
