@@ -51,13 +51,13 @@
 							<form method="post" action="#">
 								<div class="form-group form-inline">
 									<div class="input-group">
-										<input type="text" name="fechaDesde" placeholder="Fecha Desde" class="form-control input-md" required/>
+										<input type="text" name="fechaDesde" placeholder="Fecha Desde" class="form-control input-md" required id="fechaDesde"/>
 										<span class="input-group-addon">
 											<span class="fa fa-calendar fa-fw"></span>
 										</span>
 									</div>
 									<div class="input-group">
-										<input type="text" name="fechaHasta" placeholder="Fecha Hasta" class="form-control input-md" required/>
+										<input type="text" name="fechaHasta" placeholder="Fecha Hasta" class="form-control input-md" required id="fechaHasta"/>
 										<span class="input-group-addon">
 											<span class="fa fa-calendar fa-fw"></span>
 										</span>
@@ -134,5 +134,18 @@
 				{{/solicitudes}}
 		</section>
 		{{>bloques/footer}}
+		<script type="text/javascript">
+		    // When the document is ready
+		    $(document).ready(function () {
+			$('#fechaDesde').datepicker({
+			    format: "dd/mm/yyyy"
+			});  
+		    });
+			$(document).ready(function () {
+			$('#fechaHasta').datepicker({
+			    format: "dd/mm/yyyy"
+			});  
+		    });
+		</script>
 	</body>
 </html>
