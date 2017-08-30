@@ -3,28 +3,63 @@
 	{{>bloques/header}}
 	<body>
 		<section class="container custom-container">
-			<section class="form">
-				<form method="post" action="#">
-					<label class="title" ><h2>Usuario</h2></label>
-					{{#salida}}
-						<div class="form-group alert {{tipoSalida}}" role="alert">
-							{{salida}}
+			<nav class="navbar">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<img src="images/logotalghamsmall.jpg" class="navbar-brand  center-block" alt=""/>
+					</div>
+					<div class="pull-right navbar-btn">
+						<div class="btn-group">
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+								<span class="fa fa-cog" title="Toggle dropdown menu"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="/usuarios"><i class="fa fa-user fa-fw"></i>Usuarios</a></li>
+								<li><a href="/emails"><i class="fa fa-envelope-o fa-fw"></i>Email</a></li>
+								<li class="divider"></li>
+								<li><a href="/roles"><i class="fa fa-male fa-fw"></i>Roles</a></li>
+								<li><a href="/estados"><i class="fa fa-check fa-fw"></i>Estados</a></li>
+							</ul>
 						</div>
-					{{/salida}}
+						<div class="btn-group">
+							<a class="btn btn-primary" href="/verUsuario?id="><i class="fa fa-user fa-fw"></i> Usuario</a>
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+								<span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="/usuario"><i class="fa fa-pencil fa-fw"></i>Editar</a></li>
+								<li><a href="/cambiarPass"><i class="fa fa-trash-o fa-fw"></i>Cambiar Contraseña</a></li>
+								<li class="divider"></li>
+								<li><a href="/logout"><i class="fa fa-unlock fa-fw"></i>Salir</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+			<div class="page-header">
+				<h2><i class="fa fa-bars fa-fw"></i>Nuevo usuarios</h2>
+				<hr class="half-rule"/>
+				{{#salida}}
+					<div class="alert {{tipoSalida}}" role="alert">
+						{{salida}}
+					</div>
+				{{/salida}}
+			</div>
+			<form method="post" action="#">
 					<div class="form-group">
-						<input type="text" id="nombre" name="nombre" placeholder="Nombre" class="form-control input-lg" />
+						<input type="text" id="nombre" name="nombre" placeholder="Nombre" class="form-control input-lg" required/>
 					</div>
 					<div class="form-group">
-						<input type="text" id="alias" name="alias" placeholder="Alias" class="form-control input-lg" />
+						<input type="text" id="alias" name="alias" placeholder="Alias" class="form-control input-lg" required/>
 					</div>
 					<div class="form-group">        
-						<input type="text" id="email" name="email" placeholder="Email" class="form-control input-lg" />
+						<input type="text" id="email" name="email" placeholder="Email" class="form-control input-lg" required/>
 					</div>
 					<div class="form-group">        
-						<input type="password" id="password" name="password" placeholder="Password" class="form-control input-lg" />
+						<input type="password" id="password" name="password" placeholder="Password" class="form-control input-lg" required/>
 					</div>
 					<div class="form-group">
-						<select id="rol" name="rol" class="form-control input-lg">
+						<select id="rol" name="rol" class="form-control input-lg" required>
 								<option value ="0">Seleccione un Rol</option>
 							{{#roles}}
 								<option value ="{{id}}">{{nombre}}</option>
@@ -32,11 +67,10 @@
 						</select>
 					</div>
 					<div class="form-group form-inline pull-right">
-						<button class="btn btn-lg btn-primary" formaction="/usuarios">Volver</button>
+						<a class="btn btn-lg btn-primary" href="/usuarios">Volver</a>
 						<button type="submit" id="aceptar" class="btn btn-lg btn-primary">Aceptar</button>
 					</div>
 				</form>
-			</section>
 		</section>
 		{{>bloques/footer}}
 		<script src="js/elements/usuario.js"></script>

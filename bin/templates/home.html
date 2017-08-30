@@ -5,27 +5,23 @@
 		<section class="container custom-container text-center">
 			<nav class="navbar" role="navigation">
 				<div class="container-fluid">
-					<div class="collapse navbar-collapse" id="myNavbar">
-							<ul class="nav navbar-nav">
-								<li><a href="/home">Home</a></li>
-								<li><a href="/crearSolicitud">Nueva Solicitud</a></li>
-							</ul>
-							<ul class="nav navbar-nav navbar-right">
-								<li><a href="/login"><span class="fa fa-sign-in fa-lg"></span> Login</a></li>
-							</ul>
+					<div class="btn-group navbar-right">
+						<a class="btn btn-primary" href="/login"><i class="fa fa-sign-in fa-fw"></i> Ingresar </a>
+<!-- 						<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"> -->
+<!-- 							<span class="fa fa-caret-down" title="Toggle dropdown menu"></span> -->
+<!-- 						</a> -->
 					</div>
 				</div>
 			</nav>
-			<div class="container-fluid text-center">
-				{{>bloques/imagenPpal}}
+			<div class="container-fluid">
 				<div class="well">
+					<img src="images/logotalgham.jpg" class="img-responsive center-block" alt=""/>
 					<div class="panel-body"><h4 class="text-center">{{bienvenida}}</h4></div>
-					<div class="panel-body">{{textBody}}</div>
+					<div class="panel-body">Para realizar una solicitud a nuestros representantes presione <a href="/crearSolicitud">aquí.</a></div>
 				</div>
 			</div>
 			<footer class="container-fluid text-center">
-  				<p> </p>
-<!-- 			{{>bloques/link}} -->
+				<p> </p>
 			</footer>
 		</section>
 		{{>bloques/footer}}

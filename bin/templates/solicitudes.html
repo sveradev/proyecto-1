@@ -3,67 +3,88 @@
 	{{>bloques/header}}
 	<body>
 		<section class="container custom-container">
-			<nav class="navbar" role="navigation">
+			<nav class="navbar">
 				<div class="container-fluid">
-					<div class="collapse navbar-collapse" id="myNavbar">
-							<ul class="nav navbar-nav">
-								<div class="form-group">	
-									<a class="btn btn-default" href="/crearSolicitud"><i class="fa fa-plus fa-lg"></i> Nueva</a>
-									<a class="btn btn-default" href="/buscarSolicitud"><i class="fa fa-search fa-lg"></i> Buscar</a>
-								</div>
+					<div class="navbar-header">
+						<img src="images/logotalghamsmall.jpg" class="navbar-brand  center-block" alt=""/>
+					</div>
+					<ul class="nav navbar-nav">
+						<li><a href="/solicitudes">Solicitudes</a></li>
+					</ul>
+					<div class="pull-right navbar-btn">
+						<div class="btn-group">
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+								<span class="fa fa-cog" title="Toggle dropdown menu"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="/usuarios"><i class="fa fa-user fa-fw"></i>Usuarios</a></li>
+								<li><a href="/emails"><i class="fa fa-envelope-o fa-fw"></i>Email</a></li>
+								<li class="divider"></li>
+								<li><a href="/roles"><i class="fa fa-male fa-fw"></i>Roles</a></li>
+								<li><a href="/estados"><i class="fa fa-check fa-fw"></i>Estados</a></li>
 							</ul>
-							<ul class="nav navbar-nav navbar-right">
-								{{>bloques/botonConfiguracion}}
-								{{>bloques/botonUsuario}}
+						</div>
+						<div class="btn-group">
+							<a class="btn btn-primary" href="/verUsuario?id="><i class="fa fa-user fa-fw"></i> Usuario</a>
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+								<span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="/usuario"><i class="fa fa-pencil fa-fw"></i>Editar</a></li>
+								<li><a href="/cambiarPass"><i class="fa fa-trash-o fa-fw"></i>Cambiar Contraseña</a></li>
+								<li class="divider"></li>
+								<li><a href="/logout"><i class="fa fa-unlock fa-fw"></i>Salir</a></li>
 							</ul>
+						</div>
 					</div>
 				</div>
 			</nav>
-			<section class="form">
-					<div class="form-group">
-						<label class="title"><h2><i class="fa fa-bars fa-fw"></i>Solicitudes</h2></label>
-						<hr class="half-rule"/>
+			<div class="page-header">
+				<h2><i class="fa fa-bars fa-fw"></i>Solicitudes</h2>
+				<hr class="half-rule"/>
+				<a type="button" class="btn btn-default" href="/crearSolicitud"><i class="fa fa-plus fa-lg"></i> Nueva</a>
+				<a type="button" class="btn btn-default" href="/buscarSolicitud"><i class="fa fa-search fa-lg"></i> Buscar</a>
+				{{#salida}}
+					<div class="alert {{tipoSalida}}" role="alert">
+						{{salida}}
 					</div>
-					{{#salida}}
-						<div class="form-group alert {{tipoSalida}}" role="alert">
-							{{salida}}
-						</div>
-					{{/salida}}
-					<div class="table-responsive">
-						<table class="table table-hover">
-							<thead>
-								<tr>
-									<th></th>
-									<th>Id</th>
-									<th>Nombre</th>
-									<th>Email</th>
-									<th>T&iacute;tulo</th>
-									<th>Estado</th>
-									<th>Fecha</th>
-									<th>Responsable</th>
-									<th>Descripci&oacute;n</th>
-								</tr>
-							</thead>
-							<tbody>
-								{{#solicitudes}}
-									<tr class= "{{#IsSuccess}}success{{/IsSuccess}} {{#IsPending}}warning{{/IsPending}} {{#IsOverdue}}danger{{/IsOverdue}} {{#IsActive}}active{{/IsActive}}">
-										<td>
-											<a href="/editarSolicitud?id={{id}}"><i class="fa fa-pencil fa-fw"></i></a>
-											<a href="/eliminarSolicitud?id={{id}}"><i class="fa fa-trash-o fa-fw"></i></a>
-										</td>
-										<td>{{id}}</td>
-										<td>{{nombre}}</td>
-										<td>{{email}}</td>
-										<td>{{titulo}}</td>
-										<td>{{estado.nombre}}</td>
-										<td>{{fechaSolicitado}}</td>
-										<td>{{responsable.nombre}}</td>
-										<td>
-											<div class="dropdown">
-												<i id="dropdownMenu" class="fa fa-search fa-fw dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-												<div class="dropdown-menu" aria-labelledby="dropdownMenu">
-													<label class="dropdown-item">{{descripcion}}</label>
-												</div>
+				{{/salida}}
+			</div>
+			<section>
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Id</th>
+								<th>Nombre</th>
+								<th>Email</th>
+								<th>T&iacute;tulo</th>
+								<th>Estado</th>
+								<th>Fecha</th>
+								<th>Responsable</th>
+								<th>Descripci&oacute;n</th>
+							</tr>
+						</thead>
+						<tbody>
+							{{#solicitudes}}
+								<tr class= "{{#IsSuccess}}success{{/IsSuccess}} {{#IsPending}}warning{{/IsPending}} {{#IsOverdue}}danger{{/IsOverdue}} {{#IsActive}}active{{/IsActive}}">
+									<td>
+										<a href="/editarSolicitud?id={{id}}"><i class="fa fa-pencil fa-fw"></i></a>
+										<a href="/eliminarSolicitud?id={{id}}"><i class="fa fa-trash-o fa-fw"></i></a>
+									</td>
+									<td>{{id}}</td>
+									<td>{{nombre}}</td>
+									<td>{{email}}</td>
+									<td>{{titulo}}</td>
+									<td>{{estado.nombre}}</td>
+									<td>{{fechaSolicitado}}</td>
+									<td>{{responsable.nombre}}</td>
+									<td>
+										<div class="dropdown">
+											<i id="dropdownMenu" class="fa fa-search fa-fw dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+											<div class="dropdown-menu" aria-labelledby="dropdownMenu">
+												<label class="dropdown-item">{{descripcion}}</label>
 											</div>
 										</div>
 									</td>
@@ -71,11 +92,7 @@
 							{{/solicitudes}}
 						</tbody>
 					</table>
-					{{^solicitudes}}
-						<div class="form-group alert alert-info" role="alert">
-							No existen solicitudes.
-						</div>
-					{{/solicitudes}}
+				</div>
 <!-- 					Paginado -->
 <!-- 					<ul class="pagination"> -->
 <!-- 						<li><a href="#"><i class="fa fa-backward fa-fw"></i></a></li> -->
@@ -87,6 +104,11 @@
 <!-- 						<li><a href="#"><i class="fa fa-forward fa-fw"></i></a></li> -->
 <!-- 					</ul> -->
 			</section>
+				{{^solicitudes}}
+					<div class="alert alert-info" role="alert">
+						No se han encortrado solicitudes.
+					</div>
+				{{/solicitudes}}
 		</section>
 		{{>bloques/footer}}
 	</body>
