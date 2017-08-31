@@ -64,8 +64,8 @@ public class SolicitudController {
 				model.addAttribute("salida",messageSource.getMessage("solicitud.no.existe.responsables",new Object[]{},new Locale("")));
 			}
 		} else {
-			model.addAttribute("tipoSalida", Constantes.ALERTA_SUCCESS);
-			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.responsables",new Object[]{},new Locale("")));
+			model.addAttribute("tipoSalida", Constantes.ALERTA_DANGER);
+			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
 		}
 		return "crearSolicitud";
 	}
@@ -100,12 +100,13 @@ public class SolicitudController {
 		Email emailTemplate = emailService.buscarPorActividad(Constantes.ACTIVIDAD_CREAR_SOLICITUD);
 
 		if(emailTemplate != null){
-			String to = emailTemplate.getDireccion();
+			String to = emailTemplate.getDireccion() + ";" + solicitud.getResponsable().getEmail();
 			String subject = emailTemplate.getSubject();
 			String texto = emailTemplate.getTexto();
 		
 			try {
 				emailService.sendEmail(to, subject, texto);
+				emailService.sendEmail(solicitud.getEmail(), subject, texto);
 			} catch (Exception e) {
 				e.printStackTrace();
 //				loggin "Hubo un error al enviar el mail.";
@@ -194,8 +195,8 @@ public class SolicitudController {
 	
 	@GetMapping("/buscarSolicitud")
 	public String buscarSolicitud(Model model) {
-		Long idRol = new Long(3);
-		Rol rol = rolService.buscarRolesPorId(idRol);
+		Integer orden = Constantes.ROL_CONTADOR;
+		Rol rol = rolService.buscarPorOrden(orden);
 		if(rol != null){
 			ArrayList<Usuario> responsables = (ArrayList<Usuario>) usuarioService.buscarUsuariosPorRol(rol.getNombre());
 			if(!responsables.isEmpty()){
@@ -204,12 +205,15 @@ public class SolicitudController {
 				model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
 				model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.responsables",new Object[]{},new Locale("")));
 			}
+		} else {
+			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
+			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
 		}
 		return "buscarSolicitud";
 	}
 	
 	@PostMapping(path="/buscarSolicitud")
-	public @ResponseBody ModelAndView buscarSolicitud (@RequestParam Long id,
+	public @ResponseBody ModelAndView postBuscarSolicitud (@RequestParam Long id,
 			@RequestParam String nombre,
 			@RequestParam String titulo,
 			@RequestParam Long responsable,
@@ -217,54 +221,50 @@ public class SolicitudController {
 			@RequestParam String fechaHasta) throws ParseException {
 		
 		Date solicitadoDesde = null;
+		Date solicitadoHasta = null;
+		
 		if(fechaDesde!= null && !fechaDesde.equalsIgnoreCase("")){
 			solicitadoDesde = formatter.parse(fechaDesde);
 		}
-		Date solicitadoHasta = null;
+		
 		if(fechaHasta!= null && !fechaHasta.equalsIgnoreCase("")){
 			solicitadoHasta = formatterTime.parse(fechaHasta+" 23:23:59");
 		}
 		
-		Solicitud solicitud = new Solicitud();
-		List<Solicitud> solicitudesResult = new ArrayList<Solicitud>();
+		List<Solicitud> solicitudes = new ArrayList<Solicitud>();
 		String tipoSalida = "";
 		String salida = "";
 		
 		if(id != null){
-			solicitud = solicitudService.buscarPorId(id);
+			Solicitud solicitud = solicitudService.buscarPorId(id);
 			if(solicitud != null){
-				solicitudesResult.add(solicitud);
+				solicitudes.add(solicitud);
+				tipoSalida = Constantes.ALERTA_SUCCESS;
+				salida = messageSource.getMessage("buscar.solicitud.exito",new Object[]{},new Locale(""));
 			} else {
 				tipoSalida = Constantes.ALERTA_WARNING;
 				salida = messageSource.getMessage("buscar.solicitud.id.no.existe",new Object[]{id},new Locale(""));
 			}
 		} else {
-			List<Solicitud> solicitudes = null;
-			if((nombre != null && !nombre.trim().equalsIgnoreCase("")) || (titulo != null && !titulo.trim().equalsIgnoreCase("")) || (responsable != null && responsable != null)){
-				solicitudes = (List<Solicitud>) solicitudService.getAllSolicitudes();//(List<Solicitud>) solicitudService.buscarPorCampos(nombre,titulo,responsable);
-				if(solicitudes == null || solicitudes.isEmpty()){
-					tipoSalida = Constantes.ALERTA_WARNING;
-					salida = messageSource.getMessage("buscar.solicitud.no.existe",new Object[]{},new Locale(""));
-				}
-			}
-			if(solicitadoDesde != null && solicitadoHasta != null) {
-				if(solicitudes == null || solicitudes.isEmpty()){
-					solicitudes = (List<Solicitud>) solicitudService.getAllSolicitudes();
-				}
-				for(Solicitud mySolicitud : solicitudes){
-					Date fechaSolicitado = mySolicitud.getFechaSolicitado();
-					if(solicitadoDesde.before(fechaSolicitado) && solicitadoHasta.after(fechaSolicitado)){
-						solicitudesResult.add(mySolicitud);
-					}
-				}
-				if(solicitudesResult == null || solicitudesResult.isEmpty()){
-					tipoSalida = Constantes.ALERTA_WARNING;
-					salida = messageSource.getMessage("buscar.solicitud.fechas.no.existe",new Object[]{},new Locale(""));
-				}
+			solicitudes = (List<Solicitud>) solicitudService.buscar(nombre,titulo,responsable,solicitadoDesde,solicitadoHasta);
+			if(solicitudes == null){
+				ModelAndView result = new ModelAndView();
+				result.addObject("tipoSalida",Constantes.ALERTA_WARNING);
+				result.addObject("salida",messageSource.getMessage("buscar.solicitud.completar.campo",new Object[]{},new Locale("")));
+				result.setViewName("buscarSolicitud");
+				buscarSolicitud((Model) result);
+			} else if(solicitudes.isEmpty()){
+				ModelAndView result = new ModelAndView();
+				result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
+				result.addObject("salida",messageSource.getMessage("buscar.solicitud.no.registros",new Object[]{},new Locale("")));
+				result.setViewName("buscarSolicitud");
+				buscarSolicitud((Model) result);
+			} else {
+				tipoSalida = Constantes.ALERTA_SUCCESS;
+				salida = messageSource.getMessage("buscar.solicitudes.exito",new Object[]{},new Locale(""));
 			}
 		}
-		
-		ModelAndView result = this.solicitudes(solicitudesResult);
+		ModelAndView result = this.solicitudes(solicitudes);
 		result.addObject("tipoSalida",tipoSalida);
 		result.addObject("salida",salida);
 		return result;
@@ -284,54 +284,42 @@ public class SolicitudController {
 			@RequestParam String fechaDesde,
 			@RequestParam String fechaHasta) throws ParseException {
 		
-		Date solicitadoDesde = null;
-		if(fechaDesde!= null && !fechaDesde.equalsIgnoreCase("")){
-			solicitadoDesde = formatter.parse(fechaDesde);
-		}
-		Date solicitadoHasta = null;
-		if(fechaHasta!= null && !fechaHasta.equalsIgnoreCase("")){
-			solicitadoHasta = formatterTime.parse(fechaHasta+" 23:23:59");
-		}
-		
-		String tipoSalida = "";
-		String salida = "";
-		
-		if(solicitadoDesde != null && solicitadoHasta != null) {
-			List<Solicitud> solicitudesResult = new ArrayList<Solicitud>();
-			List<Solicitud> solicitudes = (List<Solicitud>) solicitudService.getAllSolicitudes();
-			for(Solicitud mySolicitud : solicitudes){
-				Date fechaSolicitado = mySolicitud.getFechaSolicitado();
-				if(solicitadoDesde.before(fechaSolicitado) && solicitadoHasta.after(fechaSolicitado)){
-					solicitudesResult.add(mySolicitud);
-				}
-			}
-			if(solicitudesResult == null || solicitudesResult.isEmpty()){
-				tipoSalida = Constantes.ALERTA_DANGER;
-				salida = messageSource.getMessage("buscar.solicitud.fechas.no.existe",new Object[]{},new Locale(""));
-			} else {
-				Email emailTemplate = emailService.buscarPorActividad(Constantes.ACTIVIDAD_REPOTAR_SOLICITUD);
-				if(emailTemplate != null){
-					String to = emailTemplate.getDireccion();
-					String subject = emailTemplate.getSubject();
-					String texto = emailTemplate.getTexto();
+		if(fechaDesde!= null && !fechaDesde.equalsIgnoreCase("") && fechaHasta!= null && !fechaHasta.equalsIgnoreCase("")){
+			Date solicitadoDesde = formatter.parse(fechaDesde);
+			Date solicitadoHasta = formatterTime.parse(fechaHasta+" 23:23:59");
+			List<Solicitud> solicitudes = (List<Solicitud>) solicitudService.buscarPorFechas(solicitadoDesde, solicitadoHasta);
+			//Envio de mail.
+			Email emailTemplate = emailService.buscarPorActividad(Constantes.ACTIVIDAD_REPOTAR_SOLICITUD);
 
-					try {
-						emailService.sendEmail(to, subject, texto);
-					} catch (Exception e) {
-						e.printStackTrace();
-						tipoSalida = Constantes.ALERTA_DANGER;
-						salida = messageSource.getMessage("solicitud.error.envio",new Object[]{},new Locale(""));
-					}
-				} else {
-					tipoSalida = Constantes.ALERTA_INFO;
-					salida = messageSource.getMessage("solicitud.no.existe.email",new Object[]{},new Locale(""));
+			if(emailTemplate != null){
+				String to = emailTemplate.getDireccion();
+				String subject = emailTemplate.getSubject();
+				String texto = emailTemplate.getTexto();//falta template Email.
+			
+				try {
+					emailService.sendEmail(to, subject, texto);
+				} catch (Exception e) {
+					e.printStackTrace();
+					ModelAndView result = this.solicitudes(null);
+					result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+					result.addObject("salida",messageSource.getMessage("email.reporte.no.enviado",new Object[]{},new Locale("")));
+					result.setViewName("solicitudes");
+					return result;
+//					loggin "Hubo un error al enviar el mail.";
 				}
+			} else {
+				ModelAndView result = this.solicitudes(null);
+				result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+				result.addObject("salida",messageSource.getMessage("email.actividad.no.encontrado",new Object[]{},new Locale("")));
+				result.setViewName("solicitudes");
+				return result;
+//				loggin No se ha encontrado un email configurado para la acción requerida.
 			}
 		}
 		
 		ModelAndView result = this.solicitudes(null);
-		result.addObject("tipoSalida",tipoSalida);
-		result.addObject("salida",salida);
+		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
+		result.addObject("salida",messageSource.getMessage("email.reporte.enviado",new Object[]{},new Locale("")));
 		result.setViewName("solicitudes");
 		return result;
 	}

@@ -68,7 +68,7 @@
 				</div>
 				<div class="form-group">
 					<div class="input-group">
-					<input type="text" name="fechaSol" placeholder="Fecha Solicitada" class="form-control input-lg"/>
+						<input type="text" name="fechaSol" placeholder="Fecha Solicitada" class="form-control input-lg" required id="fechaSol"/>
 						<span class="input-group-addon">
 							<span class="fa fa-calendar fa-fw"></span>
 						</span>
@@ -81,7 +81,17 @@
 			</form>
 		</section>
 		{{>bloques/footer}}
-		<script src="js/elements/solicitud.js"></script>
-		<script src="js/utiles.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function () {
+				$('#fechaSol').datepicker({
+					format: "dd-mm-yyyy",
+					weekStart: 7,
+					todayBtn: false,
+					language: "es",
+					autoclose: true,
+					todayHighlight: true
+				});  
+			});
+		</script>
 	</body>
 </html>

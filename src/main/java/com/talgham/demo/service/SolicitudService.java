@@ -1,6 +1,7 @@
 package com.talgham.demo.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -116,5 +117,45 @@ public class SolicitudService {
 		solicitud.setFechaModificado(new Date(System.currentTimeMillis()));
 		solicitudRepository.save(solicitud);
 		return "updated";
+	}
+
+	public Iterable <Solicitud> buscarPorFechas(Date desde, Date hasta) {
+		return solicitudRepository.findByFechaSolicitadoBetween(desde, hasta);
+	}
+
+	public Iterable <Solicitud> buscar(String nombre, String titulo, Long responsable, Date desde, Date hasta) {
+		if(desde != null && hasta != null){
+			if(nombre == null || nombre.trim().equalsIgnoreCase("")){
+				if(titulo == null || titulo.trim().equalsIgnoreCase("")){
+					if(responsable == null){
+						return solicitudRepository.findByFechaSolicitadoBetween(desde, hasta);
+					} else {
+						return solicitudRepository.findByResponsable_idAndFechaSolicitadoBetween(responsable, desde, hasta);
+					}
+				} else {
+					if(responsable == null){
+						return solicitudRepository.findByTituloAndFechaSolicitadoBetween(titulo, desde, hasta);
+					} else {
+						return solicitudRepository.findByTituloAndResponsable_idAndFechaSolicitadoBetween(titulo, responsable, desde, hasta);
+					}
+				}
+			} else {
+				if(titulo == null || titulo.trim().equalsIgnoreCase("")){
+					if(responsable == null){
+						return solicitudRepository.findByNombreAndFechaSolicitadoBetween(nombre, desde, hasta);
+					} else {
+						return solicitudRepository.findByNombreAndResponsable_idAndFechaSolicitadoBetween(nombre, responsable, desde, hasta);
+					}
+				} else {
+					if(responsable == null){
+						return solicitudRepository.findByNombreAndTituloAndFechaSolicitadoBetween(nombre, titulo, desde, hasta);
+					} else {
+						return solicitudRepository.findByNombreAndTituloAndResponsable_idAndFechaSolicitadoBetween(nombre,titulo, responsable, desde, hasta);
+					}
+				}
+			}
+		} else {
+			return null;
+		}
 	}
 }

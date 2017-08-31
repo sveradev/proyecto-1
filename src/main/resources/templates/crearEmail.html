@@ -51,7 +51,7 @@
 				</div>
 				<div class="form-group">
 					<select id="actividad" name="actividad" class="form-control input-lg" required>
-						<option value ="">Elija actividad que envie el EMail</option>
+						<option value ="">Elija una actividad que realice el envio del Email</option>
 						{{#actividades}}
 							<option value ="{{id}}">{{nombre}}</option>
 						{{/actividades}}
@@ -64,7 +64,7 @@
 					<textarea id="texto" name="texto" placeholder="Cuerpo del Email" class="form-control input-lg" rows="5" required/></textarea>
 				</div>
 				<div class="form-group form-inline pull-right">
-					<a class="btn btn-lg btn-primary" href="/solicitudes">Volver</a>
+					<a class="btn btn-lg btn-primary" href="/emails">Volver</a>
 					<button type="submit" id="aceptar" class="btn btn-lg btn-primary">Aceptar</button>
 				</div>
 			</form>
