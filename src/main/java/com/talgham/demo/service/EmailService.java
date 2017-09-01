@@ -43,7 +43,7 @@ public class EmailService {
 		}
 	}
 
-	public String addEmail (Email email) {
+	public String crearEmail (Email email) {
 		emailModel.setFechaCreacion(new Date());
 		emailRepository.save(emailModel);
 		return Constantes.GUARDADO;
