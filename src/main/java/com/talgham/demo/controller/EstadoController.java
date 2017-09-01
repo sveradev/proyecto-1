@@ -55,8 +55,7 @@ public class EstadoController {
 	
 	@RequestMapping("/estados")
 	public String estados(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
-		ArrayList<Estado> estados = (ArrayList<Estado>) estadoService.getAllEstados();
-		model.addAttribute("estados", estados);
+		model.addAttribute("estados", estadoService.getAllEstados(););
 		return "estados";
 	}
 }
