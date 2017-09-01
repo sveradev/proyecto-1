@@ -52,11 +52,10 @@ public class SolicitudController {
 
 	@GetMapping("/crearSolicitud")
 	public String crearSolicitud(Model model) {
-		Integer orden = Constantes.ROL_CONTADOR;
-		Rol rol = rolService.buscarPorOrden(orden);
+		Rol rol = rolService.buscarPorOrden(Constantes.ROL_CONTADOR);
 		if(rol != null){
 			List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorRol(rol.getId());
-			if(!responsables.isEmpty()){
+			if(responsables!= null && !responsables.isEmpty()){
 				model.addAttribute("responsables",responsables);
 			} else {
 				model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
@@ -76,14 +75,10 @@ public class SolicitudController {
 			@RequestParam String email,
 			@RequestParam String descripcion,
 			@RequestParam Long responsable,
-			@RequestParam String fechaSol
-			) throws ParseException {
+			@RequestParam String fechaSol) throws ParseException {
 		
-		Date fechaSolicitado = new Date();
-		
-		if(fechaSol!= null && !fechaSol.equalsIgnoreCase("")){
-			fechaSolicitado = formatter.parse(fechaSol);
-		}
+		ModelAndView result = new ModelAndView("solicitudes");
+		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
 		
 		Solicitud solicitud = new Solicitud();
 		solicitud.setNombre(nombre);
@@ -92,9 +87,15 @@ public class SolicitudController {
 		solicitud.setDescripcion(descripcion);
 		Usuario usuario = usuarioService.buscarUsuarioPorId(responsable);
 		solicitud.setResponsable(usuario);
-		solicitud.setFechaSolicitado(fechaSolicitado);
-		solicitudService.addSolicitud(solicitud);
-		
+		if(fechaSol!= null && !fechaSol.equalsIgnoreCase("")){
+			Date fechaSolicitado = formatter.parse(fechaSol);
+			solicitud.setFechaSolicitado(fechaSolicitado);
+		}
+		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.addSolicitud(solicitud)){
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("solicitud.no.creada.error",new Object[]{},new Locale("")));
+			return result;
+		}
 		//Envio de mail.
 		Email emailTemplate = emailService.buscarPorActividad(Constantes.ACTIVIDAD_CREAR_SOLICITUD);
 
@@ -114,69 +115,68 @@ public class SolicitudController {
 //			loggin No se ha encontrado un email configurado para la acción requerida.
 		}		
 		
-		ModelAndView result = solicitudes(null);
-		
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("solicitud.creada.exito",new Object[]{solicitud.getId()},new Locale("")));
-		
 		return result;
 	}
 	
 	@RequestMapping("/editarSolicitud")
 	public ModelAndView editarSolicitud(@RequestParam(value="id") Long id) {
-		ModelAndView result = solicitudes(null);
+		ModelAndView result = new ModelAndView();
+		
 		Solicitud solicitud = solicitudService.buscarPorId(id);
-		if(solicitud !=null){
-			Date date = solicitud.getFechaSolicitado();
-			String fechaSol = formatter.format(date);
-			result.addObject("fechaSol", fechaSol);
-			result.addObject("solicitud", solicitud);
-			List<Estado> estados = (List<Estado>) estadoService.getAllEstados();
-			if(estados != null && !estados.isEmpty()){
-				result.addObject("estados",estados);
-			} else {
-				result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
-				result.addObject("salida", messageSource.getMessage("solicitud.no.existe.estados",new Object[]{},new Locale("")));
-			}
-			Rol rol = rolService.buscarPorOrden(Constantes.ROL_CONTADOR);
-			if(rol != null){
-				List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorRol(rol.getId());
-				if(responsables != null && !responsables.isEmpty()){
-					result.addObject("responsables",responsables);
-				} else {
-					result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
-					result.addObject("salida", messageSource.getMessage("solicitud.no.existe.responsables",new Object[]{},new Locale("")));
-				}
-			} else {
-				result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
-				result.addObject("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
-			}
-			result.setViewName("editarSolicitud");
-		} else {
+		if(solicitud == null){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.encontrada",new Object[]{},new Locale("")));
+			result.addObject("solicitudes", solicitudService.getAllSolicitudes());
 			result.setViewName("solicitudes");
+			return result;
 		}
+		result.setViewName("editarSolicitud");
+		result.addObject("solicitud", solicitud);
+		String fechaSol = formatter.format(solicitud.getFechaSolicitado());
+		result.addObject("fechaSol", fechaSol);
 		
+		List<Estado> estados = (List<Estado>) estadoService.getAllEstados();
+		if(estados == null && estados.isEmpty()){
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("solicitud.no.existe.estados",new Object[]{},new Locale("")));
+			return result;
+		}
+		result.addObject("estados",estados);
+		Rol rol = rolService.buscarPorOrden(Constantes.ROL_CONTADOR);
+		if(rol == null){
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
+			return result;
+		}
+		List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorRol(rol.getId());
+		if(responsables == null && responsables.isEmpty()){
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("solicitud.no.existe.responsables",new Object[]{},new Locale("")));
+			return result;
+		}
+		result.addObject("responsables",responsables);
 		return result;
 	}
 
 	@PostMapping(path="/editarSolicitud")
 	public @ResponseBody ModelAndView editarSolicitud (@RequestParam Long id,
 			@RequestParam String nombre,
-			@RequestParam Integer estado,
+			@RequestParam Long estado,
 			@RequestParam String titulo,
 			@RequestParam String email,
 			@RequestParam String descripcion, 
 			@RequestParam Long responsable,
 			@RequestParam String fechaSol ) throws ParseException {
 		
-		Date fechaSolicitado = new Date();
+		Solicitud solicitud = new Solicitud();
+		
 		if(fechaSol!= null && !fechaSol.equalsIgnoreCase("")){
-			fechaSolicitado = formatter.parse(fechaSol);
+			Date fechaSolicitado = formatter.parse(fechaSol);
+			solicitud.setFechaSolicitado(fechaSolicitado);
 		}
 		
-		Solicitud solicitud = new Solicitud();
 		solicitud.setId(id);
 		solicitud.setNombre(nombre);
 		solicitud.setTitulo(titulo);
@@ -186,7 +186,6 @@ public class SolicitudController {
 		solicitud.setResponsable(usuario);
 		Estado estadoSeleccionado = estadoService.buscarPorId(estado);
 		solicitud.setEstado(estadoSeleccionado);
-		solicitud.setFechaSolicitado(fechaSolicitado);
 		solicitud.setFechaModificado(new Date());
 		if(estadoSeleccionado!= null && estadoSeleccionado.getOrden() == Constantes.ESTADO_FINALIZADO){
 			solicitud.setFechaFinalizado(new Date());
@@ -327,20 +326,6 @@ public class SolicitudController {
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida",messageSource.getMessage("email.reporte.enviado",new Object[]{},new Locale("")));
 		result.setViewName("solicitudes");
-		return result;
-	}
-
-	//Metodos privados
-	private ModelAndView solicitudes(List<Solicitud> solicitudes) {
-		ModelAndView result = new ModelAndView();
-		
-		if(solicitudes == null || solicitudes.isEmpty()){
-			List<Solicitud> allSolicitudes = (ArrayList<Solicitud>) solicitudService.getAllSolicitudes();
-			solicitudes = allSolicitudes;
-		} 
-		
-		result.setViewName("solicitudes");
-		result.addObject("solicitudes", solicitudes);
 		return result;
 	}
 }
