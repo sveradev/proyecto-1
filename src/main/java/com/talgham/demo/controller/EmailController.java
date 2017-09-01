@@ -1,9 +1,6 @@
-
 package com.talgham.demo.controller;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,23 +37,37 @@ public class EmailController {
 			@RequestParam String direccion,
 			@RequestParam Actividad actividad,
 			@RequestParam String subject,
-			@RequestParam String texto
-			) throws ParseException {
+			@RequestParam String texto) throws ParseException {
 		
-		Email emailModel = emailService.addEmail(direccion, actividad, subject, texto);
+		ModelAndView result = new ModelAndView("emails");
 		
-		ModelAndView result = this.emails();
-		result.addObject("tipoSalida","alert-success");
-		result.addObject("salida", "La configuracion del Email para la actividad "+emailModel.getActividad()+" se ha realizado con éxito. Muchas Gracias.");
-		
+		Email email = new Email();
+		email.setDireccion(direccion);
+		email.setActividad(actividad);
+		email.setSubject(subject);
+		email.setTexto(texto);
+		if(emailService.addEmail(email).equalsIgnoreCase(Constantes.GUARDADO){
+			result.addObject("emails", emailService.getAllEmails());
+			result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
+			result.addObject("salida", messageSource.getMessage("email.creada.exito",new Object[]{},new Locale("")));
+		} else {
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("email.no.guardado.error",new Object[]{},new Locale("")));
+		}
 		return result;
 	}
 	
 	@RequestMapping("/editarEmail")
 	public String editarEmail(@RequestParam(value="id") Long id, Model model) {
-		model.addAttribute("email", emailService.buscarPorId(id));
+		Email email = emailService.buscarPorId(id);
+		model.addAttribute("email", email);
 		List<Actividad> actividades = (List<Actividad>) actividadService.getAllActividades();
-		model.addAttribute("actividades", actividades);
+		if(actividades != null && !actividades.isEmpty()){
+			model.addAttribute("actividades", actividades);
+		} else {
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("actividad.no.exite",new Object[]{},new Locale("")));
+		}
 		return "editarEmail";
 	}
 
@@ -66,38 +77,27 @@ public class EmailController {
 			@RequestParam Actividad actividad,
 			@RequestParam String subject,
 			@RequestParam String texto) throws ParseException {
-				
+		
+		ModelAndView result = new ModelAndView("emails");		
+		
 		Email email = emailService.buscarPorId(id);
 		email.setDireccion(direccion);
 		email.setActividad(actividad);
 		email.setSubject(subject);
 		email.setTexto(texto);
-		email.setFechaModificacion(new Date());
-		
-		emailService.guardarEmail(email);
-		
-		ModelAndView result = new ModelAndView();
-//		result.addObject("mensaje", MessageSourceManager.getInstance().getMessage("solicitud.editada.exito",id));
-		result.addObject("tipoSalida", "alert-success");
-		result.addObject("salida", "El Email para la actividad"+ actividad +" se ha modificado con éxito. Muchas Gracias.");
-		result.setViewName("emails");
-		
+		if(emailService.guardarEmail(email).equalsIgnoreCase(Constantes.GUARDADO)){
+			result.addObject("tipoSalida", Constantes.ALERTA_SUCCESS);
+			result.addObject("salida", messageSource.getMessage("email.guardado.exito",new Object[]{},new Locale("")));
+		} else {
+			result.addObject("tipoSalida", Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("email.no.guardado.error",new Object[]{},new Locale("")));
+		}		
 		return result;
 	}
 
 	@RequestMapping("/emails")
 	public String emails(Model model) {
-
-		ArrayList<Email> emails = (ArrayList<Email>) emailService.getAllEmails();
-		model.addAttribute("emails", emails);
+		model.addAttribute("emails", emailService.getAllEmails());
 		return "emails";
-	}
-	
-	public ModelAndView emails() {
-		ModelAndView result = new ModelAndView();
-		ArrayList<Email> emails = (ArrayList<Email>) emailService.getAllEmails();
-		result.setViewName("emails");
-		result.addObject("emails", emails);
-		return result;
 	}
 }
