@@ -41,19 +41,21 @@ public class RolController {
 		rol.setOrden(orden);
 		rol.setFechaCreacion(new Date());
 
-		if(rolService.crearRol(rol).equalsIgnoreCase(Constantes.GUARDADO)){
-			result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
-			result.addObject("salida", messageSource.getMessage("rol.creado.exito",new Object[]{},new Locale("")));
-		} else {
+		if(!Constantes.GUARDADO.equalsIgnoreCase(rolService.crearRol(rol))){
+			result.addObject("roles", rolService.getAllRoles());
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("rol.no.creado.error",new Object[]{},new Locale("")));
+			return result;
 		}
+		result.addObject("roles", rolService.getAllRoles());
+		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
+		result.addObject("salida", messageSource.getMessage("rol.creado.exito",new Object[]{},new Locale("")));
 		return result;
 	}
 	
 	@RequestMapping("/roles")
 	public String roles(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
-		model.addAttribute("roles", rolService.getAllRoles(););
+		model.addAttribute("roles", rolService.getAllRoles());
 		return "roles";
 	}
 }
