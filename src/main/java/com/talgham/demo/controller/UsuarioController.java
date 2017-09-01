@@ -33,9 +33,9 @@ public class UsuarioController {
 	
 	@RequestMapping("/crearUsuario")
 	public String usuario(Model model) {
-
 		List<Rol> roles = (List<Rol>) rolService.getAllRoles();
-		if(roles == null && roles.isEmpty()){
+		if(roles == null || roles.isEmpty()){
+			model.addObject("usuarios", usuarioService.buscarUsuarios());
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
 			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
 			return "usuarios";
@@ -59,10 +59,12 @@ public class UsuarioController {
 		usuario.setPassword(password);
 		ususario.setRol(rolService.buscarPorId(rol));
 		if(!Constantes.GUARDADO.equalsIgnoreCase(usuarioService.crearUsuario(usuario))){
+			model.addObject("usuarios", usuarioService.buscarUsuarios());
 			model.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			model.addObject("salida", messageSource.getMessage("usuario.guardado.error",new Object[]{},new Locale("")));
 			return model;
 		}
+		model.addObject("usuarios", usuarioService.buscarUsuarios());
 		model.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		model.addObject("salida", messageSource.getMessage("usuario.creado.exito",new Object[]{},new Locale("")));
 		return model;
@@ -70,13 +72,14 @@ public class UsuarioController {
 	
 	@RequestMapping("/editarUsuario")
 	public String editarUsuario(@RequestParam(value="id") Long id, Model model) {
-		model.addAttribute("usuario", usuarioService.buscarPorId(id));
 		List<Rol> roles = (List<Rol>) rolService.getAllRoles();
-		if(roles == null && roles.isEmpty()){
+		if(roles == null || roles.isEmpty()){
+			model.addAttribute("usuarios", usuarioService.buscarUsuarios());
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
 			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
 			return "usuarios";
 		}
+		model.addAttribute("usuario", usuarioService.buscarPorId(id));
 		model.addAttribute("roles",roles);
 		return "editarUsuario";
 	}
@@ -95,12 +98,13 @@ public class UsuarioController {
 		usuario.setAlias(alias);
 		usuario.setEmail(email);
 		usuario.setRol(rolService.buscarPorId(rol));
-		
 		if(!Constantes.GUARDADO.equalsIgnoreCase(usuarioService.updateUsuario(usuario))){
+			result.addObject("usuarios", usuarioService.buscarUsuarios());
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("usuario.guardado.error",new Object[]{},new Locale("")));
 			return result;
 		}
+		result.addObject("usuarios", usuarioService.buscarUsuarios());
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("usuario.creado.exito",new Object[]{usuario.getId()},new Locale("")));
 		return result;
@@ -138,7 +142,7 @@ public class UsuarioController {
 			result.setViewName("mensaje");
 			return result;
 		}
-		if(oldPassword != null && !oldPassword.equalsIgnoreCase(usuario.getPassword())){
+		if(usuario.getPassword().equalsIgnoreCase(oldPassword)){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("password.cambiada.error",new Object[]{},new Locale("")));
 			result.setViewName("mensaje");
@@ -151,6 +155,7 @@ public class UsuarioController {
 			result.setViewName("cambiarPassword");
 			return result;
 		}
+		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("password.cambiada.exito",new Object[]{},new Locale("")));
 		result.setViewName("Solicitudes");
@@ -160,19 +165,21 @@ public class UsuarioController {
 	@RequestMapping("/eliminarUsuario")
 	public ModelAndView eliminarUsuario(@RequestParam(value="id") Long id) {
 		ModelAndView result = new ModelAndView("usuarios");
-		result.addObject("usuarios", usuarioService.buscarUsuarios());
 		Usuario usuario = usuarioService.buscarUsuarioPorId(id);
 		if(usuario == null){
+			result.addObject("usuarios", usuarioService.buscarUsuarios());
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("error.usuario.no.encontrado",new Object[]{},new Locale("")));
 			return result;
 		}
 		usuario.setFechaBaja(new Date());
-		if(Constantes.GUARDADO.equalsIgnoreCase(usuarioService.updateUsuario(usuario))){
+		if(!Constantes.GUARDADO.equalsIgnoreCase(usuarioService.updateUsuario(usuario))){
+			result.addObject("usuarios", usuarioService.buscarUsuarios());
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("usuario.baja.error",new Object[]{usuario.getNombre()},new Locale("")));
 			return result;
 		}
+		result.addObject("usuarios", usuarioService.buscarUsuarios());
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("usuario.baja.exito",new Object[]{usuario.getNombre()},new Locale("")));
 		return result;
