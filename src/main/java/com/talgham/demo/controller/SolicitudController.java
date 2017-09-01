@@ -86,6 +86,11 @@ public class SolicitudController {
 		solicitud.setEmail(email);
 		solicitud.setDescripcion(descripcion);
 		Usuario usuario = usuarioService.buscarUsuarioPorId(responsable);
+		if(usuario == null){
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("error.usuario.no.encontrado",new Object[]{solicitud.getId()},new Locale("")));
+			return result;
+		}
 		solicitud.setResponsable(usuario);
 		if(fechaSol!= null && !fechaSol.equalsIgnoreCase("")){
 			Date fechaSolicitado = formatter.parse(fechaSol);
@@ -93,7 +98,7 @@ public class SolicitudController {
 		}
 		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.addSolicitud(solicitud)){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
-			result.addObject("salida", messageSource.getMessage("solicitud.no.creada.error",new Object[]{},new Locale("")));
+			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{},new Locale("")));
 			return result;
 		}
 		//Envio de mail.
@@ -122,7 +127,7 @@ public class SolicitudController {
 	
 	@RequestMapping("/editarSolicitud")
 	public ModelAndView editarSolicitud(@RequestParam(value="id") Long id) {
-		ModelAndView result = new ModelAndView();
+		ModelAndView result = new ModelAndView("editarSolicitud");
 		
 		Solicitud solicitud = solicitudService.buscarPorId(id);
 		if(solicitud == null){
@@ -132,7 +137,6 @@ public class SolicitudController {
 			result.setViewName("solicitudes");
 			return result;
 		}
-		result.setViewName("editarSolicitud");
 		result.addObject("solicitud", solicitud);
 		String fechaSol = formatter.format(solicitud.getFechaSolicitado());
 		result.addObject("fechaSol", fechaSol);
@@ -170,13 +174,14 @@ public class SolicitudController {
 			@RequestParam Long responsable,
 			@RequestParam String fechaSol ) throws ParseException {
 		
-		Solicitud solicitud = new Solicitud();
+		ModelAndView result = new ModelAndView("solicitudes");
+		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
 		
+		Solicitud solicitud = new Solicitud();
 		if(fechaSol!= null && !fechaSol.equalsIgnoreCase("")){
 			Date fechaSolicitado = formatter.parse(fechaSol);
 			solicitud.setFechaSolicitado(fechaSolicitado);
 		}
-		
 		solicitud.setId(id);
 		solicitud.setNombre(nombre);
 		solicitud.setTitulo(titulo);
@@ -186,36 +191,58 @@ public class SolicitudController {
 		solicitud.setResponsable(usuario);
 		Estado estadoSeleccionado = estadoService.buscarPorId(estado);
 		solicitud.setEstado(estadoSeleccionado);
-		solicitud.setFechaModificado(new Date());
-		if(estadoSeleccionado!= null && estadoSeleccionado.getOrden() == Constantes.ESTADO_FINALIZADO){
-			solicitud.setFechaFinalizado(new Date());
+		if(Constantes.GUARDADO.equalIgnoreCase(solicitudService.updateSolicitud(solicitud)){
+			result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
+			result.addObject("salida", messageSource.getMessage("solicitud.editada.exito",new Object[]{solicitud.getId()},new Locale("")));
+		} else {
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{solicitud.getId()},new Locale("")));
 		}
-		
-		solicitudService.updateSolicitud(solicitud);
-		
-		ModelAndView result = solicitudes(null);
-		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
-		result.addObject("salida", messageSource.getMessage("solicitud.editada.exito",new Object[]{solicitud.getId()},new Locale("")));
-		
 		return result;
 	}
 	
 	@GetMapping("/buscarSolicitud")
 	public String buscarSolicitud(Model model) {
 		Rol rol = rolService.buscarPorOrden(Constantes.ROL_CONTADOR);
-		if(rol != null){
-			List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorRol(rol.getId());
-			if(!responsables.isEmpty()){
-				model.addAttribute("responsables",responsables);
-			} else {
-				model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
-				model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.responsables",new Object[]{},new Locale("")));
-			}
-		} else {
+		if(rol == null){
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
 			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
+			model.addAttribute("solicitudes",solicitudes);
+			return "solicitudes";
+		}
+		List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorRol(rol.getId());
+		if(!responsables.isEmpty()){
+			model.addAttribute("responsables",responsables);
+		} else {
+			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
+			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.responsables",new Object[]{},new Locale("")));
 		}
 		return "buscarSolicitud";
+	}
+		   
+	private ModelAndView CargarCombosBusqueda (ModelAndView result) {
+		if(result == null){
+			result = new ModelAndView();
+		}
+		Rol rol = rolService.buscarPorOrden(Constantes.ROL_CONTADOR);
+		if(rol == null){
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
+			model.addAttribute("solicitudes", solicitudService.getAllSolicitudes());
+			result.setViewName("solicitudes");
+			return result;
+		}
+		List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorRol(rol.getId());
+		if(!responsables.isEmpty()){
+			model.addObject("responsables",responsables);
+			result.setViewName("buscarSolicitud");
+			return result;
+		} else {
+			model.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			model.addObject("salida", messageSource.getMessage("solicitud.no.existe.responsables",new Object[]{},new Locale("")));
+			result.setViewName("buscarSolicitud");
+			return result;
+		}
 	}
 	
 	@PostMapping(path="/buscarSolicitud")
@@ -226,60 +253,49 @@ public class SolicitudController {
 			@RequestParam String fechaDesde,
 			@RequestParam String fechaHasta) throws ParseException {
 		
-		Date solicitadoDesde = null;
-		Date solicitadoHasta = null;
-		
-		if(fechaDesde!= null && !fechaDesde.equalsIgnoreCase("")){
-			solicitadoDesde = formatter.parse(fechaDesde);
-		}
-		
-		if(fechaHasta!= null && !fechaHasta.equalsIgnoreCase("")){
-			solicitadoHasta = formatterTime.parse(fechaHasta+" 23:23:59");
-		}
-		
-		List<Solicitud> solicitudes = new ArrayList<Solicitud>();
-		String tipoSalida = "";
-		String salida = "";
-		
 		if(id != null){
+			ModelAndView result = new ModelAndView ();
+			List<Solicitud> solicitudes = new ArrayList<Solicitud>();
 			Solicitud solicitud = solicitudService.buscarPorId(id);
 			if(solicitud != null){
 				solicitudes.add(solicitud);
-				tipoSalida = Constantes.ALERTA_SUCCESS;
-				salida = messageSource.getMessage("buscar.solicitud.exito",new Object[]{},new Locale(""));
+				result.addObject(solicitudes);
+				result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
+				result.addObject("salida",messageSource.getMessage("buscar.solicitud.exito",new Object[]{},new Locale("")));
+				result.setViewName("solicitudes");
+				return result;
+			} 
+			result.addObject("tipoSalida",Constantes.ALERTA_WARNING);
+			result.addObject("salida",messageSource.getMessage("buscar.solicitud.id.no.existe",new Object[]{id},new Locale("")));
+			result.setViewName("buscarSolicitud");
+			return CargarCombosBusqueda(result);
+		}
+		if(fechaDesde!= null && !fechaDesde.equalsIgnoreCase("") && fechaHasta!= null && !fechaHasta.equalsIgnoreCase("")){
+			Date solicitadoDesde = formatter.parse(fechaDesde);
+			Date solicitadoHasta = formatterTime.parse(fechaHasta+" 23:23:59");
+			List<Solicitud> solicitudes = (List<Solicitud>) solicitudService.buscar(nombre,titulo,responsable,solicitadoDesde,solicitadoHasta);
+			if(solicitudes!= null && !solicitudes.isEmpty()){
+				ModelAndView result = new ModelAndView("solicitudes");
+				result.addObject("solicitudes",solicitudService.getAllSolicitudes());
+				result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
+				result.addObject("salida",messageSource.getMessage("buscar.solicitudes.exito",new Object[]{},new Locale(""))messageSource.getMessage("buscar.solicitudes.exito",new Object[]{},new Locale("")));
+				return result;
 			} else {
-				tipoSalida = Constantes.ALERTA_WARNING;
-				salida = messageSource.getMessage("buscar.solicitud.id.no.existe",new Object[]{id},new Locale(""));
-			}
-		} else {
-			solicitudes = (List<Solicitud>) solicitudService.buscar(nombre,titulo,responsable,solicitadoDesde,solicitadoHasta);
-			if(solicitudes == null){
-				ModelAndView result = new ModelAndView();
-				result.addObject("tipoSalida",Constantes.ALERTA_WARNING);
-				result.addObject("salida",messageSource.getMessage("buscar.solicitud.completar.campo",new Object[]{},new Locale("")));
-				result.setViewName("buscarSolicitud");
-				buscarSolicitud((Model) result);
-			} else if(solicitudes.isEmpty()){
-				ModelAndView result = new ModelAndView();
+				ModelAndView result = new ModelAndView("buscarSolicitud");
 				result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 				result.addObject("salida",messageSource.getMessage("buscar.solicitud.no.registros",new Object[]{},new Locale("")));
-				result.setViewName("buscarSolicitud");
-				buscarSolicitud((Model) result);
-			} else {
-				tipoSalida = Constantes.ALERTA_SUCCESS;
-				salida = messageSource.getMessage("buscar.solicitudes.exito",new Object[]{},new Locale(""));
+				return CargarCombosBusqueda(result);
 			}
 		}
-		ModelAndView result = this.solicitudes(solicitudes);
-		result.addObject("tipoSalida",tipoSalida);
-		result.addObject("salida",salida);
-		return result;
+		ModelAndView result = new ModelAndView ("buscarSolicitud");
+		result.addObject("tipoSalida",Constantes.ALERTA_WARNING);
+		result.addObject("salida",messageSource.getMessage("buscar.solicitud.completar.campo",new Object[]{},new Locale("")));
+		return CargarCombosBusqueda(result);
 	}
 
 	@RequestMapping("/solicitudes")
 	public String solicitudes(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
-		ArrayList<Solicitud> solicitudes = (ArrayList<Solicitud>) solicitudService.getAllSolicitudes();
-		model.addAttribute("solicitudes", solicitudes);
+		model.addAttribute("solicitudes", solicitudService.getAllSolicitudes());
 		return "solicitudes";
 	}
 	
