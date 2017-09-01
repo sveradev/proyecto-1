@@ -61,7 +61,8 @@ public class EmailService {
 		return emailRepository.findById(id);
 	}
 
-	public void guardarEmail(Email email) {
+	public String guardarEmail(Email email) {
 		emailRepository.save(email);
+		return Constantes.GUARDADO;
 	}
 }
