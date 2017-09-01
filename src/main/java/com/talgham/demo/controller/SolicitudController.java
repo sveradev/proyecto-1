@@ -305,6 +305,7 @@ public class SolicitudController {
 			@RequestParam String fechaDesde,
 			@RequestParam String fechaHasta) throws ParseException {
 		
+		ModelAndView result = new ModelAndView("solicitudes");
 		if(fechaDesde!= null && !fechaDesde.equalsIgnoreCase("") && fechaHasta!= null && !fechaHasta.equalsIgnoreCase("")){
 			Date solicitadoDesde = formatter.parse(fechaDesde);
 			Date solicitadoHasta = formatterTime.parse(fechaHasta+" 23:23:59");
@@ -321,27 +322,25 @@ public class SolicitudController {
 					emailService.prepareAndSend(to, subject, texto);
 				} catch (Exception e) {
 					e.printStackTrace();
-					ModelAndView result = this.solicitudes(null);
 					result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 					result.addObject("salida",messageSource.getMessage("email.reporte.no.enviado",new Object[]{},new Locale("")));
-					result.setViewName("solicitudes");
 					return result;
 //					loggin "Hubo un error al enviar el mail.";
 				}
 			} else {
-				ModelAndView result = this.solicitudes(null);
 				result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 				result.addObject("salida",messageSource.getMessage("email.actividad.no.encontrado",new Object[]{},new Locale("")));
-				result.setViewName("solicitudes");
 				return result;
 //				loggin No se ha encontrado un email configurado para la acción requerida.
 			}
+		} else {
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida",messageSource.getMessage("solicitud.no.completa.fechas",new Object[]{},new Locale("")));
 		}
 		
-		ModelAndView result = this.solicitudes(null);
+		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida",messageSource.getMessage("email.reporte.enviado",new Object[]{},new Locale("")));
-		result.setViewName("solicitudes");
 		return result;
 	}
 }
