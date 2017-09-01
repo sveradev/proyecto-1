@@ -31,8 +31,7 @@ public class EmailController {
 	
 	@GetMapping("/crearEmail")
 	public String crearEmail(Model model) {
-		List<Actividad> actividades = (List<Actividad>) actividadService.getAllActividades();
-		model.addAttribute("actividades", actividades);
+		model.addAttribute("actividades", actividadService.getAllActividades());
 		return "crearEmail";
 	}
 
