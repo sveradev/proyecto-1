@@ -40,9 +40,8 @@ public class RolController {
 		rol.setNombre(nombre);
 		rol.setOrden(orden);
 		rol.setFechaCreacion(new Date());
-		String response = rolService.crearRol(rol);
 
-		if(response != null && response.equalsIgnoreCase(Constantes.GUARDADO)){
+		if(rolService.crearRol(rol).equalsIgnoreCase(Constantes.GUARDADO)){
 			result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 			result.addObject("salida", messageSource.getMessage("rol.creado.exito",new Object[]{},new Locale("")));
 		} else {
@@ -54,8 +53,7 @@ public class RolController {
 	
 	@RequestMapping("/roles")
 	public String roles(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
-		ArrayList<Rol> roles = (ArrayList<Rol>) rolService.getAllRoles();
-		model.addAttribute("roles", roles);
+		model.addAttribute("roles", rolService.getAllRoles(););
 		return "roles";
 	}
 }
