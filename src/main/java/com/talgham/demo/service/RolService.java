@@ -17,7 +17,7 @@ public class RolService{
 		return rolRepository.findAll();
 	}
 
-	public Rol buscarRolesPorId(Long id) {
+	public Rol buscarPorId(Long id) {
 		return rolRepository.findById(id);
 	}
 
