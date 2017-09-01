@@ -3,6 +3,7 @@ package com.talgham.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.talgham.demo.common.Constantes;
 import com.talgham.demo.model.Rol;
 import com.talgham.demo.repository.RolRepository;
 
@@ -26,6 +27,6 @@ public class RolService{
 
 	public String crearRol(Rol rol) {
 		rolRepository.save(rol);
-		return "Guardado";
+		return Constantes.GUARDADO;
 	}
 }

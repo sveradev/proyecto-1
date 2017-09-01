@@ -1,4 +1,3 @@
-
 package com.talgham.demo.controller;
 
 import java.text.ParseException;
@@ -53,10 +52,10 @@ public class SolicitudController {
 
 	@GetMapping("/crearSolicitud")
 	public String crearSolicitud(Model model) {
-		Long idRol = new Long(3);
-		Rol rol = rolService.buscarRolesPorId(idRol);
+		Integer orden = Constantes.ROL_CONTADOR;
+		Rol rol = rolService.buscarPorOrden(orden);
 		if(rol != null){
-			ArrayList<Usuario> responsables = (ArrayList<Usuario>) usuarioService.buscarUsuariosPorRol(rol.getNombre());
+			List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorRol(rol.getId());
 			if(!responsables.isEmpty()){
 				model.addAttribute("responsables",responsables);
 			} else {
@@ -105,8 +104,8 @@ public class SolicitudController {
 			String texto = emailTemplate.getTexto();
 		
 			try {
-				emailService.sendEmail(to, subject, texto);
-				emailService.sendEmail(solicitud.getEmail(), subject, texto);
+				emailService.prepareAndSend(to, subject, texto);
+				emailService.prepareAndSend(solicitud.getEmail(), subject, texto);
 			} catch (Exception e) {
 				e.printStackTrace();
 //				loggin "Hubo un error al enviar el mail.";
@@ -124,27 +123,36 @@ public class SolicitudController {
 	}
 	
 	@RequestMapping("/editarSolicitud")
-	public ModelAndView editarSolicitud(@RequestParam(value="id") Long id, Model model) {
+	public ModelAndView editarSolicitud(@RequestParam(value="id") Long id) {
 		ModelAndView result = solicitudes(null);
 		Solicitud solicitud = solicitudService.buscarPorId(id);
 		if(solicitud !=null){
 			Date date = solicitud.getFechaSolicitado();
 			String fechaSol = formatter.format(date);
-			model.addAttribute("fechaSol", fechaSol);
-			model.addAttribute("solicitud", solicitud);
-			ArrayList<Estado> estados = (ArrayList<Estado>) estadoService.getAllEstados();
-			Integer rolOrden = Constantes.ROL_CONTADOR;
-			Rol rol = rolService.buscarPorOrden(rolOrden);
-			ArrayList<Usuario> responsables = (ArrayList<Usuario>) usuarioService.buscarUsuariosPorRol(rol.getNombre());
-			model.addAttribute("responsables",responsables);
-			model.addAttribute("estados",estados);
+			result.addObject("fechaSol", fechaSol);
+			result.addObject("solicitud", solicitud);
+			List<Estado> estados = (List<Estado>) estadoService.getAllEstados();
+			if(estados != null && !estados.isEmpty()){
+				result.addObject("estados",estados);
+			} else {
+				result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+				result.addObject("salida", messageSource.getMessage("solicitud.no.existe.estados",new Object[]{},new Locale("")));
+			}
+			Rol rol = rolService.buscarPorOrden(Constantes.ROL_CONTADOR);
+			if(rol != null){
+				List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorRol(rol.getId());
+				if(responsables != null && !responsables.isEmpty()){
+					result.addObject("responsables",responsables);
+				} else {
+					result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+					result.addObject("salida", messageSource.getMessage("solicitud.no.existe.responsables",new Object[]{},new Locale("")));
+				}
+			} else {
+				result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+				result.addObject("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
+			}
 			result.setViewName("editarSolicitud");
 		} else {
-			List<Solicitud> solicitudes = (List<Solicitud>) solicitudService.getAllSolicitudes();
-			if(solicitudes !=null && !solicitudes.isEmpty()){
-				result.addObject("solicitudes",solicitudes);
-//			} else {
-			}
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.encontrada",new Object[]{},new Locale("")));
 			result.setViewName("solicitudes");
@@ -195,10 +203,9 @@ public class SolicitudController {
 	
 	@GetMapping("/buscarSolicitud")
 	public String buscarSolicitud(Model model) {
-		Integer orden = Constantes.ROL_CONTADOR;
-		Rol rol = rolService.buscarPorOrden(orden);
+		Rol rol = rolService.buscarPorOrden(Constantes.ROL_CONTADOR);
 		if(rol != null){
-			ArrayList<Usuario> responsables = (ArrayList<Usuario>) usuarioService.buscarUsuariosPorRol(rol.getNombre());
+			List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorRol(rol.getId());
 			if(!responsables.isEmpty()){
 				model.addAttribute("responsables",responsables);
 			} else {
@@ -272,7 +279,6 @@ public class SolicitudController {
 
 	@RequestMapping("/solicitudes")
 	public String solicitudes(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
-
 		ArrayList<Solicitud> solicitudes = (ArrayList<Solicitud>) solicitudService.getAllSolicitudes();
 		model.addAttribute("solicitudes", solicitudes);
 		return "solicitudes";
@@ -297,7 +303,7 @@ public class SolicitudController {
 				String texto = emailTemplate.getTexto();//falta template Email.
 			
 				try {
-					emailService.sendEmail(to, subject, texto);
+					emailService.prepareAndSend(to, subject, texto);
 				} catch (Exception e) {
 					e.printStackTrace();
 					ModelAndView result = this.solicitudes(null);

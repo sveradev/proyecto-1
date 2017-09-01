@@ -1,12 +1,11 @@
 package com.talgham.demo.service;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.talgham.demo.common.Constantes;
 import com.talgham.demo.model.Rol;
 import com.talgham.demo.model.Usuario;
 import com.talgham.demo.repository.UsuarioRepository;
@@ -17,18 +16,10 @@ public class UsuarioService {
 	@Autowired 
 	private UsuarioRepository usuarioRepository;
 
-	public String crearUsuario (String nombre,String alias,String email, String password) {
-
-		Usuario n = new Usuario();
-		Date fechaAlta = new Date(Calendar.getInstance().getTime().getTime());
-		
-		n.setNombre(nombre);
-		n.setFechaAlta(fechaAlta);
-		n.setPassword(password);
-		n.setEmail(email);
-		n.setAlias(alias);
-		usuarioRepository.save(n);
-		return "Saved";
+	public String crearUsuario (Usuario usuario) {
+		usuario.setFechaAlta(new Date());		
+		usuarioRepository.save(usuario);
+		return Constantes.GUARDADO;
 	}
 	
 	public Usuario buscarUsuarioPorId(Long id){
@@ -41,10 +32,6 @@ public class UsuarioService {
 
 	public Iterable<Usuario> buscarUsuarios() {
 		return usuarioRepository.findAll();
-	}
-
-	public List<Usuario> buscarUsuariosPorRol(String rol) {
-		return usuarioRepository.findByRol(rol);
 	}
 
 	public String updateUsuario(Usuario myUsuario) {
@@ -76,6 +63,10 @@ public class UsuarioService {
 			usuario.setFechaBaja(fechaBaja);
 		}
 		usuarioRepository.save(usuario);
-		return "guardado";
+		return Constantes.GUARDADO;
+	}
+
+	public Iterable<Usuario> buscarPorRol(Long id) {
+		return usuarioRepository.findByRol(id);
 	}
 }

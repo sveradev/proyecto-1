@@ -1,4 +1,3 @@
-
 package com.talgham.demo.controller;
 
 import java.util.ArrayList;
@@ -33,10 +32,10 @@ public class RolController {
 	}
 
 	@PostMapping(path="/crearRol")
-	public @ResponseBody ModelAndView createRol (@RequestParam String nombre,
+	public @ResponseBody ModelAndView crearRol (@RequestParam String nombre,
 			@RequestParam Integer orden) {
 
-		ModelAndView result = new ModelAndView("rols");
+		ModelAndView result = new ModelAndView("roles");
 		Rol rol = new Rol();
 		rol.setNombre(nombre);
 		rol.setOrden(orden);
@@ -44,10 +43,11 @@ public class RolController {
 		String response = rolService.crearRol(rol);
 
 		if(response != null && response.equalsIgnoreCase(Constantes.GUARDADO)){
-			result.addObject("tipoSalida","alert-success");
+			result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 			result.addObject("salida", messageSource.getMessage("rol.creado.exito",new Object[]{},new Locale("")));
 		} else {
-			
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("rol.no.creado.error",new Object[]{},new Locale("")));
 		}
 		return result;
 	}

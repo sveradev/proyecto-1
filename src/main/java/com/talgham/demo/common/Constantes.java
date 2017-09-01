@@ -24,6 +24,5 @@ public class Constantes {
 	public static final String ALERTA_DANGER = "alert-danger";
 	public static final String ALERTA_INFO = "alert-info";
 	public static final String ALERTA_WARNING = "alert-warning";
-	
-	
+
 }

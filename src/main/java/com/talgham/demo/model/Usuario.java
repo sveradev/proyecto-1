@@ -21,7 +21,6 @@ public class Usuario {
 	private Date fechaAlta;
 	private Date fechaBaja;
 	private String password;
-	
 	@ManyToOne @JoinColumn(name="rol_id")	
 	private Rol rol;
 	
