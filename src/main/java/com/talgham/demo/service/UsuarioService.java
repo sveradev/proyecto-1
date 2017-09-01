@@ -22,11 +22,11 @@ public class UsuarioService {
 		return Constantes.GUARDADO;
 	}
 	
-	public Usuario buscarUsuarioPorId(Long id){
+	public Usuario buscarPorId(Long id){
 		return usuarioRepository.findById(id);
 	}
 	
-	public Usuario buscarUsuarioPorEmail(String email){
+	public Usuario buscarPorEmail(String email){
 		return usuarioRepository.findByEmail(email);
 	}
 
