@@ -33,29 +33,28 @@ public class EstadoController {
 	}
 
 	@PostMapping(path="/crearEstado")
-	public @ResponseBody ModelAndView crearEstado (@RequestParam String nombre,
-			@RequestParam Integer orden) {
+	public @ResponseBody ModelAndView crearEstado (@RequestParam String nombre, @RequestParam Integer orden) {
 
 		ModelAndView result = new ModelAndView("estados");
 		Estado estado = new Estado();
 		estado.setNombre(nombre);
 		estado.setOrden(orden);
 		estado.setFechaCreacion(new Date());
-		String response = estadoService.crearEstado(estado);
-
-		if(response != null && response.equalsIgnoreCase(Constantes.GUARDADO)){
-			result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
-			result.addObject("salida", messageSource.getMessage("estado.creado.exito",new Object[]{},new Locale("")));
-		} else {
+		if(!Constantes.GUARDADO.equalsIgnoreCase(estadoService.crearEstado(estado))){
+			result.addObject("estados", estadoService.getAllEstados());
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("estado.no.creado.error",new Object[]{},new Locale("")));
+			return result;
 		}
+		result.addObject("estados", estadoService.getAllEstados());
+		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
+		result.addObject("salida", messageSource.getMessage("estado.creado.exito",new Object[]{},new Locale("")));
 		return result;
 	}
 	
 	@RequestMapping("/estados")
-	public String estados(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
-		model.addAttribute("estados", estadoService.getAllEstados(););
+	public String estados(Model model) {
+		model.addAttribute("estados", estadoService.getAllEstados());
 		return "estados";
 	}
 }
