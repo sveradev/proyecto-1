@@ -89,33 +89,25 @@ public class SolicitudService {
 				if(titulo == null || titulo.trim().equalsIgnoreCase("")){
 					if(responsable == null){
 						return solicitudRepository.findByFechaSolicitadoBetween(desde, hasta);
-					} else {
-						return solicitudRepository.findByResponsable_idAndFechaSolicitadoBetween(responsable, desde, hasta);
 					}
-				} else {
-					if(responsable == null){
-						return solicitudRepository.findByTituloAndFechaSolicitadoBetween(titulo, desde, hasta);
-					} else {
-						return solicitudRepository.findByTituloAndResponsable_idAndFechaSolicitadoBetween(titulo, responsable, desde, hasta);
-					}
+					return solicitudRepository.findByResponsable_idAndFechaSolicitadoBetween(responsable, desde, hasta);
 				}
-			} else {
-				if(titulo == null || titulo.trim().equalsIgnoreCase("")){
-					if(responsable == null){
-						return solicitudRepository.findByNombreAndFechaSolicitadoBetween(nombre, desde, hasta);
-					} else {
-						return solicitudRepository.findByNombreAndResponsable_idAndFechaSolicitadoBetween(nombre, responsable, desde, hasta);
-					}
-				} else {
-					if(responsable == null){
-						return solicitudRepository.findByNombreAndTituloAndFechaSolicitadoBetween(nombre, titulo, desde, hasta);
-					} else {
-						return solicitudRepository.findByNombreAndTituloAndResponsable_idAndFechaSolicitadoBetween(nombre,titulo, responsable, desde, hasta);
-					}
+				if(responsable == null){
+					return solicitudRepository.findByTituloAndFechaSolicitadoBetween(titulo, desde, hasta);
 				}
+				return solicitudRepository.findByTituloAndResponsable_idAndFechaSolicitadoBetween(titulo, responsable, desde, hasta);
+			} 
+			if(titulo == null || titulo.trim().equalsIgnoreCase("")){
+				if(responsable == null){
+					return solicitudRepository.findByNombreAndFechaSolicitadoBetween(nombre, desde, hasta);
+				} 
+				return solicitudRepository.findByNombreAndResponsable_idAndFechaSolicitadoBetween(nombre, responsable, desde, hasta);
 			}
-		} else {
-			return null;
+			if(responsable == null){
+				return solicitudRepository.findByNombreAndTituloAndFechaSolicitadoBetween(nombre, titulo, desde, hasta);
+			}
+			return solicitudRepository.findByNombreAndTituloAndResponsable_idAndFechaSolicitadoBetween(nombre,titulo, responsable, desde, hasta);
 		}
+		return null;
 	}
 }
