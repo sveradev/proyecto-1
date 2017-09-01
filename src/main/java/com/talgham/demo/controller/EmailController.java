@@ -47,6 +47,7 @@ public class EmailController {
 		email.setSubject(subject);
 		email.setTexto(texto);
 		if(!Constantes.GUARDADO.equalsIgnoreCase(emailService.crearEmail(email)){
+			result.addObject("emails", emailService.getAllEmails());
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("email.no.guardado.error",new Object[]{},new Locale("")));
 			return result;
@@ -87,6 +88,7 @@ public class EmailController {
 		email.setSubject(subject);
 		email.setTexto(texto);
 		if(!Constantes.GUARDADO.equalsIgnoreCase(emailService.guardarEmail(email))){
+			result.addObject("emails", emailService.getAllEmails());
 			result.addObject("tipoSalida", Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("email.no.guardado.error",new Object[]{},new Locale("")));
 			return result;
