@@ -42,20 +42,11 @@ public class EmailService {
 		// runtime exception; compiler will not force you to handle it
 		}
 	}
-	
-	
-	
-	public Email addEmail (String direccion, Actividad actividad, String subject, String texto) {
 
-		Email emailModel = new Email();
-		
-		emailModel.setDireccion(direccion);
-		emailModel.setActividad(actividad);;
-		emailModel.setSubject(subject);
-		emailModel.setTexto(texto);
+	public String addEmail (Email email) {
 		emailModel.setFechaCreacion(new Date());
 		emailRepository.save(emailModel);
-		return emailModel;
+		return Constantes.GUARDADO;
 	}
 	
 	public Email buscarPorActividad(Long actividad){
