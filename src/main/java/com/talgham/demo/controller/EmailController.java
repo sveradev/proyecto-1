@@ -46,35 +46,36 @@ public class EmailController {
 		email.setActividad(actividad);
 		email.setSubject(subject);
 		email.setTexto(texto);
-		if(emailService.addEmail(email).equalsIgnoreCase(Constantes.GUARDADO){
-			result.addObject("emails", emailService.getAllEmails());
-			result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
-			result.addObject("salida", messageSource.getMessage("email.creada.exito",new Object[]{},new Locale("")));
-		} else {
+		if(!Constantes.GUARDADO.equalsIgnoreCase(emailService.crearEmail(email)){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("email.no.guardado.error",new Object[]{},new Locale("")));
+			return result;
 		}
+		result.addObject("emails", emailService.getAllEmails());
+		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
+		result.addObject("salida", messageSource.getMessage("email.creada.exito",new Object[]{},new Locale("")));
 		return result;
 	}
 	
 	@RequestMapping("/editarEmail")
 	public String editarEmail(@RequestParam(value="id") Long id, Model model) {
-		Email email = emailService.buscarPorId(id);
-		model.addAttribute("email", email);
 		List<Actividad> actividades = (List<Actividad>) actividadService.getAllActividades();
-		if(actividades != null && !actividades.isEmpty()){
-			model.addAttribute("actividades", actividades);
-		} else {
+		if(actividades == null || actividades.isEmpty()){
+			result.addObject("emails",emailService.getAllActividades())
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("actividad.no.exite",new Object[]{},new Locale("")));
+			return "emails";
 		}
+		Email email = emailService.buscarPorId(id);
+		model.addAttribute("email", email);
+		model.addAttribute("actividades", actividades);
 		return "editarEmail";
 	}
 
 	@PostMapping(path="/editarEmail")
 	public @ResponseBody ModelAndView editarEmail (@RequestParam Long id,
 			@RequestParam String direccion,
-			@RequestParam Actividad actividad,
+			@RequestParam Long actividad,
 			@RequestParam String subject,
 			@RequestParam String texto) throws ParseException {
 		
@@ -82,16 +83,17 @@ public class EmailController {
 		
 		Email email = emailService.buscarPorId(id);
 		email.setDireccion(direccion);
-		email.setActividad(actividad);
+		email.setActividad(actividadService.buscarPorId(actividad));
 		email.setSubject(subject);
 		email.setTexto(texto);
-		if(emailService.guardarEmail(email).equalsIgnoreCase(Constantes.GUARDADO)){
-			result.addObject("tipoSalida", Constantes.ALERTA_SUCCESS);
-			result.addObject("salida", messageSource.getMessage("email.guardado.exito",new Object[]{},new Locale("")));
-		} else {
+		if(!Constantes.GUARDADO.equalsIgnoreCase(emailService.guardarEmail(email))){
 			result.addObject("tipoSalida", Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("email.no.guardado.error",new Object[]{},new Locale("")));
-		}		
+			return result;
+		}
+		result.addObject("emails", emailService.getAllEmails());
+		result.addObject("tipoSalida", Constantes.ALERTA_SUCCESS);
+		result.addObject("salida", messageSource.getMessage("email.guardado.exito",new Object[]{},new Locale("")));
 		return result;
 	}
 
