@@ -62,6 +62,7 @@ public class EmailService {
 	}
 
 	public String guardarEmail(Email email) {
+		email.setFechaModificacion(new Date());
 		emailRepository.save(email);
 		return Constantes.GUARDADO;
 	}
