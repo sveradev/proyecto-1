@@ -8,7 +8,8 @@ import com.talgham.demo.model.Estado;
 
 public interface EstadoRepository extends CrudRepository<Estado, Long> {
 
-	Estado findById(Integer id);
+	Estado findById(Long estado);
 	List<Estado> findAll();
+	Estado findByOrden(Integer orden);
 
 }

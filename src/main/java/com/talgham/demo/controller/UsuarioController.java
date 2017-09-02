@@ -35,7 +35,7 @@ public class UsuarioController {
 	public String usuario(Model model) {
 		List<Rol> roles = (List<Rol>) rolService.getAllRoles();
 		if(roles == null || roles.isEmpty()){
-			model.addObject("usuarios", usuarioService.buscarUsuarios());
+			model.addAttribute("usuarios", usuarioService.buscarUsuarios());
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
 			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
 			return "usuarios";
@@ -57,7 +57,7 @@ public class UsuarioController {
 		usuario.setAlias(alias);
 		usuario.setEmail(email);
 		usuario.setPassword(password);
-		ususario.setRol(rolService.buscarPorId(rol));
+		usuario.setRol(rolService.buscarPorId(rol));
 		if(!Constantes.GUARDADO.equalsIgnoreCase(usuarioService.crearUsuario(usuario))){
 			model.addObject("usuarios", usuarioService.buscarUsuarios());
 			model.addObject("tipoSalida",Constantes.ALERTA_DANGER);
@@ -112,7 +112,7 @@ public class UsuarioController {
 	
 	@RequestMapping("/cambiarPassword")
 	public String cambiarPassword(@RequestParam(value="id") Long id, Model model) {
-		Usuario usuario = usuarioService.buscarUsuarioPorId(id);
+		Usuario usuario = usuarioService.buscarPorId(id);
 		if(usuario == null){
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
 			model.addAttribute("salida", messageSource.getMessage("error.usuario.no.encontrado",new Object[]{},new Locale("")));
@@ -135,7 +135,7 @@ public class UsuarioController {
 			result.setViewName("cambiarPassword");
 			return result;
 		}
-		Usuario usuario = usuarioService.buscarUsuarioPorId(id);
+		Usuario usuario = usuarioService.buscarPorId(id);
 		if(usuario == null){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("error.usuario.no.encontrado",new Object[]{},new Locale("")));
@@ -155,17 +155,17 @@ public class UsuarioController {
 			result.setViewName("cambiarPassword");
 			return result;
 		}
-		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
+		result.addObject("usuarios", usuarioService.buscarUsuarios());
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("password.cambiada.exito",new Object[]{},new Locale("")));
-		result.setViewName("Solicitudes");
+		result.setViewName("usuarios");
 		return result;
 	}
 	
 	@RequestMapping("/eliminarUsuario")
 	public ModelAndView eliminarUsuario(@RequestParam(value="id") Long id) {
 		ModelAndView result = new ModelAndView("usuarios");
-		Usuario usuario = usuarioService.buscarUsuarioPorId(id);
+		Usuario usuario = usuarioService.buscarPorId(id);
 		if(usuario == null){
 			result.addObject("usuarios", usuarioService.buscarUsuarios());
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);

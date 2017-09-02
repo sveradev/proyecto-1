@@ -17,12 +17,16 @@ public class EstadoService {
 		return estadoRepository.findAll();
 	}
 
-	public Estado buscarPorId(Integer id) {
-		return estadoRepository.findById(id);
+	public Estado buscarPorId(Long estado) {
+		return estadoRepository.findById(estado);
 	}
 
 	public String crearEstado(Estado estado) {
 		estadoRepository.save(estado);
 		return Constantes.GUARDADO;
+	}
+
+	public Estado buscarPorOrden(Integer orden) {
+		return estadoRepository.findByOrden(orden);
 	}
 }

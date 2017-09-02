@@ -1,7 +1,6 @@
 package com.talgham.demo.service;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,7 +23,7 @@ public class SolicitudService {
 		if(solicitud.getFechaSolicitado() == null){
 			solicitud.setFechaSolicitado(new Date());
 		}
-		solicitud.setEstado(estadoService.buscarPorId(Constantes.ESTADO_SOLICITADO));
+		solicitud.setEstado(estadoService.buscarPorOrden(Constantes.ESTADO_SOLICITADO));
 		solicitudRepository.save(solicitud);
 		return Constantes.GUARDADO;
 	}
@@ -46,8 +45,6 @@ public class SolicitudService {
 		String descripcion = mySolicitud.getDescripcion();
 		Usuario responsable = mySolicitud.getResponsable();
 		Date fechaSolicitado = mySolicitud.getFechaSolicitado();
-		Date fechaModificado = mySolicitud.getFechaModificado();
-		Date fechaFinalizado = mySolicitud.getFechaFinalizado();
 		
 		Solicitud solicitud = this.buscarPorId(id);
 		if (estado!= null && solicitud.getEstado() != estado) {

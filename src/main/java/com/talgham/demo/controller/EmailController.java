@@ -2,8 +2,10 @@ package com.talgham.demo.controller;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.talgham.demo.common.Constantes;
 import com.talgham.demo.model.Actividad;
 import com.talgham.demo.model.Email;
 import com.talgham.demo.service.ActividadService;
@@ -25,6 +28,8 @@ public class EmailController {
 	private EmailService emailService;
 	@Autowired
 	private ActividadService actividadService;
+	@Autowired
+	private MessageSource messageSource;
 	
 	@GetMapping("/crearEmail")
 	public String crearEmail(Model model) {
@@ -46,7 +51,7 @@ public class EmailController {
 		email.setActividad(actividad);
 		email.setSubject(subject);
 		email.setTexto(texto);
-		if(!Constantes.GUARDADO.equalsIgnoreCase(emailService.crearEmail(email)){
+		if(!Constantes.GUARDADO.equalsIgnoreCase(emailService.crearEmail(email))){
 			result.addObject("emails", emailService.getAllEmails());
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("email.no.guardado.error",new Object[]{},new Locale("")));
@@ -62,9 +67,9 @@ public class EmailController {
 	public String editarEmail(@RequestParam(value="id") Long id, Model model) {
 		List<Actividad> actividades = (List<Actividad>) actividadService.getAllActividades();
 		if(actividades == null || actividades.isEmpty()){
-			result.addObject("emails",emailService.getAllActividades())
-			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
-			result.addObject("salida", messageSource.getMessage("actividad.no.exite",new Object[]{},new Locale("")));
+			model.addAttribute("emails",emailService.getAllEmails());
+			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
+			model.addAttribute("salida", messageSource.getMessage("actividad.no.exite",new Object[]{},new Locale("")));
 			return "emails";
 		}
 		Email email = emailService.buscarPorId(id);

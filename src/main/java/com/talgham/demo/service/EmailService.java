@@ -2,8 +2,6 @@ package com.talgham.demo.service;
 
 import java.util.Date;
 
-import javax.mail.internet.MimeMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,7 +9,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
-import com.talgham.demo.model.Actividad;
+import com.talgham.demo.common.Constantes;
 import com.talgham.demo.model.Email;
 import com.talgham.demo.repository.EmailRepository;
 
@@ -44,8 +42,8 @@ public class EmailService {
 	}
 
 	public String crearEmail (Email email) {
-		emailModel.setFechaCreacion(new Date());
-		emailRepository.save(emailModel);
+		email.setFechaCreacion(new Date());
+		emailRepository.save(email);
 		return Constantes.GUARDADO;
 	}
 	
