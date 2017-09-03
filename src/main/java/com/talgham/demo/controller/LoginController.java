@@ -9,39 +9,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class LoginController {
 
 	@GetMapping("/login")
-	public String login(@RequestParam(value="username", required=false, defaultValue="") String username, Model model) {
-		model.addAttribute("username", username);
-		model.addAttribute("password", "");
-		model.addAttribute("salida", "");
+	public String login(Model model,
+		@RequestParam(value="error", required=false) String error,
+		@RequestParam(value="logout", required=false) String logout) {
+
+		if (error != null) {
+			model.addAttribute("error", "Usuario o contraseña invalidos. Ingrese las credenciales nuevamente.");
+		}
+		if (logout != null) {
+			model.addAttribute("logout", "La sesion se cerro exitosamente.");
+		}
+
 		return "login";
 	}
-
-//	@Autowired 
-//	private UsuarioService usuarioService;
-//	
-//	@PostMapping(path="/checkUser")
-//	public ModelAndView login(@ModelAttribute Usuario usuario) {
-//		
-//		ModelAndView model = new ModelAndView("login");
-//		model.addObject("usuario", usuario);
-//		String alias = usuario.getAlias();
-//
-//		String salida="Usuario inexistente";
-//		ArrayList<Usuario> usuarios = (ArrayList<Usuario>) usuarioService.getAllUsuarios();
-//		if(!usuarios.isEmpty()){
-//			for (Usuario myUsuario : usuarios){
-//				if(myUsuario.getAlias().equalsIgnoreCase(alias)){
-//					if(myUsuario.getPassword().equalsIgnoreCase(usuario.getPassword())){
-//							salida = "Usuario Valido";	
-//							model = new ModelAndView("solicitud");
-//					} else {
-//						salida = "Password Incorrecto";
-//					}
-//				}
-//			}
-//		}
-//		
-//		model.addObject("salida", salida);
-//		return model;
-//	}
 }
