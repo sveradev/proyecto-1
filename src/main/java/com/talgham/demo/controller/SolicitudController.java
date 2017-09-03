@@ -1,11 +1,18 @@
 package com.talgham.demo.controller;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -18,6 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.Mustache;
+import com.github.mustachejava.MustacheFactory;
 import com.talgham.demo.common.Constantes;
 import com.talgham.demo.model.Email;
 import com.talgham.demo.model.Estado;
@@ -342,6 +352,39 @@ public class SolicitudController {
 		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida",messageSource.getMessage("email.reporte.enviado",new Object[]{},new Locale("")));
+		return result;
+	}
+	
+	public static String getEmailTemplate(String templateHtml, Map<String, Object> model) {
+		MustacheFactory mf = new DefaultMustacheFactory();
+		String result = null;
+		FileReader fr;
+		try {
+			//lee el archivo html y lo trasforma a un string
+			fr = new FileReader(templateHtml);
+			BufferedReader br= new BufferedReader(fr);
+			StringBuilder content=new StringBuilder(1024);
+			String s = null;
+			while((s=br.readLine())!=null) {
+				content.append(s);
+			}
+			br.close();
+			//crea un compilador de mopustache, necesita un stream de lectura del string que creamos antes (strinReader)
+			Mustache template = mf.compile(new StringReader(content.toString()), content.toString());
+			StringWriter writer = new StringWriter();
+			
+			//Ejecuta el template, con el stream de lectura, el de escitura y el modelo a popular
+			template.execute(writer, model);
+			writer.flush();
+			result = writer.toString();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//como resultado tenemos un lindo string con html populado
 		return result;
 	}
 }
