@@ -308,7 +308,11 @@ public class SolicitudController {
 		if(fechaDesde!= null && !fechaDesde.equalsIgnoreCase("") && fechaHasta!= null && !fechaHasta.equalsIgnoreCase("")){
 			Date solicitadoDesde = formatter.parse(fechaDesde);
 			Date solicitadoHasta = formatterTime.parse(fechaHasta+" 23:23:59");
+			
 			List<Solicitud> solicitudes = (List<Solicitud>) solicitudService.buscarPorFechas(solicitadoDesde, solicitadoHasta);
+			ModelAndView emailResult = new ModelAndView("EmailReporte");
+			emailResult.addObject("solicitudes",solicitudes);
+
 			//Envio de mail.
 			Email emailTemplate = emailService.buscarPorActividad(Constantes.ACTIVIDAD_REPOTAR_SOLICITUD);
 
@@ -324,13 +328,11 @@ public class SolicitudController {
 					result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 					result.addObject("salida",messageSource.getMessage("email.reporte.no.enviado",new Object[]{},new Locale("")));
 					return result;
-//					loggin "Hubo un error al enviar el mail.";
 				}
 			} else {
 				result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 				result.addObject("salida",messageSource.getMessage("email.actividad.no.encontrado",new Object[]{},new Locale("")));
 				return result;
-//				loggin No se ha encontrado un email configurado para la acción requerida.
 			}
 		} else {
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
