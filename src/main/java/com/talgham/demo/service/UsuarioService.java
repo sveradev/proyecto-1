@@ -3,6 +3,7 @@ package com.talgham.demo.service;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 import com.talgham.demo.common.Constantes;
@@ -17,7 +18,13 @@ public class UsuarioService {
 	private UsuarioRepository usuarioRepository;
 
 	public String crearUsuario (Usuario usuario) {
-		usuario.setFechaAlta(new Date());		
+		usuario.setFechaAlta(new Date());
+		String password = usuario.getPassword();
+		
+		String salt = BCrypt.gensalt(12);
+		String hashPassword = BCrypt.hashpw(password, salt);
+		usuario.setPassword(hashPassword);
+		
 		usuarioRepository.save(usuario);
 		return Constantes.GUARDADO;
 	}
@@ -67,6 +74,6 @@ public class UsuarioService {
 	}
 
 	public Iterable<Usuario> buscarPorRol(Long id) {
-		return usuarioRepository.findByRol(id);
+		return usuarioRepository.findByRol_id(id);
 	}
 }

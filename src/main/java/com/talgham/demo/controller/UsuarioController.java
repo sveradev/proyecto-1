@@ -7,6 +7,8 @@ import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +45,7 @@ public class UsuarioController {
 		model.addAttribute("roles",roles);
 		return "crearUsuario";
 	}
-
+	
 	@PostMapping(path="/crearUsuario")
 	public @ResponseBody ModelAndView createUsuario (@RequestParam String nombre,
 			@RequestParam String alias,
@@ -186,7 +188,11 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping("/usuarios")
-	public String usuarios(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
+	public String usuarios(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		Usuario usuario = usuarioService.buscarPorEmail(email);
+		model.addAttribute("isAdmin",usuario.isAdmin());
 		model.addAttribute("usuarios", usuarioService.buscarUsuarios());
 		return "usuarios";
 	}

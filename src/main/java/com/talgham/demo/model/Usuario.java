@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.talgham.demo.common.Constantes;
+
 @Entity
 public class Usuario {
 
@@ -73,9 +75,9 @@ public class Usuario {
 		this.rol = rol;
 	}
 	public Boolean isActive() {
-		return fechaBaja == null || (fechaBaja != null && fechaBaja.after(new Date()));
+		return fechaBaja == null;
 	}
-	public Boolean isNotActive() {
-		return !isActive();
+	public Boolean isAdmin() {
+		return rol.getOrden() == Constantes.ROL_ADMINISTRADOR; 
 	}
 }
