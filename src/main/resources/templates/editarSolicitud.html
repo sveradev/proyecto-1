@@ -90,6 +90,7 @@
 						<button type="submit" id="aceptar" class="btn btn-lg btn-primary">Aceptar</button>
 					</div>
 				{{/solicitud}}
+				<input type="hidden" name="_csrf" value="{{_csrf.token}}" />
 			</form>
 		</section>
 		{{>bloques/footer}}
