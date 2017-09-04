@@ -148,7 +148,7 @@ public class SolicitudController {
 			result.setViewName("home");
 			return result;
 		}
-		Usuario usuarioLogueado = usuarioService.buscarPorEmail(usuarioSession);
+		Usuario usuarioLogueado = usuarioService.buscarPorEmail(usuarioSession.getName());
 		result.addObject("usuario",usuarioLogueado);
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("solicitud.creada.exito",new Object[]{solicitud.getId()},new Locale("")));
