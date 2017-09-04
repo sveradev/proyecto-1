@@ -58,7 +58,7 @@ public class EstadoController {
 	@RequestMapping("/estados")
 	public String estados(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Usuario usuario = usuarioService.buscarPorEmail(auth.getName(););
+		Usuario usuario = usuarioService.buscarPorEmail(auth.getName());
 		model.addAttribute("usuario",usuario);
 		model.addAttribute("estados", estadoService.getAllEstados());
 		return "estados";
