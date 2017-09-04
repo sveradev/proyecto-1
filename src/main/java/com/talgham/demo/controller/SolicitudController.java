@@ -78,6 +78,9 @@ public class SolicitudController {
 			model.addAttribute("tipoSalida", Constantes.ALERTA_DANGER);
 			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
 		}
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		model.addAttribute("usuario",usuarioSession);
 		return "crearSolicitud";
 	}
 
@@ -91,7 +94,8 @@ public class SolicitudController {
 			@RequestParam String fechaSol) throws ParseException {
 		
 		ModelAndView result = new ModelAndView();
-		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
 		Solicitud solicitud = new Solicitud();
 		solicitud.setNombre(nombre);
 		solicitud.setTitulo(titulo);
@@ -101,6 +105,7 @@ public class SolicitudController {
 		if(usuario == null){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("error.usuario.no.encontrado",new Object[]{solicitud.getId()},new Locale("")));
+			result.addObject("usuario",usuarioSession);
 			result.setViewName("solicitudes");
 			return result;
 		}
@@ -112,6 +117,7 @@ public class SolicitudController {
 		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.addSolicitud(solicitud))){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{},new Locale("")));
+			result.addObject("usuario",usuarioSession);
 			result.setViewName("solicitudes");
 			return result;
 		}
@@ -136,9 +142,7 @@ public class SolicitudController {
 //		} else {
 //			loggin No se ha encontrado un email configurado para la acción requerida.
 		}	
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String usuarioEmail = auth.getName();
-		if(usuarioEmail == null){
+		if(usuarioSession == null){
 			result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 			result.addObject("salida", messageSource.getMessage("solicitud.creada.exito",new Object[]{solicitud.getId()},new Locale("")));
 			result.setViewName("home");
@@ -148,6 +152,7 @@ public class SolicitudController {
 		result.addObject("usuario",usuarioLogueado);
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("solicitud.creada.exito",new Object[]{solicitud.getId()},new Locale("")));
+		result.addObject("usuario",usuarioSession);
 		result.setViewName("solicitudes");
 		return result;
 	}
@@ -216,6 +221,9 @@ public class SolicitudController {
 		Estado estadoSeleccionado = estadoService.buscarPorId(estado);
 		solicitud.setEstado(estadoSeleccionado);
 		ModelAndView result = new ModelAndView("solicitudes");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		result.addObject("usuario",usuarioSession);
 		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
 		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.updateSolicitud(solicitud))){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
@@ -234,6 +242,9 @@ public class SolicitudController {
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
 			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
 			model.addAttribute("solicitudes",solicitudService.getAllSolicitudes());
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+			model.addAttribute("usuario",usuarioSession);
 			return "solicitudes";
 		}
 		List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorRol(rol.getId());
@@ -255,6 +266,9 @@ public class SolicitudController {
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
 			result.addObject("solicitudes", solicitudService.getAllSolicitudes());
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+			result.addObject("usuario",usuarioSession);
 			result.setViewName("solicitudes");
 			return result;
 		}
@@ -288,6 +302,9 @@ public class SolicitudController {
 				result.addObject(solicitudes);
 				result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 				result.addObject("salida",messageSource.getMessage("buscar.solicitud.exito",new Object[]{id},new Locale("")));
+				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+				Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+				result.addObject("usuario",usuarioSession);
 				result.setViewName("solicitudes");
 				return result;
 			} 
@@ -322,7 +339,7 @@ public class SolicitudController {
 	@RequestMapping("/solicitudes")
 	public String solicitudes(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Usuario usuario = usuarioService.buscarPorEmail(auth.getName(););
+		Usuario usuario = usuarioService.buscarPorEmail(auth.getName());
 		model.addAttribute("usuario",usuario);
 		model.addAttribute("solicitudes", solicitudService.getAllSolicitudes());
 		return "solicitudes";
@@ -335,6 +352,10 @@ public class SolicitudController {
 			@RequestParam String fechaHasta) throws ParseException {
 		
 		ModelAndView result = new ModelAndView("solicitudes");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		result.addObject("usuario",usuarioSession);
+		
 		if(fechaDesde!= null && !fechaDesde.equalsIgnoreCase("") && fechaHasta!= null && !fechaHasta.equalsIgnoreCase("")){
 			Date solicitadoDesde = formatter.parse(fechaDesde);
 			Date solicitadoHasta = formatterTime.parse(fechaHasta+" 23:23:59");
@@ -375,6 +396,7 @@ public class SolicitudController {
 		} else {
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida",messageSource.getMessage("solicitud.no.completa.fechas",new Object[]{},new Locale("")));
+			return result;
 		}
 		
 		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
