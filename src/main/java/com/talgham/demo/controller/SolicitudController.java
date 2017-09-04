@@ -206,12 +206,11 @@ public class SolicitudController {
 			@RequestParam Long responsable,
 			@RequestParam String fechaSol ) throws ParseException {
 		
-		Solicitud solicitud = new Solicitud();
+		Solicitud solicitud = solicitudService.buscarPorId(id);
 		if(fechaSol!= null && !fechaSol.equalsIgnoreCase("")){
 			Date fechaSolicitado = formatter.parse(fechaSol);
 			solicitud.setFechaSolicitado(fechaSolicitado);
 		}
-		solicitud.setId(id);
 		solicitud.setNombre(nombre);
 		solicitud.setTitulo(titulo);
 		solicitud.setEmail(email);
@@ -219,6 +218,34 @@ public class SolicitudController {
 		Usuario usuario = usuarioService.buscarPorId(responsable);
 		solicitud.setResponsable(usuario);
 		Estado estadoSeleccionado = estadoService.buscarPorId(estado);
+		solicitud.setEstado(estadoSeleccionado);
+		ModelAndView result = new ModelAndView("solicitudes");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		result.addObject("usuario",usuarioSession);
+		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
+		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.updateSolicitud(solicitud))){
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{solicitud.getId()},new Locale("")));
+			return result;
+		}
+		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
+		result.addObject("salida", messageSource.getMessage("solicitud.editada.exito",new Object[]{solicitud.getId()},new Locale("")));
+		return result;
+	}
+	
+	@PostMapping(path="/eliminarSolicitud")
+	public @ResponseBody ModelAndView eliminarSolicitud (@RequestParam Long id,
+			@RequestParam String nombre,
+			@RequestParam Long estado,
+			@RequestParam String titulo,
+			@RequestParam String email,
+			@RequestParam String descripcion, 
+			@RequestParam Long responsable,
+			@RequestParam String fechaSol ) throws ParseException {
+		
+		Solicitud solicitud = solicitudService.buscarPorId(id);
+		Estado estadoSeleccionado = estadoService.buscarPorOrden(Constantes.ESTADO_CANCELADO);
 		solicitud.setEstado(estadoSeleccionado);
 		ModelAndView result = new ModelAndView("solicitudes");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
