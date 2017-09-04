@@ -22,7 +22,7 @@
 								<li><a href="/estados"><i class="fa fa-check fa-fw"></i>Estados</a></li>
 							</ul>
 						</div>
-						{{/isAdmins}}
+						{{/isAdmin}}
 						<div class="btn-group">
 							<a class="btn btn-primary" href="/verUsuario?id="><i class="fa fa-user fa-fw"></i> Usuario</a>
 							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
@@ -84,7 +84,7 @@
 					</div>
 				{{/usuarios}}
 				<a class="btn btn-lg btn-primary pull-right" href="/solicitudes">Volver</a>
-				<input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+				
 			</form>
 		</section>
 		{{>bloques/footer}}
