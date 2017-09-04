@@ -54,6 +54,9 @@ public class RolController {
 	
 	@RequestMapping("/roles")
 	public String roles(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuario = usuarioService.buscarPorEmail(auth.getName(););
+		model.addAttribute("usuario",usuario);
 		model.addAttribute("roles", rolService.getAllRoles());
 		return "roles";
 	}
