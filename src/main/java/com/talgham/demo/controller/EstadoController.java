@@ -35,6 +35,10 @@ public class EstadoController {
 	public @ResponseBody ModelAndView crearEstado (@RequestParam String nombre, @RequestParam Integer orden) {
 
 		ModelAndView result = new ModelAndView("estados");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		result.addObject("usuario",usuarioSession);
+		
 		Estado estado = new Estado();
 		estado.setNombre(nombre);
 		estado.setOrden(orden);
