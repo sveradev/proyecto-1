@@ -16,12 +16,16 @@ import org.springframework.web.servlet.ModelAndView;
 import com.talgham.demo.common.Constantes;
 import com.talgham.demo.model.Estado;
 import com.talgham.demo.service.EstadoService;
+import com.talgham.demo.service.UsuarioService;
 
 @Controller
 public class EstadoController {
 
 	@Autowired
 	private EstadoService estadoService;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 	
 	@Autowired
 	MessageSource messageSource;
