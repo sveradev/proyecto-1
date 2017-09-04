@@ -106,6 +106,10 @@ public class EmailController {
 
 	@RequestMapping("/emails")
 	public String emails(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		Usuario usuario = usuarioService.buscarPorEmail(email);
+		model.addAttribute("usuario",usuario);
 		model.addAttribute("emails", emailService.getAllEmails());
 		return "emails";
 	}
