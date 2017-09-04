@@ -20,6 +20,7 @@ import com.talgham.demo.model.Actividad;
 import com.talgham.demo.model.Email;
 import com.talgham.demo.service.ActividadService;
 import com.talgham.demo.service.EmailService;
+import com.talgham.demo.service.UsuarioService;
 
 @Controller
 public class EmailController {
@@ -28,6 +29,8 @@ public class EmailController {
 	private EmailService emailService;
 	@Autowired
 	private ActividadService actividadService;
+	@Autowired
+	private UsuarioService usuarioService;
 	@Autowired
 	private MessageSource messageSource;
 	
