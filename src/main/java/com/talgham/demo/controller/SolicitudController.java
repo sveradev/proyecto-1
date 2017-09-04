@@ -321,6 +321,9 @@ public class SolicitudController {
 
 	@RequestMapping("/solicitudes")
 	public String solicitudes(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuario = usuarioService.buscarPorEmail(auth.getName(););
+		model.addAttribute("usuario",usuario);
 		model.addAttribute("solicitudes", solicitudService.getAllSolicitudes());
 		return "solicitudes";
 	}
