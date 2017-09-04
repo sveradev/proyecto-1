@@ -9,6 +9,7 @@
 						<img src="images/logotalghamsmall.jpg" class="navbar-brand  center-block" alt=""/>
 					</div>
 					<div class="pull-right navbar-btn">
+						{{#usuario}}
 						{{#isAdmin}}
 						<div class="btn-group">
 							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
@@ -24,7 +25,7 @@
 						</div>
 						{{/isAdmin}}
 						<div class="btn-group">
-							<a class="btn btn-primary" href="/verUsuario?id="><i class="fa fa-user fa-fw"></i> Usuario</a>
+							<a class="btn btn-primary" href="/verUsuario?id="><i class="fa fa-user fa-fw"></i>{{nombre}}</a>
 							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
 								<span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
 							</a>
@@ -35,6 +36,7 @@
 								<li><a href="/logout"><i class="fa fa-unlock fa-fw"></i>Salir</a></li>
 							</ul>
 						</div>
+						{{/usuario}}
 					</div>
 				</div>
 			</nav>

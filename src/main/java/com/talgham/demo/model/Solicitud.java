@@ -94,16 +94,16 @@ public class Solicitud {
 		return new Date(result);
 	}
 	
-	public Boolean IsSuccess() {
+	public Boolean isSuccess() {
 		return estado.getId() == Constantes.ESTADO_SOLICITADO && new Date().before(addDays(fechaSolicitado, 7));
 	}
-	public Boolean IsPending() {
+	public Boolean isPending() {
 		return estado.getId() == Constantes.ESTADO_SOLICITADO && new Date().after(addDays(fechaSolicitado, 7));
 	}
-	public Boolean IsOverdue() {
+	public Boolean isOverdue() {
 		return estado.getId() == Constantes.ESTADO_SOLICITADO && new Date().after(addDays(fechaSolicitado, 15));
 	}
-	public Boolean IsActive() {
+	public Boolean isActive() {
 		return estado.getId() != Constantes.ESTADO_SOLICITADO && estado.getId() != Constantes.ESTADO_FINALIZADO;
 	}
 }

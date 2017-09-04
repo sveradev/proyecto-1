@@ -1,6 +1,5 @@
 ﻿<!DOCTYPE html>
 <html>
-	{{>bloques/header}}
 	<body>
 		<h2><i class="fa fa-bars fa-fw"></i>Solicitudes</h2>
 			<table class="table table-hover">
@@ -17,7 +16,7 @@
 				</thead>
 				<tbody>
 					{{#solicitudes}}
-						<tr class= "{{#IsSuccess}}success{{/IsSuccess}} {{#IsPending}}warning{{/IsPending}} {{#IsOverdue}}danger{{/IsOverdue}} {{#IsActive}}active{{/IsActive}}">
+						<tr>
 							<td>{{id}}</td>
 							<td>{{nombre}}</td>
 							<td>{{email}}</td>

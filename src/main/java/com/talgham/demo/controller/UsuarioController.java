@@ -192,7 +192,7 @@ public class UsuarioController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		Usuario usuario = usuarioService.buscarPorEmail(email);
-		model.addAttribute("isAdmin",usuario.isAdmin());
+		model.addAttribute("usuario",usuario);
 		model.addAttribute("usuarios", usuarioService.buscarUsuarios());
 		return "usuarios";
 	}

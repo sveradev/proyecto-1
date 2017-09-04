@@ -10,12 +10,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -87,8 +90,7 @@ public class SolicitudController {
 			@RequestParam Long responsable,
 			@RequestParam String fechaSol) throws ParseException {
 		
-		ModelAndView result = new ModelAndView("solicitudes");
-		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
+		ModelAndView result = new ModelAndView();
 		
 		Solicitud solicitud = new Solicitud();
 		solicitud.setNombre(nombre);
@@ -99,6 +101,7 @@ public class SolicitudController {
 		if(usuario == null){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("error.usuario.no.encontrado",new Object[]{solicitud.getId()},new Locale("")));
+			result.setViewName("solicitudes");
 			return result;
 		}
 		solicitud.setResponsable(usuario);
@@ -109,29 +112,43 @@ public class SolicitudController {
 		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.addSolicitud(solicitud))){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{},new Locale("")));
+			result.setViewName("solicitudes");
 			return result;
 		}
+		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
+		
 		//Envio de mail.
 		Email emailTemplate = emailService.buscarPorActividad(Constantes.ACTIVIDAD_CREAR_SOLICITUD);
 
 		if(emailTemplate != null){
-			String to = emailTemplate.getDireccion() + ";" + solicitud.getResponsable().getEmail();
+			String to = emailTemplate.getDireccion();
 			String subject = emailTemplate.getSubject();
 			String texto = emailTemplate.getTexto();
 		
 			try {
-				emailService.prepareAndSend(to, subject, texto);
-				emailService.prepareAndSend(solicitud.getEmail(), subject, texto);
+				emailService.sendEmail(to, subject, texto);
+				emailService.sendEmail(solicitud.getEmail(), subject, texto);
+				emailService.sendEmail(solicitud.getResponsable().getEmail(), subject, texto);
 			} catch (Exception e) {
 				e.printStackTrace();
 //				loggin "Hubo un error al enviar el mail.";
 			}
 //		} else {
 //			loggin No se ha encontrado un email configurado para la acción requerida.
-		}		
-		
+		}	
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String usuarioEmail = auth.getName();
+		if(usuarioEmail == null){
+			result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
+			result.addObject("salida", messageSource.getMessage("solicitud.creada.exito",new Object[]{solicitud.getId()},new Locale("")));
+			result.setViewName("home");
+			return result;
+		}
+		Usuario usuarioLogueado = usuarioService.buscarPorEmail(usuarioEmail);
+		result.addObject("usuario",usuarioLogueado);
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("solicitud.creada.exito",new Object[]{solicitud.getId()},new Locale("")));
+		result.setViewName("solicitudes");
 		return result;
 	}
 	
@@ -270,7 +287,7 @@ public class SolicitudController {
 				solicitudes.add(solicitud);
 				result.addObject(solicitudes);
 				result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
-				result.addObject("salida",messageSource.getMessage("buscar.solicitud.exito",new Object[]{},new Locale("")));
+				result.addObject("salida",messageSource.getMessage("buscar.solicitud.exito",new Object[]{id},new Locale("")));
 				result.setViewName("solicitudes");
 				return result;
 			} 
@@ -329,10 +346,18 @@ public class SolicitudController {
 			if(emailTemplate != null){
 				String to = emailTemplate.getDireccion();
 				String subject = emailTemplate.getSubject();
-				String texto = emailTemplate.getTexto();//falta template Email.
 			
+				//Ruta completa al template html
+				String templateHtml = "src/main/resources/emailTemplates/emailReporte.html";
+				
+				//Mapa de objetos a renderizar (clave elemento mustache, valor opbejto)
+				Map<String, Object> data = new HashMap<String, Object>();
+				data.put("solicitudes", solicitudes);
+				
+				String templateCompilado = SolicitudController.getEmailTemplate(templateHtml, data);
+				 
 				try {
-					emailService.prepareAndSend(to, subject, texto);
+					emailService.sendEmail(to, subject, templateCompilado);
 				} catch (Exception e) {
 					e.printStackTrace();
 					result.addObject("tipoSalida",Constantes.ALERTA_DANGER);

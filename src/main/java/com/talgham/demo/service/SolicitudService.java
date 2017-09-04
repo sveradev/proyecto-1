@@ -65,7 +65,7 @@ public class SolicitudService {
 		if (responsable != null && solicitud.getResponsable() != (responsable)) {
 			solicitud.setResponsable(responsable);
 		}
-		if (fechaSolicitado != null && solicitud.getFechaSolicitado().compareTo(fechaSolicitado) == 0) {
+		if (fechaSolicitado != null && solicitud.getFechaSolicitado().compareTo(fechaSolicitado) != 0) {
 			solicitud.setFechaSolicitado(fechaSolicitado);
 		}
 		solicitud.setFechaModificado(new Date());
