@@ -16,12 +16,15 @@ import org.springframework.web.servlet.ModelAndView;
 import com.talgham.demo.common.Constantes;
 import com.talgham.demo.model.Rol;
 import com.talgham.demo.service.RolService;
+import com.talgham.demo.service.UsuarioService;
 
 @Controller
 public class RolController {
 
 	@Autowired
 	private RolService rolService;
+	@Autowired
+	private UsuarioService usuarioService;
 	@Autowired
 	MessageSource messageSource;
 	
