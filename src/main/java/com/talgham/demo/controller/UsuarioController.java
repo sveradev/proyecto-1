@@ -40,6 +40,9 @@ public class UsuarioController {
 			model.addAttribute("usuarios", usuarioService.buscarUsuarios());
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
 			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+			model.addAttribute("usuario",usuarioSession);
 			return "usuarios";
 		}
 		model.addAttribute("roles",roles);
@@ -54,6 +57,10 @@ public class UsuarioController {
 			@RequestParam Long rol) {
 
 		ModelAndView model = new ModelAndView("usuarios");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		model.addObject("usuario",usuarioSession);
+
 		Usuario usuario = new Usuario();
 		usuario.setNombre(nombre);
 		usuario.setAlias(alias);
@@ -79,6 +86,9 @@ public class UsuarioController {
 			model.addAttribute("usuarios", usuarioService.buscarUsuarios());
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
 			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+			model.addAttribute("usuario",usuarioSession);
 			return "usuarios";
 		}
 		model.addAttribute("usuario", usuarioService.buscarPorId(id));
@@ -94,6 +104,9 @@ public class UsuarioController {
 			@RequestParam Long rol) throws ParseException {
 		
 		ModelAndView result = new ModelAndView("usuarios");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		result.addObject("usuario",usuarioSession);
 		
 		Usuario usuario = usuarioService.buscarPorId(id);
 		usuario.setNombre(nombre);
@@ -160,13 +173,19 @@ public class UsuarioController {
 		result.addObject("usuarios", usuarioService.buscarUsuarios());
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("password.cambiada.exito",new Object[]{},new Locale("")));
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		result.addObject("usuario",usuarioSession);
 		result.setViewName("usuarios");
 		return result;
 	}
 	
-	@RequestMapping("/eliminarUsuario")
+	@PostMapping("/eliminarUsuario")
 	public ModelAndView eliminarUsuario(@RequestParam(value="id") Long id) {
 		ModelAndView result = new ModelAndView("usuarios");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		result.addObject("usuario",usuarioSession);
 		Usuario usuario = usuarioService.buscarPorId(id);
 		if(usuario == null){
 			result.addObject("usuarios", usuarioService.buscarUsuarios());
@@ -190,8 +209,7 @@ public class UsuarioController {
 	@RequestMapping("/usuarios")
 	public String usuarios(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String email = auth.getName();
-		Usuario usuario = usuarioService.buscarPorEmail(email);
+		Usuario usuario = usuarioService.buscarPorEmail(auth.getName());
 		model.addAttribute("usuario",usuario);
 		model.addAttribute("usuarios", usuarioService.buscarUsuarios());
 		return "usuarios";
