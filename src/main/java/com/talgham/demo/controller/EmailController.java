@@ -45,6 +45,9 @@ public class EmailController {
 			@RequestParam String texto) throws ParseException {
 		
 		ModelAndView result = new ModelAndView("emails");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		result.addObject("usuario",usuarioSession);
 		
 		Email email = new Email();
 		email.setDireccion(direccion);
@@ -70,6 +73,9 @@ public class EmailController {
 			model.addAttribute("emails",emailService.getAllEmails());
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
 			model.addAttribute("salida", messageSource.getMessage("actividad.no.exite",new Object[]{},new Locale("")));
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+			model.addAttribute("usuario",usuarioSession);
 			return "emails";
 		}
 		Email email = emailService.buscarPorId(id);
@@ -86,6 +92,9 @@ public class EmailController {
 			@RequestParam String texto) throws ParseException {
 		
 		ModelAndView result = new ModelAndView("emails");		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		result.addObject("usuario",usuarioSession);
 		
 		Email email = emailService.buscarPorId(id);
 		email.setDireccion(direccion);
@@ -107,8 +116,7 @@ public class EmailController {
 	@RequestMapping("/emails")
 	public String emails(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String email = auth.getName();
-		Usuario usuario = usuarioService.buscarPorEmail(email);
+		Usuario usuario = usuarioService.buscarPorEmail(auth.getName());
 		model.addAttribute("usuario",usuario);
 		model.addAttribute("emails", emailService.getAllEmails());
 		return "emails";
