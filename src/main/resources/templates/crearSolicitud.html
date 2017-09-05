@@ -24,7 +24,12 @@
 					<input type="text" id="nombre" name="nombre" placeholder="Razon Social" class="form-control input-lg" required/>
 				</div>
 				<div class="form-group">
-					<input type="text" id="titulo" name="titulo" placeholder="T&iacute;tulo" class="form-control input-lg" required/>
+					<select id="trabajo" name="trabajo" class="form-control input-lg" required>
+						<option value ="0">Seleccione un Tipo Trabajo</option>
+						{{#trabajos}}
+							<option value ="{{id}}">{{nombre}}</option>
+						{{/trabajos}}
+					</select>
 				</div>
 				<div class="form-group">
 					<input type="text" id="email" name="email" placeholder="Email" class="form-control input-lg" required/>
