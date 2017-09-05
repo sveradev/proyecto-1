@@ -5,6 +5,8 @@ import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.talgham.demo.common.Constantes;
 import com.talgham.demo.model.Rol;
+import com.talgham.demo.model.Usuario;
 import com.talgham.demo.service.RolService;
 import com.talgham.demo.service.UsuarioService;
 
