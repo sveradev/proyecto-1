@@ -23,12 +23,21 @@ public class EmailService {
 	private EmailRepository emailRepository;
 
 	public void sendEmail(String to, String subject, String text) throws Exception {
+		getEmailTemplate
 		MimeMessage message = sender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
 
 		helper.setTo(to);
 		helper.setSubject(subject);
+		
+		/** MultiPart para crear mensajes compuestos. */
+		MimeMultipart multipart = new MimeMultipart("related");
+		BodyPart messageBodyPart = new MimeBodyPart();
+        	messageBodyPart.setContent(text, "text/html");
+		multipart.addBodyPart(messageBodyPart);
+		
 		helper.setText(text);
+		
 
 		sender.send(message);
 
