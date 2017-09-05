@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.talgham.demo.common.Constantes;
 import com.talgham.demo.model.Estado;
 import com.talgham.demo.model.Solicitud;
+import com.talgham.demo.model.Trabajo;
 import com.talgham.demo.model.Usuario;
 import com.talgham.demo.repository.SolicitudRepository;
 
@@ -40,7 +41,7 @@ public class SolicitudService {
 		Long id = mySolicitud.getId();
 		Estado estado = mySolicitud.getEstado();
 		String nombre = mySolicitud.getNombre();
-		String titulo = mySolicitud.getTitulo();
+		Trabajo trabajo = mySolicitud.getTrabajo();
 		String email = mySolicitud.getEmail();
 		String descripcion = mySolicitud.getDescripcion();
 		Usuario responsable = mySolicitud.getResponsable();
@@ -53,8 +54,8 @@ public class SolicitudService {
 		if (!"".equalsIgnoreCase(nombre) && !solicitud.getNombre().equalsIgnoreCase(nombre)) {
 			solicitud.setNombre(nombre);
 		}
-		if (!"".equalsIgnoreCase(titulo) && !solicitud.getTitulo().equalsIgnoreCase(titulo)) {
-			solicitud.setTitulo(titulo);
+		if (trabajo != null && solicitud.getTrabajo().getId() != trabajo.getId()) {
+			solicitud.setTrabajo(trabajo);
 		}
 		if (!"".equalsIgnoreCase(email) && !solicitud.getEmail().equalsIgnoreCase(email)) {
 			solicitud.setEmail(email);

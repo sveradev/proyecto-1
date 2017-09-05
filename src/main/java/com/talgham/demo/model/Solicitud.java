@@ -17,11 +17,13 @@ public class Solicitud {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private String nombre;
-	private String titulo;
+	@ManyToOne @JoinColumn(name="trabajo_id")
+	private Trabajo trabajo;
 	private String email;
 	private String descripcion;
 	private Date fechaSolicitado;
 	private Date fechaModificado;
+	private Date fechaVencimiento;
 	private Date fechaFinalizado;
 	@ManyToOne @JoinColumn(name="estado_id")
 	private Estado estado;
@@ -40,11 +42,11 @@ public class Solicitud {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public String getTitulo() {
-		return titulo;
+	public Trabajo getTrabajo() {
+		return trabajo;
 	}
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
+	public void setTrabajo(Trabajo trabajo) {
+		this.trabajo = trabajo;
 	}
 	public String getEmail() {
 		return email;
@@ -69,6 +71,12 @@ public class Solicitud {
 	}
 	public void setFechaModificado(Date fechaModificado) {
 		this.fechaModificado = fechaModificado;
+	}
+	public Date getFechaVencimiento() {
+		return fechaVencimiento;
+	}
+	public void setFechaVencimiento(Date fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
 	}
 	public Date getFechaFinalizado() {
 		return fechaFinalizado;

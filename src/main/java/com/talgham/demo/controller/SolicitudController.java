@@ -36,11 +36,13 @@ import com.talgham.demo.model.Email;
 import com.talgham.demo.model.Estado;
 import com.talgham.demo.model.Rol;
 import com.talgham.demo.model.Solicitud;
+import com.talgham.demo.model.Trabajo;
 import com.talgham.demo.model.Usuario;
 import com.talgham.demo.service.EmailService;
 import com.talgham.demo.service.EstadoService;
 import com.talgham.demo.service.RolService;
 import com.talgham.demo.service.SolicitudService;
+import com.talgham.demo.service.TrabajoService;
 import com.talgham.demo.service.UsuarioService;
 
 @Controller
@@ -56,6 +58,8 @@ public class SolicitudController {
 	private EstadoService estadoService;
 	@Autowired
 	private RolService rolService;
+	@Autowired
+	private TrabajoService trabajoService;
 	
 	private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 	private SimpleDateFormat formatterTime = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
@@ -87,7 +91,7 @@ public class SolicitudController {
 	@PostMapping(path="/crearSolicitud")
 	public @ResponseBody ModelAndView addSolicitud (
 			@RequestParam String nombre,
-			@RequestParam String titulo,
+			@RequestParam Long tipoTrabajo,
 			@RequestParam String email,
 			@RequestParam String descripcion,
 			@RequestParam Long responsable,
@@ -98,7 +102,8 @@ public class SolicitudController {
 		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
 		Solicitud solicitud = new Solicitud();
 		solicitud.setNombre(nombre);
-		solicitud.setTitulo(titulo);
+		Trabajo trabajo = trabajoService.buscarPorId(tipoTrabajo);
+		solicitud.setTrabajo(trabajo);
 		solicitud.setEmail(email);
 		solicitud.setDescripcion(descripcion);
 		Usuario usuario = usuarioService.buscarPorId(responsable);
@@ -198,7 +203,7 @@ public class SolicitudController {
 	public @ResponseBody ModelAndView editarSolicitud (@RequestParam Long id,
 			@RequestParam String nombre,
 			@RequestParam Long estado,
-			@RequestParam String titulo,
+			@RequestParam Long tipoTrabajo,
 			@RequestParam String email,
 			@RequestParam String descripcion, 
 			@RequestParam Long responsable,
@@ -210,7 +215,8 @@ public class SolicitudController {
 			solicitud.setFechaSolicitado(fechaSolicitado);
 		}
 		solicitud.setNombre(nombre);
-		solicitud.setTitulo(titulo);
+		Trabajo trabajo = trabajoService.buscarPorId(tipoTrabajo);
+		solicitud.setTrabajo(trabajo);
 		solicitud.setEmail(email);
 		solicitud.setDescripcion(descripcion);
 		Usuario usuario = usuarioService.buscarPorId(responsable);
