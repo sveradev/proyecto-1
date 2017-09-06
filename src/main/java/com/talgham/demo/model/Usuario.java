@@ -23,8 +23,10 @@ public class Usuario {
 	private Date fechaAlta;
 	private Date fechaBaja;
 	private String password;
-	@ManyToOne @JoinColumn(name="rol_id")	
+	@ManyToOne @JoinColumn(name="rol_id")
 	private Rol rol;
+	@ManyToOne @JoinColumn(name="perfil_id")
+	private Perfil perfil;
 	
 	public Long getId() {
 		return id;
@@ -73,6 +75,12 @@ public class Usuario {
 	}
 	public void setRol(Rol rol) {
 		this.rol = rol;
+	}
+	public Perfil getPerfil() {
+		return perfil;
+	}
+	public void setPerfil(Perfil perfil) {
+		this.perfil = perfil;
 	}
 	public Boolean isActive() {
 		return fechaBaja == null;
