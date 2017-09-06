@@ -17,18 +17,9 @@ public class Perfil {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private String nombre;
-	private String cuit;
-  
 	private String descripcion;
-  	private Date cierreEjercicio;
 	private Date fechaAlta;
-	private Date fechaModificado;
 	private Date fechaBaja;
-  
- 	@ManyToOne @JoinColumn(name="usuario_id")
-	private Usuario representante;
-	@ManyToOne @JoinColumn(name="usuario_id")
-	private Usuario contador;
   
 	public Long getId(){
 		return this.id;
