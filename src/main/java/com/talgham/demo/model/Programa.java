@@ -12,20 +12,20 @@ import javax.persistence.ManyToOne;
 import com.talgham.demo.common.Constantes;
 @Entity
 public class Programa {
-  @Id
-  @GeneratedValue(strategy=GenerationType.AUTO)
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private String nombre;
-  private String descripcion;
-  private Integer periodicidad;
-  private Date fechaSolicitado;
-  private Date fechaUltimoCreado;
-  
-  private Date fechaAlta
+	private Boolean activo;
+	private Date fechaSolicitado;
+	private Date fechaUltimoCreado;
+	
+	private Date fechaAlta
 	private Date fechaModificado;
 	private Date fechaBaja;
-  
+
 	@ManyToOne @JoinColumn(name="cliente_id")
 	private Cliente cliente;
-
+	@ManyToOne @JoinColumn(name="trabajo_id")
+	private Trabajo trabajo;
 }
