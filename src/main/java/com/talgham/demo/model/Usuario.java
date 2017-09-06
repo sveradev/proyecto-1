@@ -90,4 +90,16 @@ public class Usuario {
 	public Boolean isAdmin() {
 		return rol.getOrden() == Constantes.ROL_ADMINISTRADOR; 
 	}
+	public Integer getNroDocumento() {
+		return nroDocumento;
+	}
+	public void setNroDocumento(Integer nroDocumento) {
+		this.nroDocumento = nroDocumento;
+	}
+	public String getTipoDocumento() {
+		return tipoDocumento;
+	}
+	public void setTipoDocumento(String tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
 }

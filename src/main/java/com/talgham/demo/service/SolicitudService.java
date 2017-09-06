@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import com.talgham.demo.common.Constantes;
 import com.talgham.demo.model.Estado;
 import com.talgham.demo.model.Solicitud;
-import com.talgham.demo.model.Usuario;
 import com.talgham.demo.repository.SolicitudRepository;
 
 @Component
@@ -41,9 +40,7 @@ public class SolicitudService {
 		Estado estado = mySolicitud.getEstado();
 		String nombre = mySolicitud.getNombre();
 		String titulo = mySolicitud.getTitulo();
-		String email = mySolicitud.getEmail();
 		String descripcion = mySolicitud.getDescripcion();
-		Usuario responsable = mySolicitud.getResponsable();
 		Date fechaSolicitado = mySolicitud.getFechaSolicitado();
 		
 		Solicitud solicitud = this.buscarPorId(id);
@@ -56,14 +53,8 @@ public class SolicitudService {
 		if (!"".equalsIgnoreCase(titulo) && !solicitud.getTitulo().equalsIgnoreCase(titulo)) {
 			solicitud.setTitulo(titulo);
 		}
-		if (!"".equalsIgnoreCase(email) && !solicitud.getEmail().equalsIgnoreCase(email)) {
-			solicitud.setEmail(email);
-		}
 		if (!"".equalsIgnoreCase(descripcion) && !solicitud.getDescripcion().equalsIgnoreCase(descripcion)) {
 			solicitud.setDescripcion(descripcion);
-		}
-		if (responsable != null && solicitud.getResponsable() != (responsable)) {
-			solicitud.setResponsable(responsable);
 		}
 		if (fechaSolicitado != null && solicitud.getFechaSolicitado().compareTo(fechaSolicitado) != 0) {
 			solicitud.setFechaSolicitado(fechaSolicitado);

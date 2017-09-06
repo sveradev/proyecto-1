@@ -99,7 +99,6 @@ public class SolicitudController {
 		Solicitud solicitud = new Solicitud();
 		solicitud.setNombre(nombre);
 		solicitud.setTitulo(titulo);
-		solicitud.setEmail(email);
 		solicitud.setDescripcion(descripcion);
 		Usuario usuario = usuarioService.buscarPorId(responsable);
 		if(usuario == null){
@@ -109,7 +108,6 @@ public class SolicitudController {
 			result.setViewName("solicitudes");
 			return result;
 		}
-		solicitud.setResponsable(usuario);
 		if(fechaSol!= null && !fechaSol.equalsIgnoreCase("")){
 			Date fechaSolicitado = formatter.parse(fechaSol);
 			solicitud.setFechaSolicitado(fechaSolicitado);
@@ -133,8 +131,6 @@ public class SolicitudController {
 		
 			try {
 				emailService.sendEmail(to, subject, texto);
-				emailService.sendEmail(solicitud.getEmail(), subject, texto);
-				emailService.sendEmail(solicitud.getResponsable().getEmail(), subject, texto);
 			} catch (Exception e) {
 				e.printStackTrace();
 //				loggin "Hubo un error al enviar el mail.";
@@ -211,10 +207,7 @@ public class SolicitudController {
 		}
 		solicitud.setNombre(nombre);
 		solicitud.setTitulo(titulo);
-		solicitud.setEmail(email);
 		solicitud.setDescripcion(descripcion);
-		Usuario usuario = usuarioService.buscarPorId(responsable);
-		solicitud.setResponsable(usuario);
 		Estado estadoSeleccionado = estadoService.buscarPorId(estado);
 		solicitud.setEstado(estadoSeleccionado);
 		ModelAndView result = new ModelAndView("solicitudes");
