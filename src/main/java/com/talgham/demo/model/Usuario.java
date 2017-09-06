@@ -20,6 +20,8 @@ public class Usuario {
 	private String nombre;
 	private String alias;
 	private String email;
+	private Integer nroDocumento;
+	private String tipoDocumento;
 	private Date fechaAlta;
 	private Date fechaBaja;
 	private String password;
