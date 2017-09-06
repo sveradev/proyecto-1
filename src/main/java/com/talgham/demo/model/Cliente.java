@@ -20,20 +20,20 @@ public class Cliente {
 	private String cuit;
   
 	private String descripcion;
-  private Date cierreEjercicio;
+  	private Date cierreEjercicio;
 	private Date fechaAlta;
 	private Date fechaModificado;
 	private Date fechaBaja;
   
-  @ManyToOne @JoinColumn(name="usuario_id")
+ 	@ManyToOne @JoinColumn(name="usuario_id")
 	private Usuario representante;
 	@ManyToOne @JoinColumn(name="usuario_id")
 	private Usuario contador;
   
-  public Long getId(){
-    return this.id;
-  }
-  public void setId(Long id){
-    this.id = id;
-  }
+	public Long getId(){
+		return this.id;
+	}
+	public void setId(Long id){
+		this.id = id;
+	}
 }
