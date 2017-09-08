@@ -313,7 +313,6 @@ public class SolicitudController {
 	public @ResponseBody ModelAndView postBuscarSolicitud (@RequestParam Long id,
 			@RequestParam String nombre,
 			@RequestParam String titulo,
-			@RequestParam Long responsable,
 			@RequestParam String fechaDesde,
 			@RequestParam String fechaHasta) throws ParseException {
 		
@@ -340,7 +339,7 @@ public class SolicitudController {
 		if(fechaDesde!= null && !fechaDesde.equalsIgnoreCase("") && fechaHasta!= null && !fechaHasta.equalsIgnoreCase("")){
 			Date solicitadoDesde = formatter.parse(fechaDesde);
 			Date solicitadoHasta = formatterTime.parse(fechaHasta+" 23:23:59");
-			List<Solicitud> solicitudes = (List<Solicitud>) solicitudService.buscar(nombre,titulo,responsable,solicitadoDesde,solicitadoHasta);
+			List<Solicitud> solicitudes = (List<Solicitud>) solicitudService.buscar(nombre,solicitadoDesde,solicitadoHasta);
 			if(solicitudes!= null && !solicitudes.isEmpty()){
 				ModelAndView result = new ModelAndView("solicitudes");
 				result.addObject("solicitudes",solicitudService.getAllSolicitudes());

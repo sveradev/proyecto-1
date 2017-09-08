@@ -24,9 +24,9 @@ public class Cliente {
 	private Date fechaModificado;
 	private Date fechaBaja;
   
- 	@ManyToOne @JoinColumn(name="usuario_id")
+ 	@ManyToOne @JoinColumn(name="representante_id")
 	private Usuario representante;
-	@ManyToOne @JoinColumn(name="usuario_id")
+	@ManyToOne @JoinColumn(name="contador_id")
 	private Usuario contador;
 	public Long getId() {
 		return id;

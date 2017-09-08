@@ -72,30 +72,12 @@ public class SolicitudService {
 		return solicitudRepository.findByFechaSolicitadoBetween(desde, hasta);
 	}
 
-	public Iterable <Solicitud> buscar(String nombre, String titulo, Long responsable, Date desde, Date hasta) {
+	public Iterable <Solicitud> buscar(String nombre, Date desde, Date hasta) {
 		if(desde != null && hasta != null){
 			if(nombre == null || nombre.trim().equalsIgnoreCase("")){
-				if(titulo == null || titulo.trim().equalsIgnoreCase("")){
-					if(responsable == null){
-						return solicitudRepository.findByFechaSolicitadoBetween(desde, hasta);
-					}
-					return solicitudRepository.findByResponsable_idAndFechaSolicitadoBetween(responsable, desde, hasta);
-				}
-				if(responsable == null){
-					return solicitudRepository.findByTituloAndFechaSolicitadoBetween(titulo, desde, hasta);
-				}
-				return solicitudRepository.findByTituloAndResponsable_idAndFechaSolicitadoBetween(titulo, responsable, desde, hasta);
+				return solicitudRepository.findByFechaSolicitadoBetween(desde, hasta);
 			} 
-			if(titulo == null || titulo.trim().equalsIgnoreCase("")){
-				if(responsable == null){
-					return solicitudRepository.findByNombreAndFechaSolicitadoBetween(nombre, desde, hasta);
-				} 
-				return solicitudRepository.findByNombreAndResponsable_idAndFechaSolicitadoBetween(nombre, responsable, desde, hasta);
-			}
-			if(responsable == null){
-				return solicitudRepository.findByNombreAndTituloAndFechaSolicitadoBetween(nombre, titulo, desde, hasta);
-			}
-			return solicitudRepository.findByNombreAndTituloAndResponsable_idAndFechaSolicitadoBetween(nombre,titulo, responsable, desde, hasta);
+			return solicitudRepository.findByNombreAndFechaSolicitadoBetween(nombre, desde, hasta);
 		}
 		return null;
 	}
