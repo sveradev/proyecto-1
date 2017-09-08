@@ -20,11 +20,15 @@ public class Usuario {
 	private String nombre;
 	private String alias;
 	private String email;
+	private Integer nroDocumento;
+	private String tipoDocumento;
 	private Date fechaAlta;
 	private Date fechaBaja;
 	private String password;
-	@ManyToOne @JoinColumn(name="rol_id")	
+	@ManyToOne @JoinColumn(name="rol_id")
 	private Rol rol;
+	@ManyToOne @JoinColumn(name="perfil_id")
+	private Perfil perfil;
 	
 	public Long getId() {
 		return id;
@@ -74,10 +78,28 @@ public class Usuario {
 	public void setRol(Rol rol) {
 		this.rol = rol;
 	}
+	public Perfil getPerfil() {
+		return perfil;
+	}
+	public void setPerfil(Perfil perfil) {
+		this.perfil = perfil;
+	}
 	public Boolean isActive() {
 		return fechaBaja == null;
 	}
 	public Boolean isAdmin() {
 		return rol.getOrden() == Constantes.ROL_ADMINISTRADOR; 
+	}
+	public Integer getNroDocumento() {
+		return nroDocumento;
+	}
+	public void setNroDocumento(Integer nroDocumento) {
+		this.nroDocumento = nroDocumento;
+	}
+	public String getTipoDocumento() {
+		return tipoDocumento;
+	}
+	public void setTipoDocumento(String tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
 	}
 }

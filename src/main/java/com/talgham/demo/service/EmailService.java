@@ -2,7 +2,10 @@ package com.talgham.demo.service;
 
 import java.util.Date;
 
+import javax.mail.BodyPart;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -23,12 +26,21 @@ public class EmailService {
 	private EmailRepository emailRepository;
 
 	public void sendEmail(String to, String subject, String text) throws Exception {
+
 		MimeMessage message = sender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
 
 		helper.setTo(to);
 		helper.setSubject(subject);
+		
+		/** MultiPart para crear mensajes compuestos. */
+		MimeMultipart multipart = new MimeMultipart("related");
+		BodyPart messageBodyPart = new MimeBodyPart();
+    	messageBodyPart.setContent(text, "text/html");
+		multipart.addBodyPart(messageBodyPart);
+		
 		helper.setText(text);
+		
 
 		sender.send(message);
 
