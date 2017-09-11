@@ -17,14 +17,14 @@ public class Cliente {
 	private Long id;
 	private String nombre;
 	private String cuit;
-  
+
 	private String descripcion;
-  	private Date cierreEjercicio;
+	private Date cierreEjercicio;
 	private Date fechaAlta;
 	private Date fechaModificado;
 	private Date fechaBaja;
-  
- 	@ManyToOne @JoinColumn(name="representante_id")
+	
+	@ManyToOne @JoinColumn(name="representante_id")
 	private Usuario representante;
 	@ManyToOne @JoinColumn(name="contador_id")
 	private Usuario contador;
