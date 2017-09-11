@@ -6,10 +6,7 @@
 			<nav class="navbar" role="navigation">
 				<div class="container-fluid">
 					<div class="btn-group navbar-right">
-						<a class="btn btn-primary" href="/login"><i class="fa fa-sign-in fa-fw"></i> Ingresar </a>
-<!-- 						<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"> -->
-<!-- 							<span class="fa fa-caret-down" title="Toggle dropdown menu"></span> -->
-<!-- 						</a> -->
+						<a class="btn btn-primary btn-lg" href="/login"><i class="fa fa-sign-in fa-fw"></i> Ingresar </a>
 					</div>
 				</div>
 			</nav>
@@ -17,7 +14,9 @@
 				<div class="well">
 					<img src="images/logotalgham.jpg" class="img-responsive center-block" alt=""/>
 					<div class="panel-body"><h4 class="text-center">{{bienvenida}}</h4></div>
-					<div class="panel-body">Para realizar una solicitud a nuestros representantes presione <a href="/crearSolicitud">aquí.</a></div>
+					<div class="panel-body">Mensaje</div>
+					<a class="btn btn-lg btn-primary btn-lg" href="/agenda">Agenda</a>
+					<a class="btn btn-lg btn-primary btn-lg" href="/solicitudes">Solicitudes</a>
 				</div>
 			</div>
 			<footer class="container-fluid text-center">
@@ -25,6 +24,5 @@
 			</footer>
 		</section>
 		{{>bloques/footer}}
-	<script src="js/elements/solicitud.js"></script>
 	</body>
 </html>
