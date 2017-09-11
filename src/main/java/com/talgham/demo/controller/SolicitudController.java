@@ -360,12 +360,21 @@ public class SolicitudController {
 	}
 
 	@RequestMapping("/solicitudes")
-	public String solicitudes(@RequestParam(value="id", required=false, defaultValue="") String id, Model model) {
+	public String solicitudes(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuario = usuarioService.buscarPorEmail(auth.getName());
 		model.addAttribute("usuario",usuario);
-		model.addAttribute("solicitudes", solicitudService.getAllSolicitudes());
+		model.addAttribute("solicitudes", solicitudService.buscarSolicitudes(usuario));
 		return "solicitudes";
+	}
+	
+	@RequestMapping("/agenda")
+	public String agenda(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuario = usuarioService.buscarPorEmail(auth.getName());
+		model.addAttribute("usuario",usuario);
+		model.addAttribute("solicitudes", solicitudService.buscarAgenda(usuario));
+		return "agenda";
 	}
 	
 	

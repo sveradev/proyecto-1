@@ -22,25 +22,37 @@ public class Solicitud {
 	private Trabajo trabajo;
 	private String titulo;
 	private String descripcion;
+	private Boolean programada;
 	
 	private Date fechaCreacion;
 	private Date fechaSolicitado;
 	private Date fechaModificado;
-	private Date fechaVencimiento;
 	private Date fechaFinalizado;
 	@ManyToOne @JoinColumn(name="estado_id")
 	private Estado estado;
 	@ManyToOne @JoinColumn(name="usuario_id")
 	private Cliente cliente;
 	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public String getNombre() {
 		return nombre;
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public Trabajo getTitulo() {
+	public Trabajo getTrabajo() {
 		return trabajo;
+	}
+	public void setTrabajo(Trabajo trabajo) {
+		this.trabajo = trabajo;
+	}
+	public String getTitulo() {
+		return titulo;
 	}
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
@@ -50,6 +62,12 @@ public class Solicitud {
 	}
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+	public Boolean getProgramada() {
+		return programada;
+	}
+	public void setProgramada(Boolean programada) {
+		this.programada = programada;
 	}
 	public Date getFechaCreacion() {
 		return fechaCreacion;
@@ -75,27 +93,11 @@ public class Solicitud {
 	public void setFechaFinalizado(Date fechaFinalizado) {
 		this.fechaFinalizado = fechaFinalizado;
 	}
-	public Boolean isSuccess () {
-		return estado.getOrden() == Constantes.ESTADO_SOLICITADO && this.fechaSolicitado.before(new Date()); //ver
-	}
 	public Estado getEstado() {
-		return this.estado;
+		return estado;
 	}
 	public void setEstado(Estado estado) {
 		this.estado = estado;
-	}
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public Trabajo getTrabajo() {
-		return trabajo;
-	}
-	
-	public void setTrabajo(Trabajo trabajo) {
-		this.trabajo = trabajo;
 	}
 	public Cliente getCliente() {
 		return cliente;
@@ -103,5 +105,7 @@ public class Solicitud {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	
+	public Boolean isSuccess () {
+		return estado.getOrden() == Constantes.ESTADO_SOLICITADO && this.fechaSolicitado.before(new Date()); //ver
+	}
 }

@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.talgham.demo.common.Constantes;
+import com.talgham.demo.model.Cliente;
 import com.talgham.demo.model.Estado;
 import com.talgham.demo.model.Solicitud;
 import com.talgham.demo.model.Trabajo;
+import com.talgham.demo.model.Usuario;
+import com.talgham.demo.repository.ClienteRepository;
 import com.talgham.demo.repository.SolicitudRepository;
 
 @Component
@@ -18,7 +21,9 @@ public class SolicitudService {
 	private SolicitudRepository solicitudRepository;
 	@Autowired
 	private EstadoService estadoService;
-
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
 	public String addSolicitud (Solicitud solicitud) {
 		if(solicitud.getFechaSolicitado() == null){
 			solicitud.setFechaSolicitado(new Date());
@@ -80,5 +85,15 @@ public class SolicitudService {
 			return solicitudRepository.findByNombreAndFechaSolicitadoBetween(nombre, desde, hasta);
 		}
 		return null;
+	}
+
+	public Iterable<Solicitud> buscarSolicitudes(Usuario usuario) {
+		Cliente cliente = clienteRepository.findById(usuario.getId());
+		return solicitudRepository.findByClienteAndProgramada(cliente.getId(), Boolean.FALSE);
+	}
+
+	public Iterable<Solicitud> buscarAgenda(Usuario usuario) {
+		Cliente cliente = clienteRepository.findById(usuario.getId());
+		return solicitudRepository.findByClienteAndProgramada(cliente.getId(), Boolean.TRUE);
 	}
 }
