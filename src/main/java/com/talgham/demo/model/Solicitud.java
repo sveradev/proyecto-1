@@ -20,6 +20,7 @@ public class Solicitud {
 	private String nombre;
 	@ManyToOne @JoinColumn(name="trabajo_id")
 	private Trabajo trabajo;
+	private String titulo;
 	private String descripcion;
 	
 	private Date fechaCreacion;
@@ -38,11 +39,11 @@ public class Solicitud {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public Trabajo getTrabajo() {
+	public Trabajo getTitulo() {
 		return trabajo;
 	}
-	public void setTrabajo(Trabajo trabajo) {
-		this.trabajo = trabajo;
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 	public String getDescripcion() {
 		return descripcion;
@@ -68,12 +69,6 @@ public class Solicitud {
 	public void setFechaModificado(Date fechaModificado) {
 		this.fechaModificado = fechaModificado;
 	}
-	public Date getFechaVencimiento() {
-		return fechaVencimiento;
-	}
-	public void setFechaVencimiento(Date fechaVencimiento) {
-		this.fechaVencimiento = fechaVencimiento;
-	}
 	public Date getFechaFinalizado() {
 		return fechaFinalizado;
 	}
@@ -94,6 +89,13 @@ public class Solicitud {
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public Trabajo getTrabajo() {
+		return trabajo;
+	}
+	
+	public void setTrabajo(Trabajo trabajo) {
+		this.trabajo = trabajo;
 	}
 	public Cliente getCliente() {
 		return cliente;

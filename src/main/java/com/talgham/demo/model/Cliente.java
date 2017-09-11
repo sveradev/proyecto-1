@@ -17,7 +17,6 @@ public class Cliente {
 	private Long id;
 	private String nombre;
 	private String cuit;
-
 	private String descripcion;
 	private Date cierreEjercicio;
 	private Date fechaAlta;
