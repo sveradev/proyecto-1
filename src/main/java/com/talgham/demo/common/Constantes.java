@@ -12,8 +12,10 @@ public class Constantes {
 	public static final Long ACTIVIDAD_REPOTAR_SOLICITUD = new Long(3);
 	public static final Long ACTIVIDAD_CERRAR_SOLICITUD = new Long(4);
 	
-	public static final Integer ROL_ADMINISTRADOR = 1;
-	public static final Integer ROL_CONTADOR = 2;
+	public static final Integer PERFIL_DESARROLLADOR = 1;
+	public static final Integer PERFIL_ADMINISTRADOR = 2;
+	public static final Integer PERFIL_CONTADOR = 3;
+	public static final Integer PERFIL_CLIENTE = 4;
 	
 	public static final String GUARDADO = "Guardado";
 

@@ -84,12 +84,6 @@ public class Usuario {
 	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
 	}
-	public Boolean isActive() {
-		return fechaBaja == null;
-	}
-	public Boolean isAdmin() {
-		return rol.getOrden() == Constantes.ROL_ADMINISTRADOR; 
-	}
 	public Integer getNroDocumento() {
 		return nroDocumento;
 	}
@@ -101,5 +95,21 @@ public class Usuario {
 	}
 	public void setTipoDocumento(String tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
+	}
+
+	public Boolean isActive() {
+		return fechaBaja == null;
+	}
+	public Boolean isDev() {
+		return perfil.getOrden() == Constantes.PERFIL_DESARROLLADOR; 
+	}
+		public Boolean isAdmin() {
+		return perfil.getOrden() <= Constantes.PERFIL_ADMINISTRADOR; 
+	}
+	public Boolean isContador() {
+		return perfil.getOrden() <= Constantes.PERFIL_CONTADOR;
+	}
+	public Boolean isCliente() {
+		return perfil.getOrden() <= Constantes.PERFIL_CLIENTE;
 	}
 }

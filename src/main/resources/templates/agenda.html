@@ -86,7 +86,6 @@
 								<th></th>
 								<th>Id</th>
 								{{#isContador}}<th>Nombre</th>{{/isContador}}
-								<th>Email</th>
 								<th>Trabajo</th>
 								<th>Estado</th>
 								<th>Fecha</th>
@@ -96,18 +95,17 @@
 						</thead>
 						<tbody>
 							{{#solicitudes}}
-								<tr class= "{{#isSuccess}}success{{/isSuccess}} {{#isPending}}warning{{/isPending}} {{#isOverdue}}danger{{/isOverdue}} {{#isActive}}info{{/isActive}}">
+								<tr class= "{{#isSuccess}}success{{/isSuccess}} {{#isPending}}warning{{/isPending}} {{#isOverdue}}danger{{/isOverdue}} {{^isActive}}info{{/isActive}}">
 									<td>
 										<a href="/editarSolicitud?id={{id}}"><i class="fa fa-pencil fa-fw"></i></a>
 										<a href="/eliminarSolicitud?id={{id}}"><i class="fa fa-trash-o fa-fw"></i></a>
 									</td>
 									<td>{{id}}</td>
-									{{#isContador}}<td>{{nombre}}</td>{{/isContador}}
-									<td>{{email}}</td>
+									{{#usuario.isContador}}<td>{{cliente.nombre}}</td>{{/usuario.isContador}}
 									<td>{{trabajo.nombre}}</td>
 									<td>{{estado.nombre}}</td>
 									<td>{{fechaSolicitado}}</td>
-									<td>{{responsable.nombre}}</td>
+									<td>{{cliente.contador.nombre}}</td>
 									<td>
 										<div class="dropdown">
 											<i id="dropdownMenu" class="fa fa-search fa-fw dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>

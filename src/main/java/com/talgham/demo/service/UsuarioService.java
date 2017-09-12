@@ -1,6 +1,7 @@
 package com.talgham.demo.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -75,5 +76,9 @@ public class UsuarioService {
 
 	public Iterable<Usuario> buscarPorRol(Long id) {
 		return usuarioRepository.findByRol_id(id);
+	}
+
+	public Iterable<Usuario> buscarPorPerfil(Long id) {
+		return usuarioRepository.findByPerfil_id(id);
 	}
 }

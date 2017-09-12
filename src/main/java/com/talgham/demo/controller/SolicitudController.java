@@ -34,13 +34,13 @@ import com.github.mustachejava.MustacheFactory;
 import com.talgham.demo.common.Constantes;
 import com.talgham.demo.model.Email;
 import com.talgham.demo.model.Estado;
-import com.talgham.demo.model.Rol;
+import com.talgham.demo.model.Perfil;
 import com.talgham.demo.model.Solicitud;
 import com.talgham.demo.model.Trabajo;
 import com.talgham.demo.model.Usuario;
 import com.talgham.demo.service.EmailService;
 import com.talgham.demo.service.EstadoService;
-import com.talgham.demo.service.RolService;
+import com.talgham.demo.service.PerfilService;
 import com.talgham.demo.service.SolicitudService;
 import com.talgham.demo.service.TrabajoService;
 import com.talgham.demo.service.UsuarioService;
@@ -57,21 +57,39 @@ public class SolicitudController {
 	@Autowired
 	private EstadoService estadoService;
 	@Autowired
-	private RolService rolService;
+	private PerfilService perfilService;
 	@Autowired
 	private TrabajoService trabajoService;
+	@Autowired
+	private MessageSource messageSource;
 	
 	private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 	private SimpleDateFormat formatterTime = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 	
-	@Autowired
-	private MessageSource messageSource;
 
+	@RequestMapping("/solicitudes")
+	public String solicitudes(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuario = usuarioService.buscarPorEmail(auth.getName());
+		model.addAttribute("usuario",usuario);
+		model.addAttribute("solicitudes", solicitudService.buscarSolicitudes(usuario));
+		return "solicitudes";
+	}
+	
+	@RequestMapping("/agenda")
+	public String agenda(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuario = usuarioService.buscarPorEmail(auth.getName());
+		model.addAttribute("usuario",usuario);
+		model.addAttribute("solicitudes", solicitudService.buscarAgenda(usuario));
+		return "agenda";
+	}
+	
 	@GetMapping("/crearSolicitud")
 	public String crearSolicitud(Model model) {
-		Rol rol = rolService.buscarPorOrden(Constantes.ROL_CONTADOR);
-		if(rol != null){
-			List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorRol(rol.getId());
+		Perfil perfil = perfilService.buscarPorOrden(Constantes.PERFIL_CONTADOR);
+		if(perfil != null){
+			List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorPerfil(perfil.getId());
 			if(responsables!= null && !responsables.isEmpty()){
 				model.addAttribute("responsables",responsables);
 			} else {
@@ -80,7 +98,7 @@ public class SolicitudController {
 			}
 		} else {
 			model.addAttribute("tipoSalida", Constantes.ALERTA_DANGER);
-			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
+			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.perfiles",new Object[]{},new Locale("")));
 		}
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
@@ -90,34 +108,16 @@ public class SolicitudController {
 
 	@PostMapping(path="/crearSolicitud")
 	public @ResponseBody ModelAndView addSolicitud (
-			@RequestParam String nombre,
-			@RequestParam Long tipoTrabajo,
-			@RequestParam String email,
-			@RequestParam String descripcion,
-			@RequestParam Long responsable,
-			@RequestParam String fechaSol) throws ParseException {
+			@RequestParam String titulo,
+			@RequestParam String descripcion) throws ParseException {
 		
 		ModelAndView result = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
 		Solicitud solicitud = new Solicitud();
-		solicitud.setNombre(nombre);
-		Trabajo trabajo = trabajoService.buscarPorId(tipoTrabajo);
-		solicitud.setTrabajo(trabajo);
+		solicitud.setTitulo(titulo);
 		solicitud.setDescripcion(descripcion);
-		Usuario usuario = usuarioService.buscarPorId(responsable);
-		if(usuario == null){
-			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
-			result.addObject("salida", messageSource.getMessage("error.usuario.no.encontrado",new Object[]{solicitud.getId()},new Locale("")));
-			result.addObject("usuario",usuarioSession);
-			result.setViewName("solicitudes");
-			return result;
-		}
-		if(fechaSol!= null && !fechaSol.equalsIgnoreCase("")){
-			Date fechaSolicitado = formatter.parse(fechaSol);
-			solicitud.setFechaSolicitado(fechaSolicitado);
-		}
-		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.addSolicitud(solicitud))){
+		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.addSolicitud(solicitud,usuarioSession))){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{},new Locale("")));
 			result.addObject("usuario",usuarioSession);
@@ -143,12 +143,6 @@ public class SolicitudController {
 //		} else {
 //			loggin No se ha encontrado un email configurado para la acción requerida.
 		}	
-		if(usuarioSession == null){
-			result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
-			result.addObject("salida", messageSource.getMessage("solicitud.creada.exito",new Object[]{solicitud.getId()},new Locale("")));
-			result.setViewName("home");
-			return result;
-		}
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("solicitud.creada.exito",new Object[]{solicitud.getId()},new Locale("")));
 		result.addObject("usuario",usuarioSession);
@@ -179,13 +173,13 @@ public class SolicitudController {
 			return result;
 		}
 		result.addObject("estados",estados);
-		Rol rol = rolService.buscarPorOrden(Constantes.ROL_CONTADOR);
-		if(rol == null){
+		Perfil perfil = perfilService.buscarPorOrden(Constantes.PERFIL_CONTADOR);
+		if(perfil == null){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
 			return result;
 		}
-		List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorRol(rol.getId());
+		List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorPerfil(perfil.getId());
 		if(responsables == null || responsables.isEmpty()){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.existe.responsables",new Object[]{},new Locale("")));
@@ -210,7 +204,6 @@ public class SolicitudController {
 			Date fechaSolicitado = formatter.parse(fechaSol);
 			solicitud.setFechaSolicitado(fechaSolicitado);
 		}
-		solicitud.setNombre(nombre);
 		Trabajo trabajo = trabajoService.buscarPorId(tipoTrabajo);
 		solicitud.setTrabajo(trabajo);
 		solicitud.setDescripcion(descripcion);
@@ -232,28 +225,21 @@ public class SolicitudController {
 	}
 	
 	@PostMapping(path="/eliminarSolicitud")
-	public @ResponseBody ModelAndView eliminarSolicitud (@RequestParam Long id,
-			@RequestParam String nombre,
-			@RequestParam Long estado,
-			@RequestParam String titulo,
-			@RequestParam String email,
-			@RequestParam String descripcion, 
-			@RequestParam Long responsable,
-			@RequestParam String fechaSol ) throws ParseException {
+	public @ResponseBody ModelAndView eliminarSolicitud (@RequestParam Long id) throws ParseException {
 		
 		Solicitud solicitud = solicitudService.buscarPorId(id);
 		Estado estadoSeleccionado = estadoService.buscarPorOrden(Constantes.ESTADO_CANCELADO);
 		solicitud.setEstado(estadoSeleccionado);
+		
 		ModelAndView result = new ModelAndView("solicitudes");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
-		result.addObject("usuario",usuarioSession);
-		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
+		result.addObject("usuario",usuarioService.buscarPorEmail(auth.getName()));
 		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.updateSolicitud(solicitud))){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{solicitud.getId()},new Locale("")));
 			return result;
 		}
+		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("solicitud.editada.exito",new Object[]{solicitud.getId()},new Locale("")));
 		return result;
@@ -261,8 +247,8 @@ public class SolicitudController {
 	
 	@GetMapping("/buscarSolicitud")
 	public String buscarSolicitud(Model model) {
-		Rol rol = rolService.buscarPorOrden(Constantes.ROL_CONTADOR);
-		if(rol == null){
+		Perfil perfil = perfilService.buscarPorOrden(Constantes.PERFIL_CONTADOR);
+		if(perfil == null){
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
 			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
 			model.addAttribute("solicitudes",solicitudService.getAllSolicitudes());
@@ -271,7 +257,7 @@ public class SolicitudController {
 			model.addAttribute("usuario",usuarioSession);
 			return "solicitudes";
 		}
-		List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorRol(rol.getId());
+		List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorPerfil(perfil.getId());
 		if(!responsables.isEmpty()){
 			model.addAttribute("responsables",responsables);
 		} else {
@@ -285,8 +271,8 @@ public class SolicitudController {
 		if(result == null){
 			result = new ModelAndView();
 		}
-		Rol rol = rolService.buscarPorOrden(Constantes.ROL_CONTADOR);
-		if(rol == null){
+		Perfil perfil = perfilService.buscarPorOrden(Constantes.PERFIL_CONTADOR);
+		if(perfil == null){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
 			result.addObject("solicitudes", solicitudService.getAllSolicitudes());
@@ -296,7 +282,7 @@ public class SolicitudController {
 			result.setViewName("solicitudes");
 			return result;
 		}
-		List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorRol(rol.getId());
+		List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorRol(perfil.getId());
 		if(!responsables.isEmpty()){
 			result.addObject("responsables",responsables);
 			result.setViewName("buscarSolicitud");
@@ -359,25 +345,6 @@ public class SolicitudController {
 		return CargarCombosBusqueda(result);
 	}
 
-	@RequestMapping("/solicitudes")
-	public String solicitudes(Model model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Usuario usuario = usuarioService.buscarPorEmail(auth.getName());
-		model.addAttribute("usuario",usuario);
-		model.addAttribute("solicitudes", solicitudService.buscarSolicitudes(usuario));
-		return "solicitudes";
-	}
-	
-	@RequestMapping("/agenda")
-	public String agenda(Model model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Usuario usuario = usuarioService.buscarPorEmail(auth.getName());
-		model.addAttribute("usuario",usuario);
-		model.addAttribute("solicitudes", solicitudService.buscarAgenda(usuario));
-		return "agenda";
-	}
-	
-	
 	@PostMapping(path="/enviarReporte")
 	public @ResponseBody ModelAndView enviarReporte (
 			@RequestParam String fechaDesde,

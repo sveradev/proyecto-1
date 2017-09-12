@@ -24,10 +24,12 @@ public class SolicitudService {
 	@Autowired
 	private ClienteRepository clienteRepository;
 	
-	public String addSolicitud (Solicitud solicitud) {
+	public String addSolicitud (Solicitud solicitud, Usuario usuario) {
+		solicitud.setCliente( clienteRepository.findByRepresentante_id(usuario));
 		if(solicitud.getFechaSolicitado() == null){
 			solicitud.setFechaSolicitado(new Date());
 		}
+		solicitud.setFechaCreacion(new Date());
 		solicitud.setEstado(estadoService.buscarPorOrden(Constantes.ESTADO_SOLICITADO));
 		solicitudRepository.save(solicitud);
 		return Constantes.GUARDADO;
@@ -42,19 +44,14 @@ public class SolicitudService {
 	}
 
 	public String updateSolicitud(Solicitud mySolicitud) {
-		Long id = mySolicitud.getId();
 		Estado estado = mySolicitud.getEstado();
-		String nombre = mySolicitud.getNombre();
 		Trabajo trabajo = mySolicitud.getTrabajo();
 		String descripcion = mySolicitud.getDescripcion();
 		Date fechaSolicitado = mySolicitud.getFechaSolicitado();
 		
-		Solicitud solicitud = this.buscarPorId(id);
+		Solicitud solicitud = this.buscarPorId(mySolicitud.getId());
 		if (estado!= null && solicitud.getEstado() != estado) {
 			solicitud.setEstado(estado);
-		}
-		if (!"".equalsIgnoreCase(nombre) && !solicitud.getNombre().equalsIgnoreCase(nombre)) {
-			solicitud.setNombre(nombre);
 		}
 		if (trabajo != null && solicitud.getTrabajo().getId() != trabajo.getId()) {
 			solicitud.setTrabajo(trabajo);

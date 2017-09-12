@@ -13,6 +13,7 @@ public class Perfil {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
+	private Integer orden;
 	private String nombre;
 	private String descripcion;
 	private Date fechaAlta;
@@ -23,6 +24,12 @@ public class Perfil {
 	}
 	public void setId(Long id){
 		this.id = id;
+	}
+	public Integer getOrden() {
+		return orden;
+	}
+	public void setOrden(Integer orden) {
+		this.orden = orden;
 	}
 	public String getNombre() {
 		return nombre;

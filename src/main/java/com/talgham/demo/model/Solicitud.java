@@ -17,7 +17,6 @@ public class Solicitud {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-	private String nombre;
 	@ManyToOne @JoinColumn(name="trabajo_id")
 	private Trabajo trabajo;
 	private String titulo;
@@ -30,7 +29,7 @@ public class Solicitud {
 	private Date fechaFinalizado;
 	@ManyToOne @JoinColumn(name="estado_id")
 	private Estado estado;
-	@ManyToOne @JoinColumn(name="usuario_id")
+	@ManyToOne @JoinColumn(name="cliente_id")
 	private Cliente cliente;
 	
 	public Long getId() {
@@ -38,12 +37,6 @@ public class Solicitud {
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
-	public String getNombre() {
-		return nombre;
-	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
 	}
 	public Trabajo getTrabajo() {
 		return trabajo;
