@@ -27,6 +27,7 @@ public class Cliente {
 	private Usuario representante;
 	@ManyToOne @JoinColumn(name="contador_id")
 	private Usuario contador;
+	
 	public Long getId() {
 		return id;
 	}

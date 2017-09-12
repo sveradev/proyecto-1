@@ -1,13 +1,13 @@
 package com.talgham.demo.service;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 import com.talgham.demo.common.Constantes;
+import com.talgham.demo.model.Perfil;
 import com.talgham.demo.model.Rol;
 import com.talgham.demo.model.Usuario;
 import com.talgham.demo.repository.UsuarioRepository;
@@ -48,6 +48,7 @@ public class UsuarioService {
 		String alias = myUsuario.getAlias();
 		String email = myUsuario.getEmail();
 		Rol rol = myUsuario.getRol();
+		Perfil perfil = myUsuario.getPerfil();
 		String password = myUsuario.getPassword();
 		Date fechaBaja = myUsuario.getFechaBaja();
 
@@ -61,8 +62,11 @@ public class UsuarioService {
 		if (!"".equalsIgnoreCase(email) && !usuario.getEmail().equalsIgnoreCase(email)) {
 			usuario.setEmail(email);
 		}
-		if (rol != null && usuario.getRol().equals(rol.getId())) {
+		if (rol != null && usuario.getRol().equals(rol)) {
 			usuario.setRol(rol);
+		}
+		if (perfil != null && usuario.getPerfil().equals(perfil)) {
+			usuario.setPerfil(perfil);
 		}
 		if (!"".equalsIgnoreCase(password) && usuario.getPassword() != (password)) {
 			usuario.setPassword(password);
@@ -80,5 +84,9 @@ public class UsuarioService {
 
 	public Iterable<Usuario> buscarPorPerfil(Long id) {
 		return usuarioRepository.findByPerfil_id(id);
+	}
+
+	public Iterable<Usuario> buscarPorPerfil_orden(Integer orden) {
+		return usuarioRepository.findByPerfil_orden(orden);
 	}
 }

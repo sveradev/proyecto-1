@@ -23,8 +23,6 @@ public class Programa {
 	private Date fechaModificado;
 	private Date fechaBaja;
 
-	@ManyToOne @JoinColumn(name="cliente_id")
-	private Cliente cliente;
 	@ManyToOne @JoinColumn(name="trabajo_id")
 	private Trabajo trabajo;
 	public Long getId() {
@@ -74,12 +72,6 @@ public class Programa {
 	}
 	public void setFechaBaja(Date fechaBaja) {
 		this.fechaBaja = fechaBaja;
-	}
-	public Cliente getCliente() {
-		return cliente;
-	}
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
 	}
 	public Trabajo getTrabajo() {
 		return trabajo;

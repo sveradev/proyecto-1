@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Trabajo {
@@ -15,18 +13,12 @@ public class Trabajo {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private String nombre;
-	private String tipo;
-	private String email;
 	private String descripcion;
-	private String frecuencia;
-	private Boolean programado;
-	private Integer vencimiento;
-	private Date fechaProgramado;
+	private String periodicidad;
+	private Date fechaVencimiento;
+	private Date fechaAlta;
 	private Date fechaModificado;
-	private Date fechaApagado;
-	private Date fechaUltimoCreado;
-	@ManyToOne @JoinColumn(name="usuario_id")
-	private Usuario responsable;
+	private Date fechaBaja;
 
 	public Long getId() {
 		return id;
@@ -44,60 +36,35 @@ public class Trabajo {
 		this.nombre = nombre;
 	}
 
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getDescripcion() {
 		return descripcion;
 	}
-
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 
-	public String getFrecuencia() {
-		return frecuencia;
+	public String getPeriodicidad() {
+		return periodicidad;
 	}
 
-	public void setFrecuencia(String frecuencia) {
-		this.frecuencia = frecuencia;
+	public void setPeriodicidad(String periodicidad) {
+		this.periodicidad = periodicidad;
 	}
 
-	public Boolean getProgramado() {
-		return programado;
+	public Date getFechaVencimiento() {
+		return fechaVencimiento;
 	}
 
-	public void setProgramado(Boolean programado) {
-		this.programado = programado;
+	public void setFechaVencimiento(Date fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
 	}
 
-	public Integer getVencimiento() {
-		return vencimiento;
+	public Date getFechaAlta() {
+		return fechaAlta;
 	}
 
-	public void setVencimiento(Integer vencimiento) {
-		this.vencimiento = vencimiento;
-	}
-
-	public Date getFechaProgramado() {
-		return fechaProgramado;
-	}
-
-	public void setFechaProgramado(Date fechaProgramado) {
-		this.fechaProgramado = fechaProgramado;
+	public void setFechaAlta(Date fechaAlta) {
+		this.fechaAlta = fechaAlta;
 	}
 
 	public Date getFechaModificado() {
@@ -108,19 +75,11 @@ public class Trabajo {
 		this.fechaModificado = fechaModificado;
 	}
 
-	public Date getFechaApagado() {
-		return fechaApagado;
+	public Date getFechaBaja() {
+		return fechaBaja;
 	}
 
-	public void setFechaApagado(Date fechaApagado) {
-		this.fechaApagado = fechaApagado;
-	}
-
-	public Date getFechaUltimoCreado() {
-		return fechaUltimoCreado;
-	}
-
-	public void setFechaUltimoCreado(Date fechaUltimoCreado) {
-		this.fechaUltimoCreado = fechaUltimoCreado;
+	public void setFechaBaja(Date fechaBaja) {
+		this.fechaBaja = fechaBaja;
 	}
 }
