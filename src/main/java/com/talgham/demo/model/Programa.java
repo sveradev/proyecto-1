@@ -25,6 +25,9 @@ public class Programa {
 
 	@ManyToOne @JoinColumn(name="trabajo_id")
 	private Trabajo trabajo;
+	@ManyToOne @JoinColumn(name="cliente_id")
+	private Cliente cliente;
+	
 	
 	public Long getId() {
 		return id;
@@ -79,5 +82,11 @@ public class Programa {
 	}
 	public void setTrabajo(Trabajo trabajo) {
 		this.trabajo = trabajo;
+	}
+	public Cliente getCliente() {
+		return cliente;
+	}
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 }

@@ -1,6 +1,7 @@
 package com.talgham.demo.controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.talgham.demo.common.Constantes;
+import com.talgham.demo.model.Cliente;
+import com.talgham.demo.model.Perfil;
 import com.talgham.demo.model.Programa;
+import com.talgham.demo.model.Rol;
+import com.talgham.demo.model.Trabajo;
 import com.talgham.demo.model.Usuario;
+import com.talgham.demo.service.ClienteService;
 import com.talgham.demo.service.ProgramaService;
 import com.talgham.demo.service.TrabajoService;
 import com.talgham.demo.service.UsuarioService;
@@ -27,10 +33,10 @@ public class ProgramaController {
 
 	@Autowired
 	private ProgramaService programaService;
-	
 	@Autowired
 	private TrabajoService trabajoService;
-	
+	@Autowired
+	private ClienteService clienteService;
 	@Autowired
 	private UsuarioService usuarioService;
 	
@@ -46,6 +52,24 @@ public class ProgramaController {
 			model.addAttribute("salida", messageSource.getMessage("usuario.sin.permisos",new Object[]{},new Locale("")));
 			return "mensaje";
 		}
+		List<Trabajo> trabajos = (List<Trabajo>) trabajoService.buscarTrabajos();
+		if(trabajos == null || trabajos.isEmpty()){
+			model.addAttribute("programas", programaService.buscarProgramas());
+			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
+			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.trabajos",new Object[]{},new Locale("")));
+			model.addAttribute("usuario",usuarioSession);
+			return "programas";
+		}
+		List<Cliente> clientes = (List<Cliente>) clienteService.buscarClientes();
+		if(clientes == null || clientes.isEmpty()){
+			model.addAttribute("programas", programaService.buscarProgramas());
+			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
+			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.clientes",new Object[]{},new Locale("")));
+			model.addAttribute("usuario",usuarioSession);
+			return "programas";
+		}
+		model.addAttribute("trabajos",trabajos);
+		model.addAttribute("clientes",clientes);
 		return "crearPrograma";
 	}
 
@@ -54,7 +78,8 @@ public class ProgramaController {
 			@RequestParam String nombre,
 			@RequestParam Date fechaSolicitado,
 			@RequestParam Date fechaUltimoCreado,
-			@RequestParam Long trabajo_id) {
+			@RequestParam Long trabajo_id,
+			@RequestParam Long cliente_id) {
 
 		ModelAndView result = new ModelAndView("programas");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -66,6 +91,7 @@ public class ProgramaController {
 		programa.setFechaSolicitado(fechaSolicitado);
 		programa.setFechaUltimoCreado(fechaUltimoCreado);
 		programa.setTrabajo(trabajoService.buscarPorId(trabajo_id));
+		programa.setCliente(clienteService.buscarPorId(cliente_id));
 		if(!Constantes.GUARDADO.equalsIgnoreCase(programaService.crearPrograma(programa))){
 			result.addObject("programas", programaService.buscarProgramas());
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
