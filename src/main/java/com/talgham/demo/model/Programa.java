@@ -25,6 +25,7 @@ public class Programa {
 
 	@ManyToOne @JoinColumn(name="trabajo_id")
 	private Trabajo trabajo;
+	
 	public Long getId() {
 		return id;
 	}
