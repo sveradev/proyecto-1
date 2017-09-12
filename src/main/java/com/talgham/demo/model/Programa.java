@@ -16,8 +16,8 @@ public class Programa {
 	private Long id;
 	private String nombre;
 	private Boolean activo;
-	private Date fechaSolicitado;
-	private Date fechaUltimoCreado;
+	private Date fechaProximo;
+	private Date fechaUltimo;
 	
 	private Date fechaAlta;
 	private Date fechaModificado;
@@ -47,17 +47,17 @@ public class Programa {
 	public void setActivo(Boolean activo) {
 		this.activo = activo;
 	}
-	public Date getFechaSolicitado() {
-		return fechaSolicitado;
+	public Date getFechaProximo() {
+		return fechaProximo;
 	}
-	public void setFechaSolicitado(Date fechaSolicitado) {
-		this.fechaSolicitado = fechaSolicitado;
+	public void setFechaProximo(Date fechaProximo) {
+		this.fechaProximo = fechaProximo;
 	}
-	public Date getFechaUltimoCreado() {
-		return fechaUltimoCreado;
+	public Date getFechaUltimo() {
+		return fechaUltimo;
 	}
-	public void setFechaUltimoCreado(Date fechaUltimoCreado) {
-		this.fechaUltimoCreado = fechaUltimoCreado;
+	public void setFechaUltimo(Date fechaUltimo) {
+		this.fechaUltimo = fechaUltimo;
 	}
 	public Date getFechaAlta() {
 		return fechaAlta;

@@ -28,4 +28,8 @@ public class ProgramaService {
 	public Iterable<Programa> buscarProgramas() {
 		return programaRepository.findAll();
 	}
+	
+	public Iterable<Programa> buscarPor(Date fechaDesde, Date fechaHasta){
+		return programaRepository.findByActivoAndFechaProximoBetween(Boolean.TRUE,fechaDesde,fechaHasta);
+	}
 }
