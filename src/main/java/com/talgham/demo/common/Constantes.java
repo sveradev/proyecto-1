@@ -23,5 +23,11 @@ public class Constantes {
 	public static final String ALERTA_DANGER = "alert-danger";
 	public static final String ALERTA_INFO = "alert-info";
 	public static final String ALERTA_WARNING = "alert-warning";
+	
+	public static final String PERIODICIDAD_ANUAL = "Anual";
+	public static final String PERIODICIDAD_MENSUAL = "Mensual";
+	public static final String PERIODICIDAD_BIMESTRAL = "Bimestral";
+	public static final String PERIODICIDAD_TRIMESTRAL = "Trimestral";
+	public static final String PERIODICIDAD_SEMESTRAL = "Semestral";
 
 }

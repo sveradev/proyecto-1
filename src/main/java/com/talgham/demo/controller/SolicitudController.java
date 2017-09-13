@@ -114,7 +114,7 @@ public class SolicitudController {
 		solicitud.setDescripcion(descripcion);
 		
 		ModelAndView result = new ModelAndView("solicitudes");
-		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.addSolicitud(solicitud,usuarioSession))){
+		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.addSolicitud(solicitud))){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{},new Locale("")));
 			result.addObject("solicitudes", solicitudService.getAllSolicitudes());
