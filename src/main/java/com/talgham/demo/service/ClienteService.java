@@ -24,4 +24,12 @@ public class ClienteService {
 	public Iterable<Cliente> buscarClientes() {
 		return clienteRepository.findAll();
 	}
+
+	public Cliente buscarPorRepresentante(Long usuario_id) {
+		return clienteRepository.findByRepresentante_id(usuario_id);
+	}
+
+	public Cliente buscarPorContador(Long usuario_id) {
+		return clienteRepository.findByContador_id(usuario_id);
+	}
 }

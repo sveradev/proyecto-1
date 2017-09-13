@@ -25,7 +25,7 @@ public class SolicitudService {
 	private ClienteRepository clienteRepository;
 	
 	public String addSolicitud (Solicitud solicitud, Usuario usuario) {
-		solicitud.setCliente( clienteRepository.findByRepresentante_id(usuario));
+		solicitud.setCliente( clienteRepository.findByRepresentante_id(usuario.getId()));
 		if(solicitud.getFechaSolicitado() == null){
 			solicitud.setFechaSolicitado(new Date());
 		}

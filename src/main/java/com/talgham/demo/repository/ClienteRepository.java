@@ -9,5 +9,6 @@ public interface ClienteRepository extends CrudRepository<Cliente, Long> {
 
 	Cliente findById(Long id);
 	Iterable<Cliente> findAll();
-	Cliente findByRepresentante_id(Usuario usuario);
+	Cliente findByRepresentante_id(Long usuario_id);
+	Cliente findByContador_id(Long usuario_id);
 }

@@ -1,11 +1,5 @@
 package com.talgham.demo.controller;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +9,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
@@ -28,20 +24,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
 import com.talgham.demo.common.Constantes;
+import com.talgham.demo.model.Cliente;
 import com.talgham.demo.model.Email;
 import com.talgham.demo.model.Estado;
 import com.talgham.demo.model.Perfil;
 import com.talgham.demo.model.Solicitud;
 import com.talgham.demo.model.Trabajo;
 import com.talgham.demo.model.Usuario;
+import com.talgham.demo.service.ClienteService;
 import com.talgham.demo.service.EmailService;
 import com.talgham.demo.service.EstadoService;
 import com.talgham.demo.service.PerfilService;
 import com.talgham.demo.service.SolicitudService;
+import com.talgham.demo.service.TareaService;
 import com.talgham.demo.service.TrabajoService;
 import com.talgham.demo.service.UsuarioService;
 
@@ -61,7 +57,11 @@ public class SolicitudController {
 	@Autowired
 	private TrabajoService trabajoService;
 	@Autowired
+	private ClienteService clienteService;
+	@Autowired
 	private MessageSource messageSource;
+	
+	private static final Logger log = LoggerFactory.getLogger(TareaService.class);
 	
 	private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 	private SimpleDateFormat formatterTime = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
@@ -87,19 +87,6 @@ public class SolicitudController {
 	
 	@GetMapping("/crearSolicitud")
 	public String crearSolicitud(Model model) {
-		Perfil perfil = perfilService.buscarPorOrden(Constantes.PERFIL_CONTADOR);
-		if(perfil != null){
-			List<Usuario> responsables = (List<Usuario>) usuarioService.buscarPorPerfil(perfil.getId());
-			if(responsables!= null && !responsables.isEmpty()){
-				model.addAttribute("responsables",responsables);
-			} else {
-				model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
-				model.addAttribute("salida",messageSource.getMessage("solicitud.no.existe.responsables",new Object[]{},new Locale("")));
-			}
-		} else {
-			model.addAttribute("tipoSalida", Constantes.ALERTA_DANGER);
-			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.perfiles",new Object[]{},new Locale("")));
-		}
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
 		model.addAttribute("usuario",usuarioSession);
@@ -111,17 +98,27 @@ public class SolicitudController {
 			@RequestParam String titulo,
 			@RequestParam String descripcion) throws ParseException {
 		
-		ModelAndView result = new ModelAndView();
+		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+
 		Solicitud solicitud = new Solicitud();
+		if(usuarioSession.isCliente()) {
+			solicitud.setCliente(clienteService.buscarPorRepresentante(usuarioSession.getId()));
+		}
+		if(usuarioSession.isContador()) {
+			solicitud.setCliente(clienteService.buscarPorContador(usuarioSession.getId()));
+		}
+		solicitud.setProgramada(Boolean.FALSE);
 		solicitud.setTitulo(titulo);
 		solicitud.setDescripcion(descripcion);
+		
+		ModelAndView result = new ModelAndView("solicitudes");
 		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.addSolicitud(solicitud,usuarioSession))){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{},new Locale("")));
+			result.addObject("solicitudes", solicitudService.getAllSolicitudes());
 			result.addObject("usuario",usuarioSession);
-			result.setViewName("solicitudes");
 			return result;
 		}
 		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
@@ -133,20 +130,34 @@ public class SolicitudController {
 			String to = emailTemplate.getDireccion();
 			String subject = emailTemplate.getSubject();
 			String texto = emailTemplate.getTexto();
+			Cliente cliente = solicitud.getCliente();
 		
 			try {
 				emailService.sendEmail(to, subject, texto);
 			} catch (Exception e) {
 				e.printStackTrace();
-//				loggin "Hubo un error al enviar el mail.";
+				log.error("Hubo un error al enviar el mail para {}.", to);
 			}
-//		} else {
-//			loggin No se ha encontrado un email configurado para la acción requerida.
+			
+			try {
+				emailService.sendEmail(cliente.getRepresentante().getEmail(), subject, texto);
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error("Hubo un error al enviar el mail para {}.", cliente.getRepresentante().getEmail());
+			}
+			
+			try {
+				emailService.sendEmail(cliente.getContador().getEmail(), subject, texto);
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error("Hubo un error al enviar el mail para {}.", cliente.getContador().getEmail());
+			}
+		} else {
+			log.error("No se ha encontrado un email configurado para la acción requerida.");
 		}	
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("solicitud.creada.exito",new Object[]{solicitud.getId()},new Locale("")));
 		result.addObject("usuario",usuarioSession);
-		result.setViewName("solicitudes");
 		return result;
 	}
 	
@@ -376,7 +387,7 @@ public class SolicitudController {
 				Map<String, Object> data = new HashMap<String, Object>();
 				data.put("solicitudes", solicitudes);
 				
-				String templateCompilado = SolicitudController.getEmailTemplate(templateHtml, data);
+				String templateCompilado = EmailService.getEmailTemplate(templateHtml, data);
 				 
 				try {
 					emailService.sendEmail(to, subject, templateCompilado);
@@ -402,37 +413,4 @@ public class SolicitudController {
 		result.addObject("salida",messageSource.getMessage("email.reporte.enviado",new Object[]{},new Locale("")));
 		return result;
 	}
-	
-	public static String getEmailTemplate(String templateHtml, Map<String, Object> model) {
-		MustacheFactory mf = new DefaultMustacheFactory();
-		String result = null;
-		FileReader fr;
-		try {
-			//lee el archivo html y lo trasforma a un string
-			fr = new FileReader(templateHtml);
-			BufferedReader br= new BufferedReader(fr);
-			StringBuilder content=new StringBuilder(1024);
-			String s = null;
-			while((s=br.readLine())!=null) {
-				content.append(s);
-			}
-			br.close();
-			//crea un compilador de mopustache, necesita un stream de lectura del string que creamos antes (strinReader)
-			Mustache template = mf.compile(new StringReader(content.toString()), content.toString());
-			StringWriter writer = new StringWriter();
-			
-			//Ejecuta el template, con el stream de lectura, el de escitura y el modelo a popular
-			template.execute(writer, model);
-			writer.flush();
-			result = writer.toString();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//como resultado tenemos un lindo string con html populado
-		return result;
-	}
-}
+}	

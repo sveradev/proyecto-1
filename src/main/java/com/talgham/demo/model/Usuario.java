@@ -2,6 +2,7 @@ package com.talgham.demo.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class Usuario {
 	private Long id;
 	private String nombre;
 	private String alias;
+	@Column(unique = true)
 	private String email;
 	private Integer nroDocumento;
 	private String tipoDocumento;

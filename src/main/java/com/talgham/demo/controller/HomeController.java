@@ -16,9 +16,8 @@ public class HomeController {
 	
 	@GetMapping("/home")
 	public String home(Model model) {
-		
 		model.addAttribute("bienvenida", messageSource.getMessage("bienvenida.mensaje",new Object[]{},new Locale("")));
-		model.addAttribute("textBody", messageSource.getMessage("textBoby",new Object[]{},new Locale("")));
+		model.addAttribute("mensaje", messageSource.getMessage("mensaje",new Object[]{},new Locale("")));
 		return "home";
 	}
 }
