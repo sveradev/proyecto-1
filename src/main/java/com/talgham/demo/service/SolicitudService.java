@@ -74,12 +74,9 @@ public class SolicitudService {
 		return solicitudRepository.findByFechaSolicitadoBetween(desde, hasta);
 	}
 
-	public Iterable <Solicitud> buscar(String nombre, Date desde, Date hasta) {
+	public Iterable <Solicitud> buscar(Date desde, Date hasta) {
 		if(desde != null && hasta != null){
-			if(nombre == null || nombre.trim().equalsIgnoreCase("")){
-				return solicitudRepository.findByFechaSolicitadoBetween(desde, hasta);
-			} 
-			return solicitudRepository.findByNombreAndFechaSolicitadoBetween(nombre, desde, hasta);
+			return solicitudRepository.findByFechaSolicitadoBetween(desde, hasta);
 		}
 		return null;
 	}

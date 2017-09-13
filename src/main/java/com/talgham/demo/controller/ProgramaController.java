@@ -76,8 +76,8 @@ public class ProgramaController {
 	@PostMapping(path="/crearPrograma")
 	public @ResponseBody ModelAndView crearPrograma (@RequestParam Long id,
 			@RequestParam String nombre,
-			@RequestParam Date fechaSolicitado,
-			@RequestParam Date fechaUltimoCreado,
+			@RequestParam Date fechaProximo,
+			@RequestParam Date fechaUltimo,
 			@RequestParam Long trabajo_id,
 			@RequestParam Long cliente_id) {
 
@@ -88,8 +88,8 @@ public class ProgramaController {
 		
 		Programa programa = new Programa();
 		programa.setNombre(nombre);
-		programa.setFechaSolicitado(fechaSolicitado);
-		programa.setFechaUltimoCreado(fechaUltimoCreado);
+		programa.setFechaProximo(fechaProximo);
+		programa.setFechaUltimo(fechaUltimo);
 		programa.setTrabajo(trabajoService.buscarPorId(trabajo_id));
 		programa.setCliente(clienteService.buscarPorId(cliente_id));
 		if(!Constantes.GUARDADO.equalsIgnoreCase(programaService.crearPrograma(programa))){

@@ -10,9 +10,7 @@ public interface SolicitudRepository extends CrudRepository<Solicitud, Long> {
 
 	Solicitud findById(Long id);
 	
-	Iterable<Solicitud> findByNombre(String nombre); 
 	Iterable<Solicitud> findByFechaSolicitadoBetween (Date desde, Date hasta);
-	Iterable<Solicitud> findByNombreAndFechaSolicitadoBetween (String nombre, Date desde, Date hasta);
 	Iterable<Solicitud> findByClienteAndProgramada(Long id,Boolean programada);
 	
 }
