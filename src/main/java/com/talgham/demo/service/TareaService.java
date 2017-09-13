@@ -59,7 +59,7 @@ public class TareaService {
 			}
 			log.info("Se creo la solicitud {} exitosamente",solicitud.getId());
 			Integer incremento;
-			switch (programa.getTrabajo().getPeriodicidad()) {
+			switch (programa.getPeriodicidad()) {
 				case Constantes.PERIODICIDAD_MENSUAL: incremento = 1;
 				case Constantes.PERIODICIDAD_BIMESTRAL: incremento = 2;
 				case Constantes.PERIODICIDAD_TRIMESTRAL: incremento = 3;

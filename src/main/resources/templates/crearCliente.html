@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	{{>bloques/header}}
+	<body>
+		<section class="container custom-container">
+			<nav class="navbar">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<img src="images/logotalghamsmall.jpg" class="navbar-brand  center-block" alt=""/>
+					</div>
+				</div>
+			</nav>
+			<div class="page-header">
+				<h2><i class="fa fa-bars fa-fw"></i>Nuevo Cliente</h2>
+				<hr class="half-rule"/>
+				{{#salida}}
+					<div class="alert {{tipoSalida}}" role="alert">
+						{{salida}}
+					</div>
+				{{/salida}}
+			</div>
+			<form method="post" action="#">
+				<div class="form-group">
+					<input type="text" id="nombre" name="nombre" placeholder="Nombre" class="form-control input-lg" required/>
+				</div>
+				<div class="form-group">
+					<input type="text" id="cuit" name="cuit" placeholder="CUIT" class="form-control input-lg"/>
+				</div>
+				<div class="form-group">
+					<div class="input-group">
+						<input type="text" name="cierreEjercicio" placeholder="Cierre de Ejercicio" class="form-control input-md" required id="cierreEjercicio"/>
+						<span class="input-group-addon">
+							<span class="fa fa-calendar fa-fw"></span>
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<textarea id="descripcion" name="descripcion" placeholder="Descripci&oacute;n" class="form-control input-lg" rows="5" required/></textarea>
+				</div>
+				<div class="form-group">
+					<select id="representanteId" name="representanteId" class="form-control input-lg" required>
+						<option value ="0">Representante</option>
+						{{#representantes}}
+							<option value ="{{id}}">{{nombre}}</option>
+						{{/representantes}}
+					</select>
+				</div>
+				<div class="form-group">
+					<select id="contadorId" name="contadorId" class="form-control input-lg" required>
+						<option value ="0">Cliente</option>
+						{{#contadores}}
+							<option value ="{{id}}">{{nombre}}</option>
+						{{/contadores}}
+					</select>
+				</div>
+				<div class="form-group form-inline pull-right">
+					<a class="btn btn-lg btn-primary" href="/clientes">Volver</a>
+					<button type="submit" id="aceptar" class="btn btn-lg btn-primary">Aceptar</button>
+				</div>
+			</form>
+		</section>
+		{{>bloques/footer}}
+		<script type="text/javascript">
+			$(document).ready(function () {
+				$('#cierreEjercicio').datepicker({
+					format: "dd-mm-yyyy",
+					weekStart: 7,
+					todayBtn: true,
+					language: "es",
+					autoclose: true,
+					todayHighlight: true
+				});  
+			});
+		</script>
+	</body>
+</html>

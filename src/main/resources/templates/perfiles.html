@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+	{{>bloques/header}}
+	<body>
+		<section class="container custom-container">
+			<nav class="navbar">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<img src="images/logotalghamsmall.jpg" class="navbar-brand  center-block" alt=""/>
+					</div>
+					<div class="pull-right navbar-btn">
+						{{#usuario}}
+						{{#isAdmin}}
+						<div class="btn-group">
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+								<span class="fa fa-cog" title="Toggle dropdown menu"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="/usuarios"><i class="fa fa-user fa-fw"></i>Usuarios</a></li>
+								<li><a href="/emails"><i class="fa fa-envelope-o fa-fw"></i>Email</a></li>
+								<li class="divider"></li>
+								<li><a href="/perfiles"><i class="fa fa-male fa-fw"></i>Perfiles</a></li>
+								<li><a href="/estados"><i class="fa fa-check fa-fw"></i>Estados</a></li>
+							</ul>
+						</div>
+						{{/isAdmin}}
+						<div class="btn-group">
+							<a class="btn btn-primary"><i class="fa fa-user fa-fw"></i>{{nombre}}</a>
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+								<span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="/editarUsuario?id={{id}}"><i class="fa fa-pencil fa-fw"></i>Editar</a></li>
+								<li><a href="/cambiarPassword?id={{id}}"><i class="fa fa-trash-o fa-fw"></i>Cambiar Contraseña</a></li>
+								<li class="divider"></li>
+								<li><a href="/logout"><i class="fa fa-unlock fa-fw"></i>Salir</a></li>
+							</ul>
+						</div>
+						{{/usuario}}
+					</div>
+				</div>
+			</nav>
+			<div class="page-header">
+				<h2><i class="fa fa-bars fa-fw"></i>Perfiles</h2>
+				<hr class="half-rule"/>
+				<a type="button" class="btn btn-default" href="/crearPerfil"><i class="fa fa-plus fa-lg"></i>Nuevo</a>
+<!-- 				<a type="button" class="btn btn-default" href="/buscarSolicitud"><i class="fa fa-search fa-lg"></i> Buscar</a> -->
+				{{#salida}}
+					<div class="alert {{tipoSalida}}" perfile="alert">
+						{{salida}}
+					</div>
+				{{/salida}}
+			</div>
+			<section>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Nombre</th>
+							<th>Orden</th>
+						</tr>
+					</thead>
+					<tbody>
+						{{#perfiles}}
+							<tr>
+								<td>{{id}}</a></td>
+								<td>{{nombre}}</td>
+								<td>{{orden}}</td>
+							</tr>
+						{{/perfiles}}
+					</tbody>
+				</table>
+				{{^perfiles}}
+					<div class="form-group alert alert-info" perfile="alert">
+						No existen perfiles cargados.
+					</div>
+				{{/perfiles}}
+				<div class="form-group form-inline pull-right">
+					<a class="btn btn-lg btn-primary" href="/solicitudes">Volver</a>
+				</div>
+			</section>
+		</section>
+		{{>bloques/footer}}
+	</body>
+</html>

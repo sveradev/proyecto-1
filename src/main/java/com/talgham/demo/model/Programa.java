@@ -18,6 +18,7 @@ public class Programa {
 	private Boolean activo;
 	private Date fechaProximo;
 	private Date fechaUltimo;
+	private String periodicidad;
 	
 	private Date fechaAlta;
 	private Date fechaModificado;
@@ -58,6 +59,12 @@ public class Programa {
 	}
 	public void setFechaUltimo(Date fechaUltimo) {
 		this.fechaUltimo = fechaUltimo;
+	}
+	public String getPeriodicidad() {
+		return periodicidad;
+	}
+	public void setPeriodicidad(String periodicidad) {
+		this.periodicidad = periodicidad;
 	}
 	public Date getFechaAlta() {
 		return fechaAlta;

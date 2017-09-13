@@ -18,9 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.talgham.demo.common.Constantes;
 import com.talgham.demo.model.Cliente;
-import com.talgham.demo.model.Perfil;
 import com.talgham.demo.model.Programa;
-import com.talgham.demo.model.Rol;
 import com.talgham.demo.model.Trabajo;
 import com.talgham.demo.model.Usuario;
 import com.talgham.demo.service.ClienteService;

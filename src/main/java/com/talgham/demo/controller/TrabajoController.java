@@ -48,9 +48,7 @@ public class TrabajoController {
 	@PostMapping(path="/crearTrabajo")
 	public @ResponseBody ModelAndView crearTrabajo (@RequestParam Long id,
 			@RequestParam String nombre,
-			@RequestParam String descripcion,
-			@RequestParam String periodicidad,
-			@RequestParam Date fechaVencimiento) {
+			@RequestParam String descripcion) {
 
 		ModelAndView result = new ModelAndView("trabajos");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -60,8 +58,6 @@ public class TrabajoController {
 		Trabajo trabajo = new Trabajo();
 		trabajo.setNombre(nombre);
 		trabajo.setDescripcion(descripcion);
-		trabajo.setPeriodicidad(periodicidad);
-		trabajo.setFechaVencimiento(fechaVencimiento);
 		trabajo.setFechaAlta(new Date());
 		if(!Constantes.GUARDADO.equalsIgnoreCase(trabajoService.crearTrabajo(trabajo))){
 			result.addObject("trabajos", trabajoService.buscarTrabajos());
