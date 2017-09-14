@@ -9,14 +9,14 @@
 						<img src="images/logotalghamsmall.jpg" class="navbar-brand  center-block" alt=""/>
 					</div>
 					<ul class="nav navbar-nav">
-						<li><a href="/solicitudes">Solicitudes</a></li>
-						<li><a href="/agenda">Agenda</a></li>
+						<li><a href="/solicitudes"><h4>Solicitudes</h4></a></li>
+						<li><a href="/agenda"><h4>Agenda</h4></a></li>
 					</ul>
 					<div class="pull-right navbar-btn">
 						{{#usuario}}
 						{{#isAdmin}}
 						<div class="btn-group">
-							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+							<a class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" href="#">
 								<span class="fa fa-cog" title="Toggle dropdown menu"></span>
 							</a>
 							<ul class="dropdown-menu">
@@ -29,8 +29,8 @@
 						</div>
 						{{/isAdmin}}
 						<div class="btn-group">
-							<a class="btn btn-primary"><i class="fa fa-user fa-fw"></i>{{nombre}}</a>
-							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+							<a class="btn btn-primary btn-lg"><i class="fa fa-user fa-fw"></i>{{nombre}}</a>
+							<a class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" href="#">
 								<span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
 							</a>
 							<ul class="dropdown-menu">
@@ -47,9 +47,9 @@
 			<div class="page-header">
 				<h2><i class="fa fa-bars fa-fw"></i>Solicitudes</h2>
 				<hr class="half-rule"/>
-				<a type="button" class="btn btn-default" href="/crearSolicitud"><i class="fa fa-plus fa-lg"></i>&nbsp;Nueva</a>
-				<a type="button" class="btn btn-default" href="/buscarSolicitud"><i class="fa fa-search fa-lg"></i>&nbsp;Buscar</a>
-				<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#demo"><i class="fa fa-envelope fa-lg"></i>&nbsp;Enviar Reporte</button>
+				<a type="button" class="btn btn-default btn-lg" href="/crearSolicitud"><i class="fa fa-plus fa-lg"></i>&nbsp;Nueva</a>
+<!-- 				<a type="button" class="btn btn-default btn-lg" href="/buscarSolicitud"><i class="fa fa-search fa-lg"></i>&nbsp;Buscar</a> -->
+<!-- 				<button type="button" class="btn btn-default btn-lg" data-toggle="collapse" data-target="#demo"><i class="fa fa-envelope fa-lg"></i>&nbsp;Enviar Reporte</button> -->
 				<div id="demo" class="panel-collapse collapse">
 					<div class="panel-body">
 						<form method="post" action="#">
@@ -66,7 +66,7 @@
 										<span class="fa fa-calendar fa-fw"></span>
 									</span>
 								</div>
-								<button type="submit" id="enviar" formaction="enviarReporte" class="btn btn-md btn-primary">Enviar</button>
+								<button type="submit" id="enviar" formaction="enviarReporte" class="btn btn-md btn-primary btn-lg">Enviar</button>
 							</div>
 							
 						</form>

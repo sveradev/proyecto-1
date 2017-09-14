@@ -1,5 +1,6 @@
 package com.talgham.demo.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -99,6 +100,23 @@ public class Solicitud {
 		this.cliente = cliente;
 	}
 	public Boolean isSuccess () {
-		return estado.getOrden() == Constantes.ESTADO_SOLICITADO && this.fechaSolicitado.before(new Date()); //ver
+		return estado.getOrden() == Constantes.ESTADO_SOLICITADO && this.fechaSolicitado.before(new Date());
+	}
+	public Boolean isPending () {
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(this.fechaSolicitado); 
+		c.add(Calendar.DATE, 7);
+		Date pending = c.getTime();
+		return estado.getOrden() == Constantes.ESTADO_SOLICITADO && pending.before(new Date());
+	}
+	public Boolean isOverdue () {
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(this.fechaSolicitado); 
+		c.add(Calendar.DATE, 7);
+		Date overdue = c.getTime();
+		return estado.getOrden() == Constantes.ESTADO_SOLICITADO && overdue.before(new Date());
+	}
+	public Boolean isActive () {
+		return estado.getOrden() == Constantes.ESTADO_FINALIZADO;
 	}
 }
