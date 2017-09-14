@@ -109,11 +109,17 @@ public class SolicitudController {
 		if(usuarioSession.isContador()) {
 			solicitud.setCliente(clienteService.buscarPorContador(usuarioSession.getId()));
 		}
+		ModelAndView result = new ModelAndView("solicitudes");
+		if(usuarioSession.isAdmin()) {
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("error.permiso.alto",new Object[]{solicitud.getId()},new Locale("")));
+			result.addObject("usuario",usuarioSession);
+			return result;
+		}
 		solicitud.setProgramada(Boolean.FALSE);
 		solicitud.setTitulo(titulo);
 		solicitud.setDescripcion(descripcion);
 		
-		ModelAndView result = new ModelAndView("solicitudes");
 		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.addSolicitud(solicitud))){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{},new Locale("")));
