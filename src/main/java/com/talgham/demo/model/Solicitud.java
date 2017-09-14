@@ -100,7 +100,7 @@ public class Solicitud {
 		this.cliente = cliente;
 	}
 	public Boolean isSuccess () {
-		return estado.getOrden() == Constantes.ESTADO_SOLICITADO && new Date().after(this.fechaSolicitado);
+		return estado.getOrden() == Constantes.ESTADO_SOLICITADO && new Date().compareTo(this.fechaSolicitado) >= 0;
 	}
 	public Boolean isPending () {
 		Calendar c = Calendar.getInstance(); 

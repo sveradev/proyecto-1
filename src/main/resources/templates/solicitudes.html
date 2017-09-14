@@ -101,11 +101,11 @@
 										<a href="/eliminarSolicitud?id={{id}}"><i class="fa fa-trash-o fa-fw"></i></a>
 									</td>
 									<td>{{id}}</td>
-									{{#usuario.isContador}}<td>{{nombre}}</td>{{/usuario.isContador}}
+									{{#usuario.isContador}}<td>{{cliente.nombre}}</td>{{/usuario.isContador}}
 									<td>{{titulo}}</td>
 									<td>{{estado.nombre}}</td>
 									<td>{{fechaSolicitado}}</td>
-									<td>{{cliente.responsable.nombre}}</td>
+									<td>{{cliente.contador.nombre}}</td>
 									<td>
 										<div class="dropdown">
 											<i id="dropdownMenu" class="fa fa-search fa-fw dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
