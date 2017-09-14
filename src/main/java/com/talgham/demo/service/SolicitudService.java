@@ -80,25 +80,18 @@ public class SolicitudService {
 		return null;
 	}
 
-	public Iterable<Solicitud> buscarSolicitudes(Usuario usuario) {
+	public Iterable<Solicitud> buscarSolicitudes(Usuario usuario, Boolean programada) {
 		if(usuario.isAdmin()){
-			return solicitudRepository.findByProgramada(Boolean.FALSE);
+			return solicitudRepository.findByProgramadaOrderByFechaSolicitadaAsc(programada);
 		}
-		Cliente cliente = clienteRepository.findById(usuario.getId());
-		if(cliente == null){
-			return null;
+		Cliente cliente = new Cliente();
+		if(usuario.isCliente()){
+			cliente = clienteRepository.findByRepresentante_id(usuario.getId());
 		}
-		return solicitudRepository.findByClienteAndProgramada(cliente.getId(), Boolean.FALSE);
-	}
-
-	public Iterable<Solicitud> buscarAgenda(Usuario usuario) {
-		if(usuario.isAdmin()){
-			return solicitudRepository.findByProgramada(Boolean.TRUE);
+		if(usuario.isContador()){
+			cliente = clienteRepository.findByContador_id(usuario.getId());
 		}
-		Cliente cliente = clienteRepository.findById(usuario.getId());
-		if(cliente == null){
-			return null;
-		}
-		return solicitudRepository.findByClienteAndProgramada(cliente.getId(), Boolean.TRUE);
+		
+		return solicitudRepository.findByClienteAndProgramadaOrderByFechaSolicitadaAsc(cliente.getId(), programada);
 	}
 }

@@ -71,7 +71,7 @@ public class SolicitudController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuario = usuarioService.buscarPorEmail(auth.getName());
 		model.addAttribute("usuario",usuario);
-		model.addAttribute("solicitudes", solicitudService.buscarSolicitudes(usuario));
+		model.addAttribute("solicitudes", solicitudService.buscarSolicitudes(usuario, Boolean.FALSE));
 		return "solicitudes";
 	}
 	
@@ -80,7 +80,7 @@ public class SolicitudController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuario = usuarioService.buscarPorEmail(auth.getName());
 		model.addAttribute("usuario",usuario);
-		model.addAttribute("solicitudes", solicitudService.buscarAgenda(usuario));
+		model.addAttribute("solicitudes", solicitudService.buscarSolicitudes(usuario, Boolean.TRUE));
 		
 		return "agenda";
 	}
@@ -122,7 +122,7 @@ public class SolicitudController {
 		if(cliente == null) {
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.crear.sin.cliente",new Object[]{solicitud.getId()},new Locale("")));
-			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
+			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
 			result.addObject("usuario",usuarioSession);
 			return result;
 		}
@@ -135,11 +135,11 @@ public class SolicitudController {
 		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.addSolicitud(solicitud))){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{},new Locale("")));
-			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
+			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
 			result.addObject("usuario",usuarioSession);
 			return result;
 		}
-		result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
+		result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
 		
 		//Envio de mail.
 		Email emailTemplate = emailService.buscarPorActividad(Constantes.ACTIVIDAD_CREAR_SOLICITUD);
@@ -186,7 +186,7 @@ public class SolicitudController {
 		if(usuarioSession.isCliente()) {
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.editar.sin.permiso",new Object[]{},new Locale("")));
-			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
+			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
 			result.setViewName("solicitudes");
 			return result;
 		}
@@ -194,7 +194,7 @@ public class SolicitudController {
 		if(solicitud == null){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.encontrada",new Object[]{},new Locale("")));
-			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
+			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
 			result.setViewName("solicitudes");
 			return result;
 		}
@@ -230,7 +230,7 @@ public class SolicitudController {
 		if(usuarioSession.isCliente()) {
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.editar.sin.permiso",new Object[]{},new Locale("")));
-			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
+			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
 			result.setViewName("solicitudes");
 			return result;
 		}
@@ -246,34 +246,40 @@ public class SolicitudController {
 		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.guardarSolicitud(solicitud))){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{solicitud.getId()},new Locale("")));
-			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
+			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
 			return result;
 		}
 		result.addObject("usuario",usuarioSession);
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("solicitud.editada.exito",new Object[]{solicitud.getId()},new Locale("")));
-		result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
+		result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
 		return result;
 	}
 	
 	@PostMapping(path="/eliminarSolicitud")
 	public @ResponseBody ModelAndView eliminarSolicitud (@RequestParam Long id) throws ParseException {
 		
+		ModelAndView result = new ModelAndView("solicitudes");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		result.addObject("usuario",usuarioSession);
+		if(usuarioSession.isCliente() && usuarioSession.isContador()) {
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("solicitud.editar.sin.permiso",new Object[]{},new Locale("")));
+			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
+			return result;
+		}
 		Solicitud solicitud = solicitudService.buscarPorId(id);
 		Estado estadoSeleccionado = estadoService.buscarPorOrden(Constantes.ESTADO_CANCELADO);
 		solicitud.setEstado(estadoSeleccionado);
 		
-		ModelAndView result = new ModelAndView("solicitudes");
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
-		
-		result.addObject("usuario",usuarioService.buscarPorEmail(auth.getName()));
 		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.guardarSolicitud(solicitud))){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{solicitud.getId()},new Locale("")));
+			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
 			return result;
 		}
-		result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
+		result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("solicitud.editada.exito",new Object[]{solicitud.getId()},new Locale("")));
 		return result;
@@ -287,7 +293,7 @@ public class SolicitudController {
 			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
-			model.addAttribute("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
+			model.addAttribute("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
 			model.addAttribute("usuario",usuarioSession);
 			return "solicitudes";
 		}
@@ -311,7 +317,7 @@ public class SolicitudController {
 			result.addObject("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
-			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
+			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
 			result.addObject("usuario",usuarioSession);
 			result.setViewName("solicitudes");
 			return result;
@@ -430,7 +436,7 @@ public class SolicitudController {
 			result.addObject("salida",messageSource.getMessage("solicitud.no.completa.fechas",new Object[]{},new Locale("")));
 			return result;
 		}
-		result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
+		result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida",messageSource.getMessage("email.reporte.enviado",new Object[]{},new Locale("")));
 		return result;
