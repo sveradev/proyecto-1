@@ -85,8 +85,7 @@
 							<tr>
 								<th></th>
 								<th>Id</th>
-								{{#usuario.isContador}}<th>Nombre</th>{{/usuario.isContador}}
-								<th>Email</th>
+								{{#isContador}}<th>Nombre</th>{{/isContador}}
 								<th>Trabajo</th>
 								<th>Estado</th>
 								<th>Fecha</th>
@@ -103,7 +102,6 @@
 									</td>
 									<td>{{id}}</td>
 									{{#usuario.isContador}}<td>{{nombre}}</td>{{/usuario.isContador}}
-									<td>{{email}}</td>
 									<td>{{trabajo.nombre}}</td>
 									<td>{{estado.nombre}}</td>
 									<td>{{fechaSolicitado}}</td>
