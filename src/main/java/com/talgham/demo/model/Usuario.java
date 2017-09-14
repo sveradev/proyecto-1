@@ -109,9 +109,9 @@ public class Usuario {
 		return perfil.getOrden() <= Constantes.PERFIL_ADMINISTRADOR; 
 	}
 	public Boolean isContador() {
-		return perfil.getOrden() <= Constantes.PERFIL_CONTADOR;
+		return perfil.getOrden() == Constantes.PERFIL_CONTADOR;
 	}
 	public Boolean isCliente() {
-		return perfil.getOrden() <= Constantes.PERFIL_CLIENTE;
+		return perfil.getOrden() == Constantes.PERFIL_CLIENTE;
 	}
 }

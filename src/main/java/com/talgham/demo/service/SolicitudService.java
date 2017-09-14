@@ -42,7 +42,7 @@ public class SolicitudService {
 		return solicitudRepository.findById(id);
 	}
 
-	public String updateSolicitud(Solicitud mySolicitud) {
+	public String guardarSolicitud(Solicitud mySolicitud) {
 		Estado estado = mySolicitud.getEstado();
 		Trabajo trabajo = mySolicitud.getTrabajo();
 		String descripcion = mySolicitud.getDescripcion();
