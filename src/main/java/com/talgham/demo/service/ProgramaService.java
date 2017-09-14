@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.talgham.demo.common.Constantes;
-import com.talgham.demo.model.Estado;
 import com.talgham.demo.model.Programa;
-import com.talgham.demo.model.Solicitud;
-import com.talgham.demo.model.Trabajo;
 import com.talgham.demo.repository.ProgramaRepository;
 @Component
 public class ProgramaService {
