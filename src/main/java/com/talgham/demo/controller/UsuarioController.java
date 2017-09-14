@@ -73,8 +73,6 @@ public class UsuarioController {
 	public @ResponseBody ModelAndView createUsuario (@RequestParam String nombre,
 			@RequestParam String alias,
 			@RequestParam String email,
-//			@RequestParam String tipoDocumento,
-//			@RequestParam Integer nroDocumento,
 			@RequestParam String password,
 			@RequestParam Long rol,
 			@RequestParam Long perfil) {
@@ -88,8 +86,6 @@ public class UsuarioController {
 		usuario.setNombre(nombre);
 		usuario.setAlias(alias);
 		usuario.setEmail(email);
-//		usuario.setTipoDocumento(tipoDocumento);
-//		usuario.setNroDocumento(nroDocumento);
 		usuario.setPassword(password);
 		usuario.setRol(rolService.buscarPorId(rol));
 		usuario.setPerfil(perfilService.buscarPorId(perfil));
