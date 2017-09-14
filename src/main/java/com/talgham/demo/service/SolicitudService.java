@@ -81,12 +81,24 @@ public class SolicitudService {
 	}
 
 	public Iterable<Solicitud> buscarSolicitudes(Usuario usuario) {
+		if(usuario.isAdmin()){
+			return solicitudRepository.findByProgramada(Boolean.FALSE);
+		}
 		Cliente cliente = clienteRepository.findById(usuario.getId());
+		if(cliente == null){
+			return null;
+		}
 		return solicitudRepository.findByClienteAndProgramada(cliente.getId(), Boolean.FALSE);
 	}
 
 	public Iterable<Solicitud> buscarAgenda(Usuario usuario) {
+		if(usuario.isAdmin()){
+			return solicitudRepository.findByProgramada(Boolean.FALSE);
+		}
 		Cliente cliente = clienteRepository.findById(usuario.getId());
+		if(cliente == null){
+			return null;
+		}
 		return solicitudRepository.findByClienteAndProgramada(cliente.getId(), Boolean.TRUE);
 	}
 }

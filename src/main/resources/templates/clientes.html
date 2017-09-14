@@ -12,7 +12,7 @@
 						{{#usuario}}
 						{{#isAdmin}}
 						<div class="btn-group">
-							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+							<a class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" href="#">
 								<span class="fa fa-cog" title="Toggle dropdown menu"></span>
 							</a>
 							<ul class="dropdown-menu">
@@ -31,7 +31,7 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li><a href="/editarUsuario?id={{id}}"><i class="fa fa-pencil fa-fw"></i>Editar</a></li>
-								<li><a href="/cambiarPassword?id={{id}}"><i class="fa fa-trash-o fa-fw"></i>Cambiar Contraseña</a></li>
+								<li><a href="/cambiarPassword?id={{id}}"><i class="fa fa-trash-o fa-fw"></i>Cambiar Contraseï¿½a</a></li>
 								<li class="divider"></li>
 								<li><a href="/logout"><i class="fa fa-unlock fa-fw"></i>Salir</a></li>
 							</ul>
@@ -67,13 +67,13 @@
 							<tr>
 								<td>
 									<a href="/editarCliente?id={{id}}"><i class="fa fa-pencil fa-fw"></i></a>
-									<a href="/eliminarCliente?id={{id}}"><i class="fa fa-trash-o fa-fw"></i></a>
+<!-- 									<a href="/eliminarCliente?id={{id}}"><i class="fa fa-trash-o fa-fw"></i></a> -->
 								</td>
 								<td>{{nombre}}</td>
 								<td>{{cuit}}</td>
 								<td>{{cierreEjercicio}}</td>
-								<td>{{representante}}</td>
-								<td>{{contador}}</td>
+								<td>{{representante.nombre}}</td>
+								<td>{{contador.nombre}}</td>
 							</tr>
 						{{/clientes}}
 					</tbody>

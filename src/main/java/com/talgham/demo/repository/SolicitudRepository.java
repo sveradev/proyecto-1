@@ -12,5 +12,7 @@ public interface SolicitudRepository extends CrudRepository<Solicitud, Long> {
 	
 	Iterable<Solicitud> findByFechaSolicitadoBetween (Date desde, Date hasta);
 	Iterable<Solicitud> findByClienteAndProgramada(Long id,Boolean programada);
+
+	Iterable<Solicitud> findByProgramada(Boolean programada);
 	
 }
