@@ -100,21 +100,21 @@ public class Solicitud {
 		this.cliente = cliente;
 	}
 	public Boolean isSuccess () {
-		return estado.getOrden() == Constantes.ESTADO_SOLICITADO && this.fechaSolicitado.before(new Date());
+		return estado.getOrden() == Constantes.ESTADO_SOLICITADO && new Date().after(this.fechaSolicitado);
 	}
 	public Boolean isPending () {
 		Calendar c = Calendar.getInstance(); 
 		c.setTime(this.fechaSolicitado); 
 		c.add(Calendar.DATE, 7);
 		Date pending = c.getTime();
-		return estado.getOrden() == Constantes.ESTADO_SOLICITADO && pending.before(new Date());
+		return estado.getOrden() == Constantes.ESTADO_SOLICITADO && new Date().after(pending);
 	}
 	public Boolean isOverdue () {
 		Calendar c = Calendar.getInstance(); 
 		c.setTime(this.fechaSolicitado); 
 		c.add(Calendar.DATE, 7);
 		Date overdue = c.getTime();
-		return estado.getOrden() == Constantes.ESTADO_SOLICITADO && overdue.before(new Date());
+		return estado.getOrden() == Constantes.ESTADO_SOLICITADO && new Date().after(overdue);
 	}
 	public Boolean isActive () {
 		return estado.getOrden() == Constantes.ESTADO_FINALIZADO;
