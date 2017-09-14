@@ -102,7 +102,7 @@
 									</td>
 									<td>{{id}}</td>
 									{{#usuario.isContador}}<td>{{cliente.nombre}}</td>{{/usuario.isContador}}
-									<td>{{trabajo.nombre}}</td>
+									<td>{{#trabajo}}{{trabajo.nombre}}{{/trabajo}}</td>
 									<td>{{estado.nombre}}</td>
 									<td>{{fechaSolicitado}}</td>
 									<td>{{cliente.contador.nombre}}</td>

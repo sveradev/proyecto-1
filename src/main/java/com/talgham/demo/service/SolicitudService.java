@@ -93,7 +93,7 @@ public class SolicitudService {
 
 	public Iterable<Solicitud> buscarAgenda(Usuario usuario) {
 		if(usuario.isAdmin()){
-			return solicitudRepository.findByProgramada(Boolean.FALSE);
+			return solicitudRepository.findByProgramada(Boolean.TRUE);
 		}
 		Cliente cliente = clienteRepository.findById(usuario.getId());
 		if(cliente == null){
