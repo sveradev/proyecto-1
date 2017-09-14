@@ -123,11 +123,11 @@ public class SolicitudController {
 		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.addSolicitud(solicitud))){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{},new Locale("")));
-			result.addObject("solicitudes", solicitudService.getAllSolicitudes());
+			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
 			result.addObject("usuario",usuarioSession);
 			return result;
 		}
-		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
+		result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
 		
 		//Envio de mail.
 		Email emailTemplate = emailService.buscarPorActividad(Constantes.ACTIVIDAD_CREAR_SOLICITUD);
@@ -170,12 +170,13 @@ public class SolicitudController {
 	@RequestMapping("/editarSolicitud")
 	public ModelAndView editarSolicitud(@RequestParam(value="id") Long id) {
 		ModelAndView result = new ModelAndView("editarSolicitud");
-		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
 		Solicitud solicitud = solicitudService.buscarPorId(id);
 		if(solicitud == null){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.encontrada",new Object[]{},new Locale("")));
-			result.addObject("solicitudes", solicitudService.getAllSolicitudes());
+			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
 			result.setViewName("solicitudes");
 			return result;
 		}
@@ -230,7 +231,7 @@ public class SolicitudController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
 		result.addObject("usuario",usuarioSession);
-		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
+		result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
 		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.updateSolicitud(solicitud))){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{solicitud.getId()},new Locale("")));
@@ -250,13 +251,15 @@ public class SolicitudController {
 		
 		ModelAndView result = new ModelAndView("solicitudes");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		
 		result.addObject("usuario",usuarioService.buscarPorEmail(auth.getName()));
 		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.updateSolicitud(solicitud))){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{solicitud.getId()},new Locale("")));
 			return result;
 		}
-		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
+		result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("solicitud.editada.exito",new Object[]{solicitud.getId()},new Locale("")));
 		return result;
@@ -268,9 +271,9 @@ public class SolicitudController {
 		if(perfil == null){
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
 			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
-			model.addAttribute("solicitudes",solicitudService.getAllSolicitudes());
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+			model.addAttribute("solicitudes",solicitudService.buscarSolicitudes(usuarioSession));
 			model.addAttribute("usuario",usuarioSession);
 			return "solicitudes";
 		}
@@ -292,9 +295,9 @@ public class SolicitudController {
 		if(perfil == null){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
-			result.addObject("solicitudes", solicitudService.getAllSolicitudes());
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
 			result.addObject("usuario",usuarioSession);
 			result.setViewName("solicitudes");
 			return result;
@@ -414,7 +417,7 @@ public class SolicitudController {
 			return result;
 		}
 		
-		result.addObject("solicitudes", solicitudService.getAllSolicitudes());
+		result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession));
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida",messageSource.getMessage("email.reporte.enviado",new Object[]{},new Locale("")));
 		return result;
