@@ -105,7 +105,7 @@ public class Solicitud {
 	public Boolean isPending () {
 		Calendar c = Calendar.getInstance(); 
 		c.setTime(this.fechaSolicitado); 
-		c.add(Calendar.DATE, 7);
+		c.add(Calendar.DATE, 3);
 		Date pending = c.getTime();
 		return estado.getOrden() == Constantes.ESTADO_SOLICITADO && new Date().after(pending);
 	}
