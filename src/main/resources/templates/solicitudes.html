@@ -36,7 +36,9 @@
 			<div class="page-header">
 				<h2><i class="fa fa-bars fa-fw"></i>Solicitudes</h2>
 				<hr class="half-rule"/>
-				<a type="button" class="btn btn-default btn-lg" href="/crearSolicitud"><i class="fa fa-plus fa-lg"></i>&nbsp;Nueva</a>
+				{{^usuario.isAdmin}}
+					<a type="button" class="btn btn-default btn-lg" href="/crearSolicitud"><i class="fa fa-plus fa-lg"></i>&nbsp;Nueva</a>
+				{{/usuario.isAdmin}}
 <!-- 				<a type="button" class="btn btn-default btn-lg" href="/buscarSolicitud"><i class="fa fa-search fa-lg"></i>&nbsp;Buscar</a> -->
 <!-- 				<button type="button" class="btn btn-default btn-lg" data-toggle="collapse" data-target="#demo"><i class="fa fa-envelope fa-lg"></i>&nbsp;Enviar Reporte</button> -->
 				<div id="demo" class="panel-collapse collapse">
