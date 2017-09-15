@@ -25,7 +25,7 @@
 						<input type="text" id="titulo" name="titulo" placeholder="T&iacute;itulo" class="form-control input-lg" value="{{titulo}}"/>
 					</div>
 					<div class="form-group">
-						<select name="trabajo_id" placeholder="trabajo_id" class="form-control input-lg">
+						<select name="trabajo" placeholder="trabajo" class="form-control input-lg">
 							{{#trabajo}}
 								<option value ="{{trabajo.id}}">{{trabajo.nombre}}</option>
 							{{/trabajo}}
@@ -34,21 +34,11 @@
 							{{/trabajos}}
 						</select>
 					</div>
-					{{#usuario.isAdmin}}
 					<div class="form-group">
-						<select name="cliente_id" placeholder="cliente_id" class="form-control input-lg" required>
-							<option value ="{{cliente.id}}">{{cliente.nombre}}</option>
-							{{#clientes}}
-								<option value ="{{id}}">{{nombre}}</option>
-							{{/clientes}}
-						</select>
-					</div>
-					{{/usuario.isAdmin}}
-					<div class="form-group">        
 						<textarea id="descripcion" name="descripcion" placeholder="Descripci&oacute;n" class="form-control input-lg" rows="5" required/>{{descripcion}}</textarea>
 					</div>
 					<div class="form-group">
-						<select name="estado_id" placeholder="estado_id" class="form-control input-lg" required>
+						<select name="estado" placeholder="estado" class="form-control input-lg" required>
 							<option value ="{{estado.id}}">{{estado.nombre}}</option>
 							{{#estados}}
 								<option value ="{{id}}">{{nombre}}</option>

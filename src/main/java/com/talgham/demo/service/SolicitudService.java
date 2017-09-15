@@ -82,7 +82,7 @@ public class SolicitudService {
 
 	public Iterable<Solicitud> buscarSolicitudes(Usuario usuario, Boolean programada) {
 		if(usuario.isAdmin()){
-			return solicitudRepository.findByProgramadaOrderByFechaSolicitadaAsc(programada);
+			return solicitudRepository.findByProgramadaOrderByFechaSolicitadoAsc(programada);
 		}
 		Cliente cliente = new Cliente();
 		if(usuario.isCliente()){
@@ -92,6 +92,6 @@ public class SolicitudService {
 			cliente = clienteRepository.findByContador_id(usuario.getId());
 		}
 		
-		return solicitudRepository.findByClienteAndProgramadaOrderByFechaSolicitadaAsc(cliente.getId(), programada);
+		return solicitudRepository.findByClienteAndProgramadaOrderByFechaSolicitadoAsc(cliente.getId(), programada);
 	}
 }

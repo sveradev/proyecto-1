@@ -15,7 +15,7 @@ public interface SolicitudRepository extends CrudRepository<Solicitud, Long> {
 
 	Iterable<Solicitud> findByProgramada(Boolean programada);
 
-	Iterable<Solicitud> findByClienteAndProgramadaOrderByFechaSolicitadaAsc(Long id, Boolean programada);
-	Iterable<Solicitud> findByProgramadaOrderByFechaSolicitadaAsc(Boolean programada);
+	Iterable<Solicitud> findByClienteAndProgramadaOrderByFechaSolicitadoAsc(Long id, Boolean programada);
+	Iterable<Solicitud> findByProgramadaOrderByFechaSolicitadoAsc(Boolean programada);
 	
 }

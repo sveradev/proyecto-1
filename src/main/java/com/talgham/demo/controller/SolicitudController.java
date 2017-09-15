@@ -100,7 +100,7 @@ public class SolicitudController {
 	public @ResponseBody ModelAndView addSolicitud (
 			@RequestParam String titulo,
 			@RequestParam String descripcion,
-			@RequestParam Long cliente_id) throws ParseException {
+			@RequestParam Long cliente) throws ParseException {
 		
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -108,15 +108,15 @@ public class SolicitudController {
 
 		ModelAndView result = new ModelAndView("solicitudes");
 		Solicitud solicitud = new Solicitud();
-		Cliente cliente = null;
-		if(cliente_id != null) {
-			cliente = clienteService.buscarPorId(cliente_id);
+		Cliente clienteSel = null;
+		if(cliente != null) {
+			clienteSel = clienteService.buscarPorId(cliente);
 		} else {
 			if(usuarioSession.isCliente()) {
-				cliente = clienteService.buscarPorRepresentante(usuarioSession.getId());
+				clienteSel = clienteService.buscarPorRepresentante(usuarioSession.getId());
 			}
 			if(usuarioSession.isContador()) {
-				cliente = clienteService.buscarPorContador(usuarioSession.getId());
+				clienteSel = clienteService.buscarPorContador(usuarioSession.getId());
 			}
 		}
 		if(cliente == null) {
@@ -127,7 +127,7 @@ public class SolicitudController {
 			return result;
 		}
 		
-		solicitud.setCliente(cliente);
+		solicitud.setCliente(clienteSel);
 		solicitud.setProgramada(Boolean.FALSE);
 		solicitud.setTitulo(titulo);
 		solicitud.setDescripcion(descripcion);
@@ -157,17 +157,17 @@ public class SolicitudController {
 			}
 			
 			try {
-				emailService.sendEmail(cliente.getRepresentante().getEmail(), subject, texto);
+				emailService.sendEmail(clienteSel.getRepresentante().getEmail(), subject, texto);
 			} catch (Exception e) {
 				e.printStackTrace();
-				log.error("Hubo un error al enviar el mail para {}.", cliente.getRepresentante().getEmail());
+				log.error("Hubo un error al enviar el mail para {}.", clienteSel.getRepresentante().getEmail());
 			}
 			
 			try {
-				emailService.sendEmail(cliente.getContador().getEmail(), subject, texto);
+				emailService.sendEmail(clienteSel.getContador().getEmail(), subject, texto);
 			} catch (Exception e) {
 				e.printStackTrace();
-				log.error("Hubo un error al enviar el mail para {}.", cliente.getContador().getEmail());
+				log.error("Hubo un error al enviar el mail para {}.", clienteSel.getContador().getEmail());
 			}
 		} else {
 			log.error("No se ha encontrado un email configurado para la acción requerida.");
@@ -218,11 +218,10 @@ public class SolicitudController {
 	@PostMapping(path="/editarSolicitud")
 	public @ResponseBody ModelAndView editarSolicitud (@RequestParam Long id,
 			@RequestParam String titulo,
-			@RequestParam Long estado_id,
-			@RequestParam Long trabajo_id,
+			@RequestParam Long estado,
+			@RequestParam Long trabajo,
 			@RequestParam String descripcion, 
-			@RequestParam String fechaSol,
-			@RequestParam Long cliente_id) throws ParseException {
+			@RequestParam String fechaSol) throws ParseException {
 		
 		ModelAndView result = new ModelAndView("solicitudes");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -239,9 +238,8 @@ public class SolicitudController {
 			solicitud.setFechaSolicitado(formatter.parse(fechaSol));
 		}
 		solicitud.setTitulo(titulo);
-		solicitud.setTrabajo(trabajoService.buscarPorId(trabajo_id));
-		solicitud.setEstado(estadoService.buscarPorId(estado_id));
-		solicitud.setCliente(clienteService.buscarPorId(estado_id));
+		solicitud.setTrabajo(trabajoService.buscarPorId(trabajo));
+		solicitud.setEstado(estadoService.buscarPorId(estado));
 		solicitud.setDescripcion(descripcion);
 		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.guardarSolicitud(solicitud))){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
