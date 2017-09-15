@@ -15,7 +15,7 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
 jar {
-	baseName = 'gs-spring-boot'
+	baseName = 'talgham_web'
 	version = '0.1.0'
 }
 
