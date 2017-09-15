@@ -26,16 +26,6 @@
 				<div class="form-group">
 					<textarea id="descripcion" name="descripcion" placeholder="Descripci&oacute;n" class="form-control input-lg" rows="5" required/></textarea>
 				</div>
-				{{#usuario.isAdmin}}
-					<div class="form-group">
-						<select id="cliente_id" name="cliente_id" class="form-control input-lg" required>
-								<option value ="0">Seleccione un Cliente</option>
-							{{#clientes}}
-								<option value ="{{id}}">{{nombre}}</option>
-							{{/clientes}}
-						</select>
-					</div>
-				{{/usuario.isAdmin}}
 				<div class="form-group form-inline pull-right">
 					<a class="btn btn-lg btn-primary btn-lg" href="/solicitudes">Volver</a>
 					<button type="submit" id="aceptar" class="btn btn-lg btn-primary">Aceptar</button>

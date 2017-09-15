@@ -99,8 +99,7 @@ public class SolicitudController {
 	@PostMapping(path="/crearSolicitud")
 	public @ResponseBody ModelAndView addSolicitud (
 			@RequestParam String titulo,
-			@RequestParam String descripcion,
-			@RequestParam Long cliente) throws ParseException {
+			@RequestParam String descripcion) throws ParseException {
 		
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -109,23 +108,12 @@ public class SolicitudController {
 		ModelAndView result = new ModelAndView("solicitudes");
 		Solicitud solicitud = new Solicitud();
 		Cliente clienteSel = null;
-		if(cliente != null) {
-			clienteSel = clienteService.buscarPorId(cliente);
-		} else {
 			if(usuarioSession.isCliente()) {
 				clienteSel = clienteService.buscarPorRepresentante(usuarioSession.getId());
 			}
 			if(usuarioSession.isContador()) {
 				clienteSel = clienteService.buscarPorContador(usuarioSession.getId());
 			}
-		}
-		if(cliente == null) {
-			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
-			result.addObject("salida", messageSource.getMessage("solicitud.crear.sin.cliente",new Object[]{solicitud.getId()},new Locale("")));
-			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
-			result.addObject("usuario",usuarioSession);
-			return result;
-		}
 		
 		solicitud.setCliente(clienteSel);
 		solicitud.setProgramada(Boolean.FALSE);
