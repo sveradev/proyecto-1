@@ -92,6 +92,6 @@ public class SolicitudService {
 			cliente = clienteRepository.findByContador_id(usuario.getId());
 		}
 		
-		return solicitudRepository.findByClienteAndProgramadaOrderByFechaSolicitadoAsc(cliente.getId(), programada);
+		return solicitudRepository.findByCliente_idAndProgramadaOrderByFechaSolicitadoAsc(cliente.getId(), programada);
 	}
 }
