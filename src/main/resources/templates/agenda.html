@@ -74,11 +74,11 @@
 							<tr>
 								<th></th>
 								<th>Id</th>
-								{{#usuario.isContador}}<th>Nombre</th>{{/usuario.isContador}}
+								{{^usuario.isCliente}}<th>Nombre</th>{{/usuario.isCliente}}
 								<th>Trabajo</th>
 								<th>Estado</th>
 								<th>Fecha</th>
-								<th>Responsable</th>
+								{{^usuario.isContador}}<th>Responsable</th>{{/usuario.isContador}}
 								<th>Descripci&oacute;n</th>
 							</tr>
 						</thead>
@@ -92,13 +92,11 @@
 										{{/usuario.isAdmin}}
 									</td>
 									<td>{{id}}</td>
-									{{#usuario.isContador}}
-										<td>{{cliente.nombre}}</td>
-									{{/usuario.isContador}}
+									{{^usuario.isCliente}}<td>{{cliente.nombre}}</td>{{/usuario.isCliente}}
 									<td>{{#trabajo}}{{trabajo.nombre}}{{/trabajo}}</td>
 									<td>{{estado.nombre}}</td>
 									<td>{{fechaSolicitado}}</td>
-									<td>{{cliente.contador.nombre}}</td>
+									{{^usuario.isContador}}<td>{{cliente.contador.nombre}}</td>{{/usuario.isContador}}
 									<td>
 										<div class="dropdown">
 											<i id="dropdownMenu" class="fa fa-search fa-fw dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
