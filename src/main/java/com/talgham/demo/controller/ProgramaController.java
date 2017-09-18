@@ -76,8 +76,8 @@ public class ProgramaController {
 			@RequestParam String nombre,
 			@RequestParam Date fechaProximo,
 			@RequestParam Date fechaUltimo,
-			@RequestParam Long trabajo_id,
-			@RequestParam Long cliente_id) {
+			@RequestParam Long trabajo,
+			@RequestParam Long cliente) {
 
 		ModelAndView result = new ModelAndView("programas");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -88,8 +88,8 @@ public class ProgramaController {
 		programa.setNombre(nombre);
 		programa.setFechaProximo(fechaProximo);
 		programa.setFechaUltimo(fechaUltimo);
-		programa.setTrabajo(trabajoService.buscarPorId(trabajo_id));
-		programa.setCliente(clienteService.buscarPorId(cliente_id));
+		programa.setTrabajo(trabajoService.buscarPorId(trabajo));
+		programa.setCliente(clienteService.buscarPorId(cliente));
 		if(!Constantes.GUARDADO.equalsIgnoreCase(programaService.crearPrograma(programa))){
 			result.addObject("programas", programaService.buscarProgramas());
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);

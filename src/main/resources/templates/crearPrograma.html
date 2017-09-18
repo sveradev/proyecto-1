@@ -35,16 +35,16 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<select id="trabajo_id" name="trabajo_id" class="form-control input-lg" required>
-						<option value ="0">Trabajo</option>
+					<select id="trabajo" name="trabajo" class="form-control input-lg" required>
+						<option value ="0">Seleccione una Tarea</option>
 						{{#trabajos}}
 							<option value ="{{id}}">{{nombre}}</option>
 						{{/trabajos}}
 					</select>
 				</div>
 				<div class="form-group">
-					<select id="cliente_id" name="cliente_id" class="form-control input-lg" required>
-						<option value ="0">Cliente</option>
+					<select id="cliente" name="cliente" class="form-control input-lg" required>
+						<option value ="0">Seleccione un Cliente</option>
 						{{#clientes}}
 							<option value ="{{id}}">{{nombre}}</option>
 						{{/clientes}}
