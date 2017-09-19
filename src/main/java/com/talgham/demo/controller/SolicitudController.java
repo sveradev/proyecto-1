@@ -242,22 +242,7 @@ public class SolicitudController {
 		return result;
 	}
 	
-	@RequestMapping("/eliminarSolicitud")
-	public String eliminarSolicitud(@RequestParam(value="id") Long id, Model model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Usuario usuario = usuarioService.buscarPorEmail(auth.getName());
-		if(!usuario.isAdmin()) {
-			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
-			model.addAttribute("salida", messageSource.getMessage("solicitud.eliminar.sin.permiso",new Object[]{},new Locale("")));
-			model.addAttribute("solicitudes", solicitudService.buscarSolicitudes(usuario, Boolean.FALSE));
-			return "solicitudes";
-		}
-		model.addAttribute("mensaje",messageSource.getMessage("solicitud.eliminar.confirmar",new Object[]{id},new Locale("")));
-		model.addAttribute("usuario",usuario);
-		return "eliminarSolicitud";
-	}
-	
-	@PostMapping(path="/eliminarSolicitud")
+	@RequestMapping(path="/eliminarSolicitud")
 	public @ResponseBody ModelAndView eliminarSolicitud(@RequestParam Long id) throws ParseException {
 		
 		ModelAndView result = new ModelAndView("solicitudes");

@@ -220,7 +220,7 @@ public class UsuarioController {
 		return result;
 	}
 	
-	@PostMapping("/eliminarUsuario")
+	@RequestMapping("/eliminarUsuario")
 	public ModelAndView eliminarUsuario(@RequestParam(value="id") Long id) {
 		ModelAndView result = new ModelAndView("usuarios");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
