@@ -171,6 +171,7 @@ public class SolicitudController {
 		ModelAndView result = new ModelAndView("editarSolicitud");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		result.addObject("usuario", usuarioSession);
 		if(usuarioSession.isCliente()) {
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("solicitud.editar.sin.permiso",new Object[]{},new Locale("")));
