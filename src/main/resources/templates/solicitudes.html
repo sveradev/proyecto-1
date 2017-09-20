@@ -24,7 +24,7 @@
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="/editarUsuario?id={{id}}"><i class="fa fa-pencil fa-fw"></i>Editar</a></li>
-									<li><a href="/cambiarPassword?id={{id}}"><i class="fa fa-key fa-fw"></i>Cambiar Contraseña</a></li>
+									<li><a href="/cambiarPassword?id={{id}}"><i class="fa fa-key fa-fw"></i>Cambiar Contraseï¿½a</a></li>
 									<li class="divider"></li>
 									<li><a href="/logout"><i class="fa fa-unlock fa-fw"></i>Salir</a></li>
 								</ul>
@@ -88,8 +88,11 @@
 							{{#solicitudes}}
 								<tr class= "{{#isSuccess}}success{{/isSuccess}} {{#isPending}}warning{{/isPending}} {{#isOverdue}}danger{{/isOverdue}} {{#isActive}}info{{/isActive}}">
 									<td>
-										<a href="/editarSolicitud?id={{id}}"><i class="fa fa-pencil fa-fw"></i></a>
+										{{#usuario.isContador}}
+											<a href="/finalizarSolicitud?id={{id}}"><i class="fa fa-check fa-fw"></i></a>
+										{{/usuario.isContador}}
 										{{#usuario.isAdmin}}
+											<a href="/editarSolicitud?id={{id}}"><i class="fa fa-pencil fa-fw"></i></a>
 											<a href="/eliminarSolicitud?id={{id}}"><i class="fa fa-trash-o fa-fw"></i></a>
 										{{/usuario.isAdmin}}
 									</td>

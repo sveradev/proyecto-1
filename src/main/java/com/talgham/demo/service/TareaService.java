@@ -40,8 +40,8 @@ public class TareaService {
 
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.DAY_OF_MONTH, 1);
-	    Date desde = c.getTime();
-		    
+		Date desde = c.getTime();
+
 		Calendar c2 = Calendar.getInstance();
 		c2.set(Calendar.DAY_OF_MONTH, c2.getActualMaximum(Calendar.DAY_OF_MONTH));
 		Date hasta = c2.getTime();
@@ -69,8 +69,8 @@ public class TareaService {
 			}
 			
 			Calendar cal = Calendar.getInstance(); 
-            cal.setTime(programa.getFechaUltimo()); 
-            cal.add(Calendar.MONTH, incremento );
+			cal.setTime(programa.getFechaProximo()); 
+			cal.add(Calendar.MONTH, incremento );
 			programa.setFechaProximo(cal.getTime());
 			programa.setFechaUltimo(solicitud.getFechaSolicitado());
 			programaService.guardar(programa);
@@ -83,8 +83,8 @@ public class TareaService {
 		
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.DAY_OF_MONTH, 1);
-	    Date fechaDesde = c.getTime();
-		    
+		Date fechaDesde = c.getTime();
+
 		Calendar c2 = Calendar.getInstance();
 		c2.set(Calendar.DAY_OF_MONTH, c2.getActualMaximum(Calendar.DAY_OF_MONTH));
 		Date fechaHasta = c2.getTime();

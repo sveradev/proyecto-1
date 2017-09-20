@@ -3,18 +3,37 @@
 	{{>bloques/header}}
 	<body>
 		<section class="container custom-container text-center">
-			<nav class="navbar" role="navigation">
+			<nav class="navbar">
 				<div class="container-fluid">
-					<div class="btn-group navbar-right">
-						<a class="btn btn-primary btn-lg" href="/login"><i class="fa fa-sign-in fa-fw"></i> Ingresar </a>
+					<div class="navbar-header">
+						<img src="images/logotalghamsmall.jpg" class="navbar-brand  center-block" alt=""/>
+					</div>
+					<div class="pull-right navbar-btn">
+						{{#usuario}}
+							{{#isAdmin}}
+								{{>bloques/botonConfiguracion}}
+							{{/isAdmin}}
+							<div class="btn-group">
+								<a class="btn btn-primary btn-lg"><i class="fa fa-user fa-fw"></i>{{nombre}}</a>
+								<a class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" href="#">
+									<span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
+								</a>
+								<ul class="dropdown-menu">
+									<li><a href="/editarUsuario?id={{id}}"><i class="fa fa-pencil fa-fw"></i>Editar</a></li>
+									<li><a href="/cambiarPassword?id={{id}}"><i class="fa fa-key fa-fw"></i>Cambiar Contrase�a</a></li>
+									<li class="divider"></li>
+									<li><a href="/logout"><i class="fa fa-unlock fa-fw"></i>Salir</a></li>
+								</ul>
+							</div>
+						{{/usuario}}
 					</div>
 				</div>
 			</nav>
 			<div class="container-fluid">
 				<div class="well">
 					<img src="images/logotalgham.jpg" class="img-responsive center-block" alt=""/>
-					<div class="panel-body"><h4 class="text-center">{{bienvenida}}</h4></div>
-					<div class="panel-body">{{mensaje}}</div>
+					<div class="panel-body"><h3 class="text-center">{{bienvenida}}</h3></div>
+					<div class="panel-body"><h4>{{mensaje}}</h4></div>
 					<a class="btn btn-lg btn-primary btn-lg" href="/agenda">Agenda</a>
 					<a class="btn btn-lg btn-primary btn-lg" href="/solicitudes">Solicitudes</a>
 				</div>

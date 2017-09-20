@@ -18,7 +18,7 @@ public class EstadoService {
 	}
 
 	public Estado buscarPorId(Long estado) {
-		return estadoRepository.findById(estado);
+		return estadoRepository.findByIdAndActivo(estado,Boolean.TRUE);
 	}
 
 	public String crearEstado(Estado estado) {

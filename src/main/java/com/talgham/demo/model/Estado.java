@@ -11,13 +11,14 @@ import javax.persistence.Id;
 public class Estado {
 	
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	private String nombre;
 	private String descripcion;
 	private Date fechaCreacion;
 	private Integer color;
 	private Integer orden;
+	private Boolean activo;
 	
 	public long getId() {
 		return id;
@@ -54,5 +55,11 @@ public class Estado {
 	}
 	public void setOrden(Integer orden) {
 		this.orden = orden;
+	}
+	public Boolean getActivo() {
+		return activo;
+	}
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
 	}
 }

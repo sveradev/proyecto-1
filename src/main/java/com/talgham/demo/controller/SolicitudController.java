@@ -272,6 +272,35 @@ public class SolicitudController {
 		return result;
 	}
 	
+	@RequestMapping(path="/finalizarSolicitud")
+	public @ResponseBody ModelAndView finalizarSolicitud(@RequestParam Long id) throws ParseException {
+		
+		ModelAndView result = new ModelAndView("solicitudes");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		result.addObject("usuario",usuarioSession);
+		if(usuarioSession.isCliente()) {
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("solicitud.editar.sin.permiso",new Object[]{},new Locale("")));
+			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
+			return result;
+		}
+		Solicitud solicitud = solicitudService.buscarPorId(id);
+		Estado estadoSeleccionado = estadoService.buscarPorOrden(Constantes.ESTADO_FINALIZADO);
+		solicitud.setEstado(estadoSeleccionado);
+		
+		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.guardarSolicitud(solicitud))){
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{solicitud.getId()},new Locale("")));
+			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
+			return result;
+		}
+		result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
+		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
+		result.addObject("salida", messageSource.getMessage("solicitud.editada.exito",new Object[]{solicitud.getId()},new Locale("")));
+		return result;
+	}
+	
 	@GetMapping("/buscarSolicitud")
 	public String buscarSolicitud(Model model) {
 		Perfil perfil = perfilService.buscarPorOrden(Constantes.PERFIL_CONTADOR);

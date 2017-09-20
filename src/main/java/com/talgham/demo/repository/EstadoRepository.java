@@ -11,5 +11,6 @@ public interface EstadoRepository extends CrudRepository<Estado, Long> {
 	Estado findById(Long estado);
 	List<Estado> findAll();
 	Estado findByOrden(Integer orden);
+	Estado findByIdAndActivo(Long estado, Boolean  activo);
 
 }

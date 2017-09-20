@@ -106,31 +106,31 @@ public class UsuarioController {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
-		if(!usuarioSession.isAdmin()) {
+		if(usuarioSession.isAdmin()) {
+			List<Rol> roles = (List<Rol>) rolService.getAllRoles();
+			if(roles == null || roles.isEmpty()){
+				model.addAttribute("usuarios", usuarioService.buscarUsuarios());
+				model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
+				model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
+				model.addAttribute("usuario",usuarioSession);
+				return "usuarios";
+			}
+			List<Perfil> perfiles = (List<Perfil>) perfilService.getAllPerfiles();
+			if(perfiles == null || perfiles.isEmpty()){
+				model.addAttribute("usuarios", usuarioService.buscarUsuarios());
+				model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
+				model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.perfiles",new Object[]{},new Locale("")));
+				model.addAttribute("usuario",usuarioSession);
+				return "usuarios";
+			}
+			model.addAttribute("roles",roles);
+			model.addAttribute("perfiles",perfiles);
+		} else if (usuarioSession.getId() != id){
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
 			model.addAttribute("salida", messageSource.getMessage("usuario.sin.permisos",new Object[]{},new Locale("")));
 			return "mensaje";
 		}
-		
-		List<Rol> roles = (List<Rol>) rolService.getAllRoles();
-		if(roles == null || roles.isEmpty()){
-			model.addAttribute("usuarios", usuarioService.buscarUsuarios());
-			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
-			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.roles",new Object[]{},new Locale("")));
-			model.addAttribute("usuario",usuarioSession);
-			return "usuarios";
-		}
-		List<Perfil> perfiles = (List<Perfil>) perfilService.getAllPerfiles();
-		if(perfiles == null || perfiles.isEmpty()){
-			model.addAttribute("usuarios", usuarioService.buscarUsuarios());
-			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
-			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.perfiles",new Object[]{},new Locale("")));
-			model.addAttribute("usuario",usuarioSession);
-			return "usuarios";
-		}
 		model.addAttribute("usuario", usuarioService.buscarPorId(id));
-		model.addAttribute("roles",roles);
-		model.addAttribute("perfiles",perfiles);
 		return "editarUsuario";
 	}
 
@@ -250,6 +250,11 @@ public class UsuarioController {
 	public String usuarios(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuario = usuarioService.buscarPorEmail(auth.getName());
+		if(!usuario.isAdmin()) {
+			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
+			model.addAttribute("salida", messageSource.getMessage("usuario.sin.permisos",new Object[]{},new Locale("")));
+			return "mensaje";
+		}
 		model.addAttribute("usuario",usuario);
 		model.addAttribute("usuarios", usuarioService.buscarUsuarios());
 		return "usuarios";
