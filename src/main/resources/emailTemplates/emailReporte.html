@@ -6,9 +6,9 @@
 			<thead>
 				<tr>
 					<th>Id</th>
-					<th>Nombre</th>
-					<th>Email</th>
+					<th>Cliente</th>
 					<th>T&iacute;tulo</th>
+					<th>Trabajo</th>
 					<th>Estado</th>
 					<th>Fecha</th>
 					<th>Responsable</th>
@@ -27,19 +27,19 @@
 							background-color: #fcf8e3;
 							border-color: #faebcc;
 						{{/isPending}}
-						{#isOverdue}}
+						{{#isOverdue}}
 							color: #a94442;
 							background-color: #f2dede;
 							border-color: #ebccd1;
 						{{/isOverdue}}
 					">
 						<td>{{id}}</td>
-						<td>{{nombre}}</td>
-						<td>{{email}}</td>
-						<td>{{titulo}}</td>
+						<td>{{cliente.nombre}}</td>
+						<td>{{#titulo}}{{titulo}}{{/titulo}}</td>
+						<td>{{#trabajo}}{{trabajo}}{{/trabajo}}</td>
 						<td>{{estado.nombre}}</td>
 						<td>{{fechaSolicitado}}</td>
-						<td>{{responsable.nombre}}</td>
+						<td>{{cliente.contador.nombre}}</td>
 					</tr>
 				{{/solicitudes}}
 			</tbody>
