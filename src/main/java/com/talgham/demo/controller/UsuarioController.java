@@ -234,7 +234,7 @@ public class UsuarioController {
 			return result;
 		}
 		usuario.setFechaBaja(new Date());
-		if(!Constantes.GUARDADO.equalsIgnoreCase(usuarioService.updateUsuario(usuario))){
+		if(!Constantes.ELIMINADO.equalsIgnoreCase(usuarioService.eliminarUsuario(usuario))){
 			result.addObject("usuarios", usuarioService.buscarUsuarios());
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
 			result.addObject("salida", messageSource.getMessage("usuario.baja.error",new Object[]{usuario.getNombre()},new Locale("")));
