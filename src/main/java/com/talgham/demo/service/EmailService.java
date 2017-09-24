@@ -49,7 +49,7 @@ public class EmailService {
     	messageBodyPart.setContent(text, "text/html");
 		multipart.addBodyPart(messageBodyPart);
 		
-		helper.setText(text);
+		helper.setText(text,true);
 		
 
 		sender.send(message);
