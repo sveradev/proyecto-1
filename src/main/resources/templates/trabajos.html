@@ -5,8 +5,8 @@
 		<section class="container custom-container">
 			<nav class="navbar">
 				<div class="container-fluid">
-					<div class="navbar-header">
-						<img src="images/logotalghamsmall.jpg" class="navbar-brand  center-block" alt=""/>
+					<div class="navbar-brand">
+						<img alt="Brand" src="images/logotalghamsmall.jpg" class="img-responsive">
 					</div>
 					<div class="pull-right navbar-btn">
 						{{#usuario}}
@@ -14,13 +14,13 @@
 								{{>bloques/botonConfiguracion}}
 							{{/isAdmin}}
 							<div class="btn-group">
-								<a class="btn btn-primary"><i class="fa fa-user fa-fw"></i>{{nombre}}</a>
-								<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+								<a class="btn btn-primary btn-lg"><i class="fa fa-user fa-fw"></i>{{nombre}}</a>
+								<a class="btn btn-primary dropdown-toggle btn-lg" data-toggle="dropdown" href="#">
 									<span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="/editarUsuario?id={{id}}"><i class="fa fa-pencil fa-fw"></i>Editar</a></li>
-									<li><a href="/cambiarPassword?id={{id}}"><i class="fa fa-trash-o fa-fw"></i>Cambiar Contraseña</a></li>
+<!-- 									<li><a href="/cambiarPassword?id={{id}}"><i class="fa fa-trash-o fa-fw"></i>Cambiar ContraseÃ±a</a></li> -->
 									<li class="divider"></li>
 									<li><a href="/logout"><i class="fa fa-unlock fa-fw"></i>Salir</a></li>
 								</ul>
@@ -30,9 +30,9 @@
 				</div>
 			</nav>
 			<div class="page-header">
-				<h2><i class="fa fa-bars fa-fw"></i>Trabajos</h2>
+				<h2><i class="fa fa-briefcase fa-fw"></i>Trabajos</h2>
 				<hr class="half-rule"/>
-				<a class="btn btn-default" href="/crearTrabajos"><i class="fa fa-plus fa-lg"></i> Nuevo</a>
+				<a class="btn btn-default btn-lg" href="/crearTrabajo"><i class="fa fa-plus fa-lg"></i> Nuevo</a>
 				{{#salida}}
 					<div class="alert {{tipoSalida}}" role="alert">
 						{{salida}}

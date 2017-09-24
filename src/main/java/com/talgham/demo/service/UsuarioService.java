@@ -89,4 +89,9 @@ public class UsuarioService {
 	public Iterable<Usuario> buscarPorPerfil_orden(Integer orden) {
 		return usuarioRepository.findByPerfil_orden(orden);
 	}
+
+	public String eliminarUsuario(Usuario usuario) {
+		usuarioRepository.delete(usuario);
+		return Constantes.ELIMINADO;
+	}
 }

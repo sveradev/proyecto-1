@@ -46,8 +46,7 @@ public class TrabajoController {
 	}
 
 	@PostMapping(path="/crearTrabajo")
-	public @ResponseBody ModelAndView crearTrabajo (@RequestParam Long id,
-			@RequestParam String nombre,
+	public @ResponseBody ModelAndView crearTrabajo (@RequestParam String nombre,
 			@RequestParam String descripcion) {
 
 		ModelAndView result = new ModelAndView("trabajos");

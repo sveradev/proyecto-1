@@ -14,7 +14,7 @@ public class EstadoService {
 	private EstadoRepository estadoRepository;
 
 	public Iterable<Estado> getAllEstados() {
-		return estadoRepository.findAll();
+		return estadoRepository.findByActivo(Boolean.TRUE);
 	}
 
 	public Estado buscarPorId(Long estado) {

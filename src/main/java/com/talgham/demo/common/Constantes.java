@@ -18,6 +18,7 @@ public class Constantes {
 	public static final Integer PERFIL_CLIENTE = 4;
 	
 	public static final String GUARDADO = "Guardado";
+	public static final String ELIMINADO = "Eliminado";
 
 	public static final String ALERTA_SUCCESS = "alert-success";
 	public static final String ALERTA_DANGER = "alert-danger";

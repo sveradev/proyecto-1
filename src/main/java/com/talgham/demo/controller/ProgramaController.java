@@ -72,8 +72,7 @@ public class ProgramaController {
 	}
 
 	@PostMapping(path="/crearPrograma")
-	public @ResponseBody ModelAndView crearPrograma (@RequestParam Long id,
-			@RequestParam String nombre,
+	public @ResponseBody ModelAndView crearPrograma (@RequestParam String nombre,
 			@RequestParam Date fechaProximo,
 			@RequestParam Date fechaUltimo,
 			@RequestParam Long trabajo,
