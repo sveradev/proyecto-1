@@ -24,11 +24,17 @@
 					<input type="text" id="nombre" name="nombre" placeholder="Nombre" class="form-control input-lg" required/>
 				</div>
 				<div class="form-group">
-					<input type="text" id="periodicidad" name="periodicidad" placeholder="Periodicidad" class="form-control input-lg" required/>
+					<select name="periodicidad" placeholder="Periodicidad" class="form-control input-lg" required>
+						<option value ="Mensual">Mensual</option>
+						<option value ="Bimestral">Bimestral</option>
+						<option value ="Trimestral">Trimestral</option>
+						<option value ="Semestral">Semestral</option>
+						<option value ="Anual">Anual</option>
+					</select>
 				</div>
 				<div class="form-group">
 					<div class="input-group">
-						<input type="text" name="fechaProximo" placeholder="Pr�xima Solicitud" class="form-control input-md" required id="fechaProximo"/>
+						<input type="text" name="fechaProximo" placeholder="Pr&oacute;xima Solicitud" class="form-control input-lg" required id="fechaProximo"/>
 						<span class="input-group-addon">
 							<span class="fa fa-calendar fa-fw"></span>
 						</span>

@@ -46,14 +46,17 @@
 						</select>
 					</div>
 					{{#usuario.isAdmin}}
-					<div class="form-group">
-						<div class="input-group">
-							<input type="text" name="fechaSol" placeholder="Fecha Solicitada" class="form-control input-lg" required id="fechaSol" value="{{fechaSol}}"/>
-							<span class="input-group-addon">
-								<span class="fa fa-calendar fa-fw"></span>
-							</span>
+						<div class="form-group">
+							<div class="input-group">
+								<input type="text" name="fechaSol" placeholder="Fecha Solicitada" class="form-control input-lg" id="fechaSol" value="{{fechaSol}}"/>
+								<span class="input-group-addon">
+									<span class="fa fa-calendar fa-fw"></span>
+								</span>
+							</div>
 						</div>
-					</div>
+					{{/usuario.isAdmin}}
+					{{^usuario.isAdmin}}
+						<input type="hidden" name="fechaSol" class="form-control input-lg" id="fechaSol" value="{{fechaSol}}"/>
 					{{/usuario.isAdmin}}
 					<div class="form-group form-inline pull-right">
 						<a class="btn btn-lg btn-primary" href="/solicitudes">Volver</a>

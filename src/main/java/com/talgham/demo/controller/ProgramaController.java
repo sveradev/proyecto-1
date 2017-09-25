@@ -1,6 +1,7 @@
 package com.talgham.demo.controller;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -23,6 +24,7 @@ import com.talgham.demo.model.Trabajo;
 import com.talgham.demo.model.Usuario;
 import com.talgham.demo.service.ClienteService;
 import com.talgham.demo.service.ProgramaService;
+import com.talgham.demo.service.SolicitudService;
 import com.talgham.demo.service.TrabajoService;
 import com.talgham.demo.service.UsuarioService;
 
@@ -37,6 +39,10 @@ public class ProgramaController {
 	private ClienteService clienteService;
 	@Autowired
 	private UsuarioService usuarioService;
+	@Autowired
+	private SolicitudService solicitudService;
+	
+	private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 	
 	@Autowired
 	MessageSource messageSource;
@@ -66,6 +72,7 @@ public class ProgramaController {
 			model.addAttribute("usuario",usuarioSession);
 			return "programas";
 		}
+		
 		model.addAttribute("trabajos",trabajos);
 		model.addAttribute("clientes",clientes);
 		return "crearPrograma";
@@ -73,10 +80,10 @@ public class ProgramaController {
 
 	@PostMapping(path="/crearPrograma")
 	public @ResponseBody ModelAndView crearPrograma (@RequestParam String nombre,
-			@RequestParam Date fechaProximo,
-			@RequestParam Date fechaUltimo,
+			@RequestParam String periodicidad,
+			@RequestParam String fechaProximo,
 			@RequestParam Long trabajo,
-			@RequestParam Long cliente) {
+			@RequestParam Long cliente) throws Exception {
 
 		ModelAndView result = new ModelAndView("programas");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -85,8 +92,8 @@ public class ProgramaController {
 		
 		Programa programa = new Programa();
 		programa.setNombre(nombre);
-		programa.setFechaProximo(fechaProximo);
-		programa.setFechaUltimo(fechaUltimo);
+		programa.setPeriodicidad(periodicidad);
+		programa.setFechaProximo(formatter.parse(fechaProximo));
 		programa.setTrabajo(trabajoService.buscarPorId(trabajo));
 		programa.setCliente(clienteService.buscarPorId(cliente));
 		if(!Constantes.GUARDADO.equalsIgnoreCase(programaService.crearPrograma(programa))){
@@ -98,6 +105,35 @@ public class ProgramaController {
 		result.addObject("programas", programaService.buscarProgramas());
 		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
 		result.addObject("salida", messageSource.getMessage("programa.creado.exito",new Object[]{},new Locale("")));
+		return result;
+	}
+	
+	@RequestMapping(path="/activarPrograma")
+	public @ResponseBody ModelAndView activarPrograma(@RequestParam Long id) throws ParseException {
+		
+		ModelAndView result = new ModelAndView("programas");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		result.addObject("usuario",usuarioSession);
+		if(!usuarioSession.isAdmin()) {
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("accion.sin.permiso",new Object[]{},new Locale("")));
+			
+			result.addObject("programas", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
+			return result;
+		}
+		Programa programa = programaService.buscarPorId(id);
+		programa.setActivo(!programa.getActivo());
+		
+		if(!Constantes.GUARDADO.equalsIgnoreCase(programaService.guardar(programa))){
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("programa.no.guardada.error",new Object[]{programa.getId()},new Locale("")));
+			result.addObject("programas", programaService.buscarProgramas());
+			return result;
+		}
+		result.addObject("programas", programaService.buscarProgramas());
+		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
+		result.addObject("salida", messageSource.getMessage("programa.activo.exito",new Object[]{programa.getId()},new Locale("")));
 		return result;
 	}
 	

@@ -78,10 +78,13 @@ public class TareaService {
 		log.info("Finalizó la creacion de solicitudes programadas - {}", formatterTime.format(new Date()));
 	}
 	
-	@Scheduled(fixedRate = 24*60*60*1000)
+	@Scheduled(fixedRate = 7*24*60*60*1000)
 	public void enviarSolicitudReporte() throws ParseException {
 		
 		Calendar c = Calendar.getInstance();
+		if(c.DAY_OF_MONTH != 1){
+			return;
+		}
 		c.set(Calendar.DAY_OF_MONTH, 1);
 		Date fechaDesde = c.getTime();
 

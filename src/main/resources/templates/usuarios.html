@@ -33,6 +33,23 @@
 					</div>
 				</div>
 			</nav>
+			<div id="myModal" class="modal fade" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Advertencia</h4>
+						</div>
+						<div class="modal-body">
+							<p>Esta Seguro que desea eliminar el usuario completamente.</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+							<a type="button" id="eliminar" class="btn btn-default" href="#">Aceptar</a>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="page-header">
 				<h2><i class="fa fa-bars fa-fw"></i>Usuarios</h2>
 				<hr class="half-rule"/>
@@ -61,7 +78,7 @@
 							<tr class= "{{#isActive}}info{{/isActive}} {{^isActive}}danger{{/isActive}}">
 								<td>
 									<a href="/editarUsuario?id={{id}}"><i class="fa fa-pencil fa-fw"></i></a>
-									<a href="/eliminarUsuario?id={{id}}"><i class="fa fa-trash-o fa-fw"></i></a>
+									<a class="open-modal" data-toggle="modal" data-id="{{id}}" data-target="#myModal"><i class="fa fa-trash-o fa-fw"></i></a>
 								</td>
 								<td>{{nombre}}</td>
 								<td>{{alias}}</td>
@@ -83,5 +100,11 @@
 			</form>
 		</section>
 		{{>bloques/footer}}
+		<script type="text/javascript">
+			$(document).on("click", ".open-modal", function () {
+				var myId = $(this).data('id');
+				$("#eliminar").attr("href", "/eliminarUsuario?id="+myId);
+			});
+		</script>
 	</body>
 </html>

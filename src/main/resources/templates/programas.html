@@ -55,8 +55,7 @@
 						{{#programas}}
 							<tr>
 								<td>
-									<a href="/editarPrograma?id={{id}}"><i class="fa fa-pencil fa-fw"></i></a>
-									<a href="/eliminarPrograma?id={{id}}"><i class="fa fa-trash-o fa-fw"></i></a>
+									<a href="/activarPrograma?id={{id}}"><i class="fa {{#activo}}fa-toggle-off{{/activo}}{{^activo}}fa-toggle-on{{/activo}} fa-fw"></i></a>
 								</td>
 								<td>{{cliente.nombre}}</td>
 								<td>{{trabajo.nombre}}</td>

@@ -1,5 +1,6 @@
 package com.talgham.demo.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -33,6 +34,8 @@ public class ClienteController {
 	
 	@Autowired
 	MessageSource messageSource;
+	
+	private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
 	@RequestMapping("/crearCliente")
 	public String cliente(Model model) {
@@ -68,9 +71,9 @@ public class ClienteController {
 	public @ResponseBody ModelAndView crearCliente (@RequestParam String nombre,
 			@RequestParam String cuit,
 			@RequestParam String descripcion,
-			@RequestParam Date cierreEjercicio,
+			@RequestParam String cierreEjercicio,
 			@RequestParam Long representanteId,
-			@RequestParam Long contadorId) {
+			@RequestParam Long contadorId) throws Exception {
 
 		ModelAndView result = new ModelAndView("clientes");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -81,7 +84,7 @@ public class ClienteController {
 		cliente.setNombre(nombre);
 		cliente.setCuit(cuit);
 		cliente.setDescripcion(descripcion);
-		cliente.setCierreEjercicio(cierreEjercicio);
+		cliente.setCierreEjercicio(formatter.parse(cierreEjercicio));
 		cliente.setRepresentante(usuarioService.buscarPorId(representanteId));
 		cliente.setContador(usuarioService.buscarPorId(contadorId));
 		cliente.setFechaAlta(new Date());
@@ -96,6 +99,8 @@ public class ClienteController {
 		result.addObject("salida", messageSource.getMessage("cliente.creado.exito",new Object[]{},new Locale("")));
 		return result;
 	}
+	
+	
 	
 	@RequestMapping("/clientes")
 	public String clientes(Model model) {
