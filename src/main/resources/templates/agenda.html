@@ -73,7 +73,6 @@
 								<th>Id</th>
 								{{^usuario.isCliente}}<th>Nombre</th>{{/usuario.isCliente}}
 								<th>Trabajo</th>
-								<th>Estado</th>
 								<th>Fecha</th>
 								{{^usuario.isContador}}<th>Responsable</th>{{/usuario.isContador}}
 								<th>Descripci&oacute;n</th>
@@ -94,7 +93,6 @@
 									<td>{{id}}</td>
 									{{^usuario.isCliente}}<td>{{cliente.nombre}}</td>{{/usuario.isCliente}}
 									<td>{{#trabajo}}{{trabajo.nombre}}{{/trabajo}}</td>
-									<td>{{estado.nombre}}</td>
 									<td>{{fechaSolicitado}}</td>
 									{{^usuario.isContador}}<td>{{cliente.contador.nombre}}</td>{{/usuario.isContador}}
 									<td>
