@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	{{>bloques/header}}
+	<body>
+		<section class="container custom-container" >
+			<nav class="navbar">
+				<div class="container-fluid">
+					<div class="navbar-brand">
+						<img alt="Brand" src="images/logotalghamsmall.jpg" class="img-responsive">
+					</div>
+				</div>
+			</nav>
+			<div class="page-header">
+				<h2><i class="fa fa-pencil fa-fw"></i>Editar Solicitud</h2>
+				<hr class="half-rule"/>
+				{{#salida}}
+					<div class="alert {{tipoSalida}}" role="alert">
+						{{salida}}
+					</div>
+				{{/salida}}
+			</div>
+			<form method="post" action="">
+				{{#solicitud}}
+					<div class="form-group">
+						<input type="text" id="titulo" name="titulo" placeholder="T&iacute;itulo" class="form-control input-lg" value="{{titulo}}"/>
+					</div>
+					<div class="form-group">
+						<select name="trabajo" placeholder="trabajo" class="form-control input-lg">
+							{{#trabajo}}
+								<option value ="{{trabajo.id}}">{{trabajo.nombre}}</option>
+							{{/trabajo}}
+							{{#trabajos}}
+								<option value ="{{id}}">{{nombre}}</option>
+							{{/trabajos}}
+						</select>
+					</div>
+					<div class="form-group">
+						<textarea id="descripcion" name="descripcion" placeholder="Descripci&oacute;n" class="form-control input-lg" rows="5" required/>{{descripcion}}</textarea>
+					</div>
+					<div class="form-group">
+						<select name="estado" placeholder="estado" class="form-control input-lg" required>
+							<option value ="{{estado.id}}">{{estado.nombre}}</option>
+							{{#estados}}
+								<option value ="{{id}}">{{nombre}}</option>
+							{{/estados}}
+						</select>
+					</div>
+					{{#usuario.isAdmin}}
+						<div class="form-group">
+							<div class="input-group">
+								<input type="text" name="fechaSol" placeholder="Fecha Solicitada" class="form-control input-lg" id="fechaSol" value="{{fechaSol}}"/>
+								<span class="input-group-addon">
+									<span class="fa fa-calendar fa-fw"></span>
+								</span>
+							</div>
+						</div>
+					{{/usuario.isAdmin}}
+					{{^usuario.isAdmin}}
+						<input type="hidden" name="fechaSol" class="form-control input-lg" id="fechaSol" value="{{fechaSol}}"/>
+					{{/usuario.isAdmin}}
+					<div class="form-group form-inline pull-right">
+						<a class="btn btn-lg btn-primary" href="/agenda">Volver</a>
+						<button type="submit" id="aceptar" class="btn btn-lg btn-primary">Aceptar</button>
+					</div>
+				{{/solicitud}}
+				
+			</form>
+		</section>
+		{{>bloques/footer}}
+		<script type="text/javascript">
+			$(document).ready(function () {
+				$('#fechaSol').datepicker({
+					format: "dd-mm-yyyy",
+					weekStart: 7,
+					todayBtn: true,
+					language: "es",
+					autoclose: true,
+					todayHighlight: true
+				});  
+	    	});
+		</script>
+	</body>
+</html>
