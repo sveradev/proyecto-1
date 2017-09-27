@@ -243,6 +243,69 @@ public class SolicitudController {
 		return result;
 	}
 	
+	@RequestMapping("/editarAgenda")
+	public ModelAndView editarAgenda(@RequestParam(value="id") Long id) {
+		ModelAndView result = new ModelAndView("editarAgenda");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		result.addObject("usuario", usuarioSession);
+		Solicitud solicitud = solicitudService.buscarPorId(id);
+		if(solicitud == null){
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("solicitud.no.encontrada",new Object[]{},new Locale("")));
+			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
+			result.setViewName("solicitudes");
+			return result;
+		}
+		if(usuarioSession.isAdmin()) {
+			result.addObject("clientes",clienteService.buscarClientes());
+		} 
+		result.addObject("solicitud", solicitud);
+		result.addObject("fechaSol", formatter.format(solicitud.getFechaSolicitado()));
+		
+		List<Estado> estados = (List<Estado>) estadoService.getAllEstados();
+		if(estados == null || estados.isEmpty()){
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("solicitud.no.existe.estados",new Object[]{},new Locale("")));
+			return result;
+		}
+		result.addObject("estados",estados);
+		result.addObject("trabajos", trabajoService.buscarTrabajos());
+		return result;
+	}
+
+	@PostMapping(path="/editarAgenda")
+	public @ResponseBody ModelAndView editarAgenda (@RequestParam Long id,
+			@RequestParam String titulo,
+			@RequestParam Long estado,
+			@RequestParam Long trabajo,
+			@RequestParam String descripcion, 
+			@RequestParam String fechaSol) throws ParseException {
+		
+		ModelAndView result = new ModelAndView("solicitudes");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		Solicitud solicitud = solicitudService.buscarPorId(id);
+		if(fechaSol!= null && !fechaSol.equalsIgnoreCase("")){
+			solicitud.setFechaSolicitado(formatter.parse(fechaSol));
+		}
+		solicitud.setTitulo(titulo);
+		solicitud.setTrabajo(trabajoService.buscarPorId(trabajo));
+		solicitud.setEstado(estadoService.buscarPorId(estado));
+		solicitud.setDescripcion(descripcion);
+		if(!Constantes.GUARDADO.equalsIgnoreCase(solicitudService.guardarSolicitud(solicitud))){
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("solicitud.no.guardada.error",new Object[]{solicitud.getId()},new Locale("")));
+			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
+			return result;
+		}
+		result.addObject("usuario",usuarioSession);
+		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
+		result.addObject("salida", messageSource.getMessage("solicitud.editada.exito",new Object[]{solicitud.getId()},new Locale("")));
+		result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
+		return result;
+	}
+	
 	@RequestMapping(path="/eliminarSolicitud")
 	public @ResponseBody ModelAndView eliminarSolicitud(@RequestParam Long id) throws ParseException {
 		
