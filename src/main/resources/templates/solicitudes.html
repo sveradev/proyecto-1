@@ -90,8 +90,8 @@
 										{{#usuario.isContador}}
 											<a href="/finalizarSolicitud?id={{id}}"><i class="fa fa-check fa-fw"></i></a>
 										{{/usuario.isContador}}
+										<a href="/editarSolicitud?id={{id}}"><i class="fa fa-pencil fa-fw"></i></a>
 										{{#usuario.isAdmin}}
-											<a href="/editarSolicitud?id={{id}}"><i class="fa fa-pencil fa-fw"></i></a>
 											<a href="/eliminarSolicitud?id={{id}}"><i class="fa fa-trash-o fa-fw"></i></a>
 										{{/usuario.isAdmin}}
 									</td>
@@ -101,12 +101,15 @@
 									<td>{{fechaSolicitado}}</td>
 									{{^usuario.isContador}}<td>{{cliente.contador.nombre}}</td>{{/usuario.isContador}}
 									<td>
-										<div class="dropdown">
-											<i id="dropdownMenu" class="fa fa-search fa-fw dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-											<div class="dropdown-menu" aria-labelledby="dropdownMenu">
-												<label class="dropdown-item">{{descripcion}}</label>
+										{{#descripcion}}
+<!-- 											<a href="#" data-toggle="popover" data-placement="left" data-content="{{descripcion}}"><i class="fa fa-search fa-fw"></i></a> -->
+											<div class="dropdown">
+												<a id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-search fa-fw dropdown-toggle"></i></a>
+												<div class="dropdown-menu" aria-labelledby="dropdownMenu">
+													<label class="dropdown-item">{{descripcion}}</label>
+												</div>
 											</div>
-										</div>
+										{{/descripcion}}
 									</td>
 								</tr>
 							{{/solicitudes}}
@@ -151,6 +154,9 @@
 					autoclose: true,
 					todayHighlight: true
 				});  
+			});
+			$(document).ready(function(){
+				$('[data-toggle="popover"]').popover();   
 			});
 		</script>
 	</body>

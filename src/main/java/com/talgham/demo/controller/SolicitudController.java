@@ -172,13 +172,13 @@ public class SolicitudController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
 		result.addObject("usuario", usuarioSession);
-		if(usuarioSession.isCliente()) {
-			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
-			result.addObject("salida", messageSource.getMessage("solicitud.editar.sin.permiso",new Object[]{},new Locale("")));
-			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
-			result.setViewName("solicitudes");
-			return result;
-		}
+//		if(usuarioSession.isCliente()) {
+//			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+//			result.addObject("salida", messageSource.getMessage("solicitud.editar.sin.permiso",new Object[]{},new Locale("")));
+//			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
+//			result.setViewName("solicitudes");
+//			return result;
+//		}
 		Solicitud solicitud = solicitudService.buscarPorId(id);
 		if(solicitud == null){
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
@@ -215,13 +215,13 @@ public class SolicitudController {
 		ModelAndView result = new ModelAndView("solicitudes");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
-		if(usuarioSession.isCliente()) {
-			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
-			result.addObject("salida", messageSource.getMessage("solicitud.editar.sin.permiso",new Object[]{},new Locale("")));
-			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
-			result.setViewName("solicitudes");
-			return result;
-		}
+//		if(usuarioSession.isCliente()) {
+//			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+//			result.addObject("salida", messageSource.getMessage("solicitud.editar.sin.permiso",new Object[]{},new Locale("")));
+//			result.addObject("solicitudes", solicitudService.buscarSolicitudes(usuarioSession, Boolean.FALSE));
+//			result.setViewName("solicitudes");
+//			return result;
+//		}
 		Solicitud solicitud = solicitudService.buscarPorId(id);
 		if(fechaSol!= null && !fechaSol.equalsIgnoreCase("")){
 			solicitud.setFechaSolicitado(formatter.parse(fechaSol));
@@ -276,7 +276,6 @@ public class SolicitudController {
 
 	@PostMapping(path="/editarAgenda")
 	public @ResponseBody ModelAndView editarAgenda (@RequestParam Long id,
-			@RequestParam String titulo,
 			@RequestParam Long estado,
 			@RequestParam Long trabajo,
 			@RequestParam String descripcion, 
@@ -289,7 +288,6 @@ public class SolicitudController {
 		if(fechaSol!= null && !fechaSol.equalsIgnoreCase("")){
 			solicitud.setFechaSolicitado(formatter.parse(fechaSol));
 		}
-		solicitud.setTitulo(titulo);
 		solicitud.setTrabajo(trabajoService.buscarPorId(trabajo));
 		solicitud.setEstado(estadoService.buscarPorId(estado));
 		solicitud.setDescripcion(descripcion);

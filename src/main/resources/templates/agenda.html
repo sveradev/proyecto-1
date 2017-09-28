@@ -12,14 +12,14 @@
 						<li><a href="/solicitudes"><h4>Solicitudes</h4></a></li>
 						<li><a href="/agenda"><h4>Agenda</h4></a></li>
 					</ul>
-					<div class="navbar-right navbar-btn">
+					<div class="pull-right navbar-btn">
 						{{#usuario}}
 							{{#isAdmin}}
 								{{>bloques/botonConfiguracion}}
 							{{/isAdmin}}
 							<div class="btn-group">
 								<a class="btn btn-primary btn-lg"><i class="fa fa-user fa-fw"></i>{{nombre}}</a>
-								<a class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" href="#">
+								<a class="btn btn-primary dropdown-toggle btn-lg" data-toggle="dropdown" href="#">
 									<span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
 								</a>
 								<ul class="dropdown-menu">
@@ -96,12 +96,14 @@
 									<td>{{fechaSolicitado}}</td>
 									{{^usuario.isContador}}<td>{{cliente.contador.nombre}}</td>{{/usuario.isContador}}
 									<td>
+										{{#descripcion}}
 										<div class="dropdown">
 											<i id="dropdownMenu" class="fa fa-search fa-fw dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
 											<div class="dropdown-menu" aria-labelledby="dropdownMenu">
 												<label class="dropdown-item">{{descripcion}}</label>
 											</div>
 										</div>
+										{{/descripcion}}
 									</td>
 								</tr>
 							{{/solicitudes}}

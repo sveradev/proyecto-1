@@ -11,7 +11,7 @@
 				</div>
 			</nav>
 			<div class="page-header">
-				<h2><i class="fa fa-bars fa-fw"></i>Nueva Solicitud</h2>
+				<h2><i class="fa fa-list-alt fa-fw"></i>Nueva Solicitud</h2>
 				<hr class="half-rule"/>
 				{{#salida}}
 					<div class="alert {{tipoSalida}}" role="alert">
@@ -24,7 +24,7 @@
 					<input type="text" id="titulo" name="titulo" placeholder="Tipo Trabajo" class="form-control input-lg" required/>
 				</div>
 				<div class="form-group">
-					<textarea id="descripcion" name="descripcion" placeholder="Descripci&oacute;n" class="form-control input-lg" rows="5" required/></textarea>
+					<textarea id="descripcion" name="descripcion" placeholder="Descripci&oacute;n" class="form-control input-lg" rows="3" maxlength="255" required/></textarea>
 				</div>
 				<div class="form-group form-inline pull-right">
 					<a class="btn btn-lg btn-primary btn-lg" href="/solicitudes">Volver</a>
