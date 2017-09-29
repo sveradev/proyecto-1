@@ -3,11 +3,11 @@
 	{{>bloques/header}}
 	<body>
 		<section class="container custom-container">
-			<nav class="navbar">
+			<nav class="navbar navbar-default">
 				<div class="container-fluid">
-					<div class="navbar-brand">
+					<a class="navbar-brand" href="/home">
 						<img alt="Brand" src="images/logotalghamsmall.jpg" class="img-responsive">
-					</div>
+					</a>
 					<ul class="nav navbar-nav">
 						<li><a href="/solicitudes"><h4>Solicitudes</h4></a></li>
 						<li><a href="/agenda"><h4>Agenda</h4></a></li>
@@ -19,12 +19,12 @@
 							{{/isAdmin}}
 							<div class="btn-group">
 								<a class="btn btn-primary btn-lg"><i class="fa fa-user fa-fw"></i>{{nombre}}</a>
-								<a class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" href="#">
+								<a class="btn btn-primary dropdown-toggle btn-lg" data-toggle="dropdown" href="#">
 									<span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="/editarUsuario?id={{id}}"><i class="fa fa-pencil fa-fw"></i>Editar</a></li>
-<!-- 									<li><a href="/cambiarPassword?id={{id}}"><i class="fa fa-key fa-fw"></i>Cambiar Contrase�a</a></li> -->
+<!-- 									<li><a href="/cambiarPassword?id={{id}}"><i class="fa fa-trash-o fa-fw"></i>Cambiar Contraseña</a></li> -->
 									<li class="divider"></li>
 									<li><a href="/logout"><i class="fa fa-unlock fa-fw"></i>Salir</a></li>
 								</ul>
@@ -51,7 +51,7 @@
 				</div>
 			</div>
 			<div class="page-header">
-				<h2><i class="fa fa-bars fa-fw"></i>Usuarios</h2>
+				<h2><i class="fa fa-user fa-fw"></i>Usuarios</h2>
 				<hr class="half-rule"/>
 				<a class="btn btn-default" href="/crearUsuario"><i class="fa fa-plus fa-lg"></i> Nuevo</a>
 				{{#salida}}

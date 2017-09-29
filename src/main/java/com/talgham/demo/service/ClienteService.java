@@ -32,4 +32,9 @@ public class ClienteService {
 	public Cliente buscarPorContador(Long usuario_id) {
 		return clienteRepository.findByContador_id(usuario_id);
 	}
+
+	public String guardar(Cliente cliente) {
+		clienteRepository.save(cliente);
+		return Constantes.GUARDADO;
+	}
 }

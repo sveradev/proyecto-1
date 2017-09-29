@@ -100,7 +100,97 @@ public class ClienteController {
 		return result;
 	}
 	
+	@RequestMapping("/editarCliente")
+	public String editarCliente(@RequestParam(value="id") Long id, Model model) {
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		if(usuarioSession.isAdmin()) {
+			List<Usuario> contadores = (List<Usuario>)usuarioService.buscarPorPerfil_orden(Constantes.PERFIL_CONTADOR);
+			if(contadores == null || contadores.isEmpty()){
+				model.addAttribute("clientes", clienteService.buscarClientes());
+				model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
+				model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.contadores",new Object[]{},new Locale("")));
+				model.addAttribute("usuario",usuarioSession);
+				return "clientes";
+			}
+			List<Usuario> representantes = (List<Usuario>) usuarioService.buscarPorPerfil_orden(Constantes.PERFIL_CLIENTE);
+			if(representantes == null || representantes.isEmpty()){
+				model.addAttribute("clientes", clienteService.buscarClientes());
+				model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
+				model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.representantes",new Object[]{},new Locale("")));
+				model.addAttribute("usuario",usuarioSession);
+				return "clientes";
+			}
+			model.addAttribute("contadores",contadores);
+			model.addAttribute("representantes",representantes);
+		} else if (usuarioSession.getId() != id){
+			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
+			model.addAttribute("salida", messageSource.getMessage("usuario.sin.permisos",new Object[]{},new Locale("")));
+			return "mensaje";
+		}
+		model.addAttribute("cliente", clienteService.buscarPorId(id));
+		return "editarCliente";
+	}
+
+	@PostMapping(path="/editarCliente")
+	public @ResponseBody ModelAndView editarCliente (@RequestParam Long id,
+			@RequestParam String nombre,
+			@RequestParam String cuit,
+			@RequestParam String descripcion,
+			@RequestParam String cierreEjercicio,
+			@RequestParam Long representanteId,
+			@RequestParam Long contadorId) throws Exception {
+		
+		ModelAndView result = new ModelAndView("clientes");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		result.addObject("usuario",usuarioSession);
+		
+		Cliente cliente = clienteService.buscarPorId(id);
+		cliente.setNombre(nombre);
+		cliente.setCuit(cuit);
+		cliente.setDescripcion(descripcion);
+		cliente.setCierreEjercicio(formatter.parse(cierreEjercicio));
+		cliente.setRepresentante(usuarioService.buscarPorId(representanteId));
+		cliente.setContador(usuarioService.buscarPorId(contadorId));
+		if(!Constantes.GUARDADO.equalsIgnoreCase(clienteService.guardar(cliente))){
+			result.addObject("clientes", clienteService.buscarClientes());
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("cliente.guardado.error",new Object[]{},new Locale("")));
+			return result;
+		}
+		result.addObject("clientes", clienteService.buscarClientes());
+		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
+		result.addObject("salida", messageSource.getMessage("cliente.guardado.exito",new Object[]{cliente.getId()},new Locale("")));
+		return result;
+	}
 	
+	@RequestMapping("/eliminarCliente")
+	public ModelAndView eliminarCliente(@RequestParam(value="id") Long id) {
+		ModelAndView result = new ModelAndView("clientes");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
+		result.addObject("usuario",usuarioSession);
+		Cliente cliente = clienteService.buscarPorId(id);
+		if(cliente == null){
+			result.addObject("clientes", clienteService.buscarClientes());
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("error.cliente.no.encontrado",new Object[]{},new Locale("")));
+			return result;
+		}
+		cliente.setFechaBaja(new Date());
+		if(!Constantes.ELIMINADO.equalsIgnoreCase(clienteService.guardar(cliente))){
+			result.addObject("clientes", clienteService.buscarClientes());
+			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
+			result.addObject("salida", messageSource.getMessage("cliente.baja.error",new Object[]{cliente.getNombre()},new Locale("")));
+			return result;
+		}
+		result.addObject("clientes", clienteService.buscarClientes());
+		result.addObject("tipoSalida",Constantes.ALERTA_SUCCESS);
+		result.addObject("salida", messageSource.getMessage("cliente.baja.exito",new Object[]{cliente.getNombre()},new Locale("")));
+		return result;
+	}
 	
 	@RequestMapping("/clientes")
 	public String clientes(Model model) {

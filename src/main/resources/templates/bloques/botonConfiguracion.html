@@ -7,10 +7,12 @@
 		<li><a href="/clientes"><i class="fa fa-building fa-fw"></i>Clientes</a></li>
 		<li><a href="/trabajos"><i class="fa fa-briefcase fa-fw"></i>Trabajos</a></li>
 		<li><a href="/programas"><i class="fa fa-gears fa-fw"></i>Programas</a></li>
-		<li class="divider"></li>
-		<li><a href="/perfiles"><i class="fa fa-group fa-fw"></i>Perfiles</a></li>
+		{{#isDev}}
 		<li class="divider"></li>
 		<li><a href="/estados"><i class="fa fa-check fa-fw"></i>Estados</a></li>
-		<li><a href="/emails"><i class="fa fa-envelope-o fa-fw"></i>Email</a></li>
+			<li class="divider"></li>
+			<li><a href="/perfiles"><i class="fa fa-group fa-fw"></i>Perfiles</a></li>
+			<li><a href="/emails"><i class="fa fa-envelope-o fa-fw"></i>Email</a></li>
+		{{/isDev}}
 	</ul>
 </div>

@@ -24,4 +24,9 @@ public class TrabajoService {
 	public Iterable<Trabajo> buscarTrabajos() {
 		return trabajoRepository.findAll();
 	}
+	
+	public String guardar(Trabajo trabajo) {
+		trabajoRepository.save(trabajo);
+		return Constantes.GUARDADO;
+	}
 }
