@@ -19,7 +19,7 @@
 					</div>
 				{{/salida}}
 			</div>
-			<form method="post" action="">
+			<form method="post" action="" id="form">
 				<div class="form-group">
 					<input type="text" id="direccion" name="direccion" placeholder="Email" class="form-control input-lg" required/>
 				</div>
@@ -45,6 +45,11 @@
 			</form>
 		</section>
 		{{>bloques/footer}}
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#form")[0].reset();
+			});
+		</script>
 		<script src="js/elements/email.js"></script>
 		<script src="js/utiles.js"></script>
 	</body>

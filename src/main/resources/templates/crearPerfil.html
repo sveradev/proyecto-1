@@ -19,7 +19,7 @@
 					</div>
 				{{/salida}}
 			</div>
-			<form method="post" action="#">
+			<form method="post" action="#" id="form">
 				<div class="form-group">
 					<input type="text" id="nombre" name="nombre" placeholder="Nombre" class="form-control input-lg" required/>
 				</div>
@@ -36,5 +36,10 @@
 			</form>
 		</section>
 		{{>bloques/footer}}
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#form")[0].reset();
+			});
+		</script>
 	</body>
 </html>

@@ -91,7 +91,7 @@ public class SolicitudController {
 		Usuario usuarioSession = usuarioService.buscarPorEmail(auth.getName());
 		model.addAttribute("usuario",usuarioSession);
 		if(usuarioSession.isAdmin()) {
-			model.addAttribute("clientes",clienteService.buscarClientes());
+			model.addAttribute("clientes",clienteService.buscarClientesActivos());
 		}
 		return "crearSolicitud";
 	}
@@ -188,7 +188,7 @@ public class SolicitudController {
 			return result;
 		}
 		if(usuarioSession.isAdmin()) {
-			result.addObject("clientes",clienteService.buscarClientes());
+			result.addObject("clientes",clienteService.buscarClientesActivos());
 		} 
 		result.addObject("solicitud", solicitud);
 		result.addObject("fechaSol", formatter.format(solicitud.getFechaSolicitado()));
@@ -200,7 +200,7 @@ public class SolicitudController {
 			return result;
 		}
 		result.addObject("estados",estados);
-		result.addObject("trabajos", trabajoService.buscarTrabajos());
+		result.addObject("trabajos", trabajoService.buscarTrabajosActivos());
 		return result;
 	}
 
@@ -258,7 +258,7 @@ public class SolicitudController {
 			return result;
 		}
 		if(usuarioSession.isAdmin()) {
-			result.addObject("clientes",clienteService.buscarClientes());
+			result.addObject("clientes",clienteService.buscarClientesActivos());
 		} 
 		result.addObject("solicitud", solicitud);
 		result.addObject("fechaSol", formatter.format(solicitud.getFechaSolicitado()));
@@ -270,7 +270,7 @@ public class SolicitudController {
 			return result;
 		}
 		result.addObject("estados",estados);
-		result.addObject("trabajos", trabajoService.buscarTrabajos());
+		result.addObject("trabajos", trabajoService.buscarTrabajosActivos());
 		return result;
 	}
 

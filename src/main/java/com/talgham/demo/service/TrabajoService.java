@@ -1,5 +1,7 @@
 package com.talgham.demo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,5 +30,9 @@ public class TrabajoService {
 	public String guardar(Trabajo trabajo) {
 		trabajoRepository.save(trabajo);
 		return Constantes.GUARDADO;
+	}
+
+	public Iterable<Trabajo> buscarTrabajosActivos() {
+		return trabajoRepository.findByFechaBajaNotNull();
 	}
 }

@@ -11,5 +11,6 @@ public interface TrabajoRepository extends CrudRepository<Trabajo, Long>{
 	Trabajo findById(Long id);
 	Iterable<Trabajo> findAll();
 	Trabajo findByIdAndFechaBaja(Long id, Date fechaBaja);
+	Iterable<Trabajo> findByFechaBajaNotNull();
 
 }

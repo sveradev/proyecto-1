@@ -56,7 +56,7 @@ public class ProgramaController {
 			model.addAttribute("salida", messageSource.getMessage("usuario.sin.permisos",new Object[]{},new Locale("")));
 			return "mensaje";
 		}
-		List<Trabajo> trabajos = (List<Trabajo>) trabajoService.buscarTrabajos();
+		List<Trabajo> trabajos = (List<Trabajo>) trabajoService.buscarTrabajosActivos();
 		if(trabajos == null || trabajos.isEmpty()){
 			model.addAttribute("programas", programaService.buscarProgramas());
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
@@ -64,7 +64,7 @@ public class ProgramaController {
 			model.addAttribute("usuario",usuarioSession);
 			return "programas";
 		}
-		List<Cliente> clientes = (List<Cliente>) clienteService.buscarClientes();
+		List<Cliente> clientes = (List<Cliente>) clienteService.buscarClientesActivos();
 		if(clientes == null || clientes.isEmpty()){
 			model.addAttribute("programas", programaService.buscarProgramas());
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
