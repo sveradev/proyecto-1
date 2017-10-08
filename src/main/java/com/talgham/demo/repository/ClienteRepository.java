@@ -1,7 +1,6 @@
 package com.talgham.demo.repository;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
@@ -14,5 +13,5 @@ public interface ClienteRepository extends CrudRepository<Cliente, Long> {
 	Cliente findByRepresentante_id(Long usuario_id);
 	Cliente findByContador_id(Long usuario_id);
 	Cliente findByIdAndFechaBaja(Long id, Date fechaBaja);
-	Iterable<Cliente> findByfechaBajaNotNull();
+	Iterable<Cliente> findByFechaBajaNotNull();
 }
