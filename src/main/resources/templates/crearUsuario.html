@@ -21,28 +21,34 @@
 			</div>
 			<form method="post" action="#" id="form">
 				<div class="form-group">
+					<label for="nombre">Nombre Usuario</label>
 					<input type="text" id="nombre" name="nombre" placeholder="Nombre" class="form-control input-lg" required/>
 				</div>
 				<div class="form-group">
-					<input type="text" id="alias" name="alias" placeholder="Alias" class="form-control input-lg" required/>
+					<label for="nombre">Nombre Completo</label>
+					<input type="text" id="alias" name="alias" placeholder="Nombre Completo" class="form-control input-lg" required/>
 				</div>
 				<div class="form-group">
+					<label for="nombre">Email</label>
 					<input type="text" id="email" name="email" placeholder="Email" class="form-control input-lg" required/>
 				</div>
 				<div class="form-group">
+					<label for="nombre">Password</label>
 					<input type="password" id="password" name="password" placeholder="Password" class="form-control input-lg" required/>
 				</div>
 				<div class="form-group">
+					<label for="nombre">Rol</label>
 					<select id="rol" name="rol" class="form-control input-lg" required>
-							<option value ="0">Seleccione un Rol</option>
+						<option value ="0">Seleccione un Rol</option>
 						{{#roles}}
 							<option value ="{{id}}">{{nombre}}</option>
 						{{/roles}}
 					</select>
 				</div>
 				<div class="form-group">
+					<label for="nombre">Perfil</label>
 					<select id="perfil" name="perfil" class="form-control input-lg" required>
-							<option value ="0">Seleccione un perfil</option>
+						<option value ="0">Seleccione un perfil</option>
 						{{#perfiles}}
 							<option value ="{{id}}">{{nombre}}</option>
 						{{/perfiles}}

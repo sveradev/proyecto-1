@@ -21,33 +21,37 @@
 			</div>
 			<form method="post" action="#" id="form">
 				<div class="form-group">
+					<label for="nombre">Nombre</label>
 					<input type="text" id="nombre" name="nombre" placeholder="Nombre" class="form-control input-lg" required/>
 				</div>
 				<div class="form-group">
+					<label for="nombre">CUIT</label>
 					<input type="text" id="cuit" name="cuit" placeholder="CUIT" class="form-control input-lg"/>
 				</div>
 				<div class="form-group">
+					<label for="nombre">Cierre de Ejercicio</label>
 					<div class="input-group">
-						<input type="text" name="cierreEjercicio" placeholder="Cierre de Ejercicio" class="form-control input-md" required id="cierreEjercicio"/>
+						<input type="text" name="cierreEjercicio" placeholder="Cierre de Ejercicio" class="form-control input-lg" required id="cierreEjercicio"/>
 						<span class="input-group-addon">
 							<span class="fa fa-calendar fa-fw"></span>
 						</span>
 					</div>
 				</div>
 				<div class="form-group">
-					<textarea id="descripcion" name="descripcion" placeholder="Descripci&oacute;n" class="form-control input-lg" rows="5" required/></textarea>
+					<label for="nombre">Descripci&oacute;n</label>
+					<textarea id="descripcion" name="descripcion" placeholder="Descripci&oacute;n" class="form-control input-lg" rows="3" maxlength="255" required/></textarea>
 				</div>
 				<div class="form-group">
+					<label for="nombre">Representante</label>
 					<select id="representanteId" name="representanteId" class="form-control input-lg" required>
-						<option value ="0">Representante</option>
 						{{#representantes}}
 							<option value ="{{id}}">{{nombre}}</option>
 						{{/representantes}}
 					</select>
 				</div>
 				<div class="form-group">
+					<label for="nombre">Cliente</label>
 					<select id="contadorId" name="contadorId" class="form-control input-lg" required>
-						<option value ="0">Cliente</option>
 						{{#contadores}}
 							<option value ="{{id}}">{{nombre}}</option>
 						{{/contadores}}
