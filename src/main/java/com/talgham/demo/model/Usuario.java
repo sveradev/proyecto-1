@@ -105,8 +105,8 @@ public class Usuario {
 	public Boolean isDev() {
 		return perfil.getOrden() == Constantes.PERFIL_DESARROLLADOR; 
 	}
-		public Boolean isAdmin() {
-		return perfil.getOrden() <= Constantes.PERFIL_ADMINISTRADOR; 
+	public Boolean isAdmin() {
+		return perfil.getOrden() <= Constantes.PERFIL_ADMINISTRADOR || rol.getOrden() == Constantes.ROL_ADMINISTRADOR ; 
 	}
 	public Boolean isContador() {
 		return perfil.getOrden() == Constantes.PERFIL_CONTADOR;

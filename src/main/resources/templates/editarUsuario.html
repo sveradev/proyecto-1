@@ -44,7 +44,7 @@
 							</select>
 						</div>
 						<div class="form-group form-inline pull-right">
-							<button class="btn btn-lg btn-primary" formaction="/usuarios">Volver</button>
+							<a class="btn btn-lg btn-primary" href="/usuarios">Volver</a>
 							<button type="submit" id="aceptar" class="btn btn-lg btn-primary">Aceptar</button>
 						</div>
 					{{/usuario.isAdmin}}
@@ -52,7 +52,7 @@
 						<input type="hidden" id="rol" name="rol" class="form-control input-lg" value="{{rol}}"/>
 						<input type="hidden" id="perfil" name="perfil" class="form-control input-lg" value="{{perfil}}"/>
 						<div class="form-group form-inline pull-right">
-							<button class="btn btn-lg btn-primary" formaction="/home">Volver</button>
+							<a class="btn btn-lg btn-primary" href="/home">Volver</a>
 							<button type="submit" id="aceptar" class="btn btn-lg btn-primary">Aceptar</button>
 						</div>
 					{{/usuario.isAdmin}}

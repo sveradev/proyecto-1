@@ -79,6 +79,16 @@ public class SolicitudController {
 	public String agenda(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuario = usuarioService.buscarPorEmail(auth.getName());
+		if(usuario.isCliente() && clienteService.buscarPorRepresentante(usuario.getId()) == null){
+			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
+			model.addAttribute("salida", messageSource.getMessage("usuario.sin.cliente",new Object[]{},new Locale("")));
+			return "mensaje";
+		}
+		if(usuario.isContador() && clienteService.buscarPorContador(usuario.getId()) == null){
+			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
+			model.addAttribute("salida", messageSource.getMessage("usuario.sin.cliente",new Object[]{},new Locale("")));
+			return "mensaje";
+		}
 		model.addAttribute("usuario",usuario);
 		model.addAttribute("solicitudes", solicitudService.buscarSolicitudes(usuario, Boolean.TRUE));
 		

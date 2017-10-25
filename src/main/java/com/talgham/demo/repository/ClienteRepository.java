@@ -14,4 +14,5 @@ public interface ClienteRepository extends CrudRepository<Cliente, Long> {
 	Cliente findByContador_id(Long usuario_id);
 	Cliente findByIdAndFechaBaja(Long id, Date fechaBaja);
 	Iterable<Cliente> findByFechaBajaNotNull();
+	Iterable<Cliente> findByFechaBajaIsNull();
 }

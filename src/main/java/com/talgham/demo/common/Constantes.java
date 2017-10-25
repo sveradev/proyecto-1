@@ -17,6 +17,9 @@ public class Constantes {
 	public static final Integer PERFIL_CONTADOR = 3;
 	public static final Integer PERFIL_CLIENTE = 4;
 	
+	public static final Integer ROL_ADMINISTRADOR = 1;
+	public static final Integer ROL_USUARIO = 2;
+	
 	public static final String GUARDADO = "Guardado";
 	public static final String ELIMINADO = "Eliminado";
 

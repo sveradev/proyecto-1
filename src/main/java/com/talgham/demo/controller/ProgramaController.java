@@ -60,7 +60,7 @@ public class ProgramaController {
 		if(trabajos == null || trabajos.isEmpty()){
 			model.addAttribute("programas", programaService.buscarProgramas());
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
-			model.addAttribute("salida", messageSource.getMessage("solicitud.no.existe.trabajos",new Object[]{},new Locale("")));
+			model.addAttribute("salida", messageSource.getMessage("programa.no.existe.trabajos",new Object[]{},new Locale("")));
 			model.addAttribute("usuario",usuarioSession);
 			return "programas";
 		}

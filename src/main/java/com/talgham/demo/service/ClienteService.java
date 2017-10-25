@@ -41,6 +41,6 @@ public class ClienteService {
 	}
 
 	public Iterable<Cliente> buscarClientesActivos() {
-		return clienteRepository.findByFechaBajaNotNull();
+		return clienteRepository.findByFechaBajaIsNull();
 	}
 }

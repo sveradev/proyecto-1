@@ -33,6 +33,6 @@ public class TrabajoService {
 	}
 
 	public Iterable<Trabajo> buscarTrabajosActivos() {
-		return trabajoRepository.findByFechaBajaNotNull();
+		return trabajoRepository.findByFechaBajaIsNull();
 	}
 }
