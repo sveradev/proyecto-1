@@ -22,7 +22,7 @@
 			<form method="post" action="#" id="form">
 				<div class="form-group">
 					<label for="nombre">Nombre Usuario</label>
-					<input type="text" id="nombre" name="nombre" placeholder="Nombre" class="form-control input-lg" required/>
+					<input type="text" id="nombre" name="nombre" placeholder="Nombre Usuario" class="form-control input-lg" required/>
 				</div>
 				<div class="form-group">
 					<label for="nombre">Nombre Completo</label>
@@ -52,6 +52,15 @@
 						{{#perfiles}}
 							<option value ="{{id}}">{{nombre}}</option>
 						{{/perfiles}}
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="nombre">Cliente</label>
+					<select id="cliente" name="cliente" class="form-control input-lg">
+						<option value ="0">Seleccione un cliente</option>
+						{{#clientes}}
+							<option value ="{{id}}">{{nombre}}</option>
+						{{/clientes}}
 					</select>
 				</div>
 				<div class="form-group form-inline pull-right">

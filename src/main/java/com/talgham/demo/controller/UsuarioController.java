@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.talgham.demo.common.Constantes;
+import com.talgham.demo.model.Cliente;
 import com.talgham.demo.model.Perfil;
 import com.talgham.demo.model.Rol;
 import com.talgham.demo.model.Usuario;
+import com.talgham.demo.service.ClienteService;
 import com.talgham.demo.service.PerfilService;
 import com.talgham.demo.service.RolService;
 import com.talgham.demo.service.UsuarioService;
@@ -34,6 +36,8 @@ public class UsuarioController {
 	private RolService rolService;
 	@Autowired
 	private PerfilService perfilService;
+	@Autowired
+	private ClienteService clienteService;
 	@Autowired
 	private MessageSource messageSource;
 	
@@ -50,6 +54,7 @@ public class UsuarioController {
 		
 		List<Rol> roles = (List<Rol>) rolService.getAllRoles();
 		List<Perfil> perfiles = (List<Perfil>) perfilService.getAllPerfiles();
+		List<Cliente> clientes = (List<Cliente>) clienteService.buscarClientes();
 		if(roles == null || roles.isEmpty()){
 			model.addAttribute("usuarios", usuarioService.buscarUsuarios());
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
@@ -66,6 +71,7 @@ public class UsuarioController {
 		}
 		model.addAttribute("roles",roles);
 		model.addAttribute("perfiles",perfiles);
+		model.addAttribute("clientes",clientes);
 		return "crearUsuario";
 	}
 	
@@ -75,7 +81,8 @@ public class UsuarioController {
 			@RequestParam String email,
 			@RequestParam String password,
 			@RequestParam Long rol,
-			@RequestParam Long perfil) {
+			@RequestParam Long perfil,
+			@RequestParam Long cliente) {
 
 		ModelAndView model = new ModelAndView("usuarios");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -89,6 +96,14 @@ public class UsuarioController {
 		usuario.setPassword(password);
 		usuario.setRol(rolService.buscarPorId(rol));
 		usuario.setPerfil(perfilService.buscarPorId(perfil));
+		
+		Cliente clienteSel = clienteService.buscarPorId(cliente);
+		if(perfil.intValue() == Constantes.PERFIL_CLIENTE){
+			clienteSel.setRepresentante(usuario);
+		} else if (perfil.intValue() == Constantes.PERFIL_CONTADOR){
+			clienteSel.setContador(usuario);
+		}
+		clienteService.guardar(clienteSel);
 		if(!Constantes.GUARDADO.equalsIgnoreCase(usuarioService.crearUsuario(usuario))){
 			model.addObject("usuarios", usuarioService.buscarUsuarios());
 			model.addObject("tipoSalida",Constantes.ALERTA_DANGER);
@@ -123,8 +138,10 @@ public class UsuarioController {
 				model.addAttribute("usuario",usuarioSession);
 				return "usuarios";
 			}
+			List<Cliente> clientes = (List<Cliente>) clienteService.buscarClientes();
 			model.addAttribute("roles",roles);
 			model.addAttribute("perfiles",perfiles);
+			model.addAttribute("clientes",clientes);
 		} else if (usuarioSession.getId() != id){
 			model.addAttribute("tipoSalida",Constantes.ALERTA_DANGER);
 			model.addAttribute("salida", messageSource.getMessage("usuario.sin.permisos",new Object[]{},new Locale("")));
@@ -140,7 +157,8 @@ public class UsuarioController {
 			@RequestParam String alias,
 			@RequestParam String email,
 			@RequestParam Long rol,
-			@RequestParam Long perfil) throws ParseException {
+			@RequestParam Long perfil,
+			@RequestParam Long cliente) throws ParseException {
 		
 		ModelAndView result = new ModelAndView("usuarios");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -153,6 +171,14 @@ public class UsuarioController {
 		usuario.setEmail(email);
 		usuario.setRol(rolService.buscarPorId(rol));
 		usuario.setPerfil(perfilService.buscarPorId(perfil));
+		
+		Cliente clienteSel = clienteService.buscarPorId(cliente);
+		if(perfil.intValue() == Constantes.PERFIL_CLIENTE){
+			clienteSel.setRepresentante(usuario);
+		} else if (perfil.intValue() == Constantes.PERFIL_CONTADOR){
+			clienteSel.setContador(usuario);
+		}
+		clienteService.guardar(clienteSel);
 		if(!Constantes.GUARDADO.equalsIgnoreCase(usuarioService.updateUsuario(usuario))){
 			result.addObject("usuarios", usuarioService.buscarUsuarios());
 			result.addObject("tipoSalida",Constantes.ALERTA_DANGER);
