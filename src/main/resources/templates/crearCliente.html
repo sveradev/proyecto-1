@@ -21,7 +21,7 @@
 			</div>
 			<form method="post" action="#" id="form">
 				<div class="form-group">
-					<label for="nombre">Nombre</label>
+					<label for="nombre">Nombre del Cliente</label>
 					<input type="text" id="nombre" name="nombre" placeholder="Nombre" class="form-control input-lg" required/>
 				</div>
 				<div class="form-group">
@@ -38,11 +38,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="nombre">Descripci&oacute;n</label>
-					<textarea id="descripcion" name="descripcion" placeholder="Descripci&oacute;n" class="form-control input-lg" rows="3" maxlength="255" required/></textarea>
-				</div>
-				<div class="form-group">
-					<label for="nombre">Representante</label>
+					<label for="nombre">Representante del Cliente</label>
 					<select id="representanteId" name="representanteId" class="form-control input-lg" required>
 						{{#representantes}}
 							<option value ="{{id}}">{{nombre}}</option>
@@ -50,12 +46,16 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<label for="nombre">Cliente</label>
+					<label for="nombre">Contador Asignado</label>
 					<select id="contadorId" name="contadorId" class="form-control input-lg" required>
 						{{#contadores}}
 							<option value ="{{id}}">{{nombre}}</option>
 						{{/contadores}}
 					</select>
+				</div>
+				<div class="form-group">
+					<label for="nombre">Notas</label>
+					<textarea id="descripcion" name="descripcion" placeholder="Notas" class="form-control input-lg" rows="3" maxlength="255"/></textarea>
 				</div>
 				<div class="form-group form-inline pull-right">
 					<a class="btn btn-lg btn-primary" href="/clientes">Volver</a>

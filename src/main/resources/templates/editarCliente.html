@@ -15,7 +15,7 @@
 				</div>
 				{{#cliente}}
 					<div class="form-group">
-						<label for="nombre">Nombre</label>
+						<label for="nombre">Nombre del Cliente</label>
 						<input type="text" id="nombre" name="nombre" placeholder="Nombre" class="form-control input-lg" value="{{nombre}}"/>
 					</div>
 					<div class="form-group">
@@ -23,10 +23,7 @@
 						<input type="text" id="cuit" name="cuit" placeholder="CUIT" class="form-control input-lg" value="{{cuit}}"/>
 					</div>
 					<div class="form-group">
-						<label for="nombre">Descripci&oacute;n</label>
-						<textarea id="descripcion" name="descripcion" placeholder="Descripci&oacute;n" class="form-control input-lg" rows="3" maxlength="255" required/>{{descripcion}}</textarea>
-					</div>
-					<div class="form-group">
+						<label for="nombre">Cierre de Ejercicio</label>
 						<div class="input-group">
 							<input type="text" name="cierreEjercicio" placeholder="Fecha Cierre Ejercicio" class="form-control input-lg" id="cierreEjercicio" value="{{cierreEjercicio}}"/>
 							<span class="input-group-addon">
@@ -35,7 +32,8 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="representante">Representante</label>
+						<label for="representante">Representante del Cliente</label>
+						<a class="" href="/crearUsuario">Nuevo</a>
 						<select name="representanteId" class="form-control input-lg">
 							{{#representantes}}
 								<option value ="{{id}}">{{nombre}}</option>
@@ -43,15 +41,20 @@
 						</select>
 					</div>
 					<div class="form-group">
-						<label for="contador">Contador</label>
+						<label for="contador">Contador Asignado</label>
+						<a class="" href="/crearUsuario">Nuevo</a>
 						<select name="contadorId" class="form-control input-lg">
 							{{#contadores}}
 								<option value ="{{id}}">{{nombre}}</option>
 							{{/contadores}}
 						</select>
 					</div>
+					<div class="form-group">
+						<label for="nombre">Notas</label>
+						<textarea id="descripcion" name="descripcion" placeholder="Notas" class="form-control input-lg" rows="3" maxlength="255"/>{{descripcion}}</textarea>
+					</div>
 					<div class="form-group form-inline pull-right">
-						<button class="btn btn-lg btn-primary" formaction="/clientes">Volver</button>
+						<a class="btn btn-lg btn-primary" href="/clientes">Volver</a>
 						<button type="submit" id="aceptar" class="btn btn-lg btn-primary">Aceptar</button>
 					</div>
 				{{/cliente}}
