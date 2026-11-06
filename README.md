@@ -1,4 +1,4 @@
-# 📋 Talgham — Sistema de gestión de solicitudes
+# 📋 Talgham — Sistema de gestión para un estudio contable
 
 [🇦🇷 Español](#-español) · [🇬🇧 English](#-english)
 
@@ -12,7 +12,9 @@
 
 ## 🇦🇷 Español
 
-Aplicación web para gestionar **solicitudes de trabajo** de clientes: desde que se piden hasta que se terminan, con usuarios, perfiles, roles y avisos por email.
+Aplicación web para la gestión de un **estudio contable**: organiza los pedidos de trabajo de los clientes desde que se reciben hasta que se terminan, con usuarios, perfiles, roles y avisos por email.
+
+> 💼 **Proyecto real:** lo desarrollamos para un estudio contable y lo vendimos.
 
 ### Funcionalidades
 - **Solicitudes** con ciclo de estados: *Solicitado → En proceso → Detenido → Finalizado / Cancelado*, y opción de programarlas.
@@ -60,7 +62,9 @@ src/main/java/com/talgham/demo
 
 ## 🇬🇧 English
 
-Web application to manage client **work requests** from creation to completion, with users, profiles, roles and email notifications.
+Web application for managing an **accounting firm**: it tracks client work requests from intake to completion, with users, profiles, roles and email notifications.
+
+> 💼 **Real-world project:** built for an accounting firm and sold to them.
 
 ### Features
 - **Requests** with a status workflow: *Requested → In progress → On hold → Done / Cancelled*, plus scheduling.
